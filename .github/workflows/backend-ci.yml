@@ -1,5 +1,9 @@
 name: CI
 
+defaults:
+  run:
+    working-directory: backend
+
 on:
   push:
     branches: [main]
@@ -19,7 +23,6 @@ jobs:
           cache: maven
       - name: Run ktlint
         uses: lucasnlm/ktlint-action@v1.0.1
-        working-directory: ./backend
   test:
     runs-on: ubuntu-latest
     steps:
@@ -34,4 +37,3 @@ jobs:
           cache: maven
       - name: Test with Maven
         run: mvn -B test
-        working-directory: ./backend
