@@ -8,9 +8,42 @@
               <v-expansion-panel>
                 <v-expansion-panel-header>Subjects</v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <!-- TODO: Add buttons -->
+                  <v-btn
+                    v-for="({ subjectName }, i) in { subjectList }"
+                    :key="i"
+                  >
+                    { subjectName }
+                  </v-btn>
                 </v-expansion-panel-content>
               </v-expansion-panel>
+
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Queue administration
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-btn
+                    v-for="({ subjectName }, i) in { subjectList }"
+                    :key="i"
+                  >
+                    { subjectName }
+                  </v-btn>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+
+              <v-expansion-panel>
+                <v-expansion-panel-header>Task list</v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-btn
+                    v-for="({ subjectName }, i) in { subjectList }"
+                    :key="i"
+                  >
+                    { subjectName }
+                  </v-btn>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-btn>User settings</v-btn>
+              <v-btn>Log out</v-btn>
             </v-expansion-panels>
           </div>
         </div>
@@ -20,5 +53,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "SideBar",
+  data() {
+    return {
+      subjectName: null,
+      subjectList: [],
+    };
+  },
+  methods: {
+    loadSubjects() {},
+  },
+};
 </script>
