@@ -15,11 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci
-      - run: npm run test:unit
+      - name: Install project
+        run: npm ci
+      - name: Run unit tests
+        run: npm run test:unit
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci
-      - run: npx vue-cli-service lint --no-fix
+      - name: Install project
+        run: npm ci
+      - name: Run linter
+        run: npx vue-cli-service lint --no-fix
