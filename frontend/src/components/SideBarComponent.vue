@@ -8,10 +8,7 @@
               <v-expansion-panel>
                 <v-expansion-panel-header>Subjects</v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <v-btn
-                    v-for="({ subjectName }, i) in { subjectList }"
-                    :key="i"
-                  >
+                  <v-btn v-for="(subjectName, i) in { subjectList }" :key="i">
                     { subjectName }
                   </v-btn>
                 </v-expansion-panel-content>
@@ -22,10 +19,7 @@
                   Queue administration
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <v-btn
-                    v-for="({ subjectName }, i) in { subjectList }"
-                    :key="i"
-                  >
+                  <v-btn v-for="(subjectName, i) in { subjectList }" :key="i">
                     { subjectName }
                   </v-btn>
                 </v-expansion-panel-content>
@@ -35,8 +29,9 @@
                 <v-expansion-panel-header>Task list</v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-btn
-                    v-for="({ subjectName }, i) in { subjectList }"
+                    v-for="(subjectName, i) in { subjectList }"
                     :key="i"
+                    @click="loadSubjects"
                   >
                     { subjectName }
                   </v-btn>
@@ -53,16 +48,27 @@
 </template>
 
 <script>
+import { receiveAll } from "@/feature/api";
+
 export default {
   name: "SideBar",
   data() {
     return {
-      subjectName: null,
       subjectList: [],
+      get: null,
+      error: null,
     };
   },
   methods: {
-    loadSubjects() {},
+    loadSubjects() {
+      this.subjectList.push(
+        receiveAll((err) => {
+          if (err) {
+            this.error = err.toString();
+          }
+        })
+      );
+    },
   },
 };
 </script>
