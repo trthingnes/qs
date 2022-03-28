@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.g16.backend.security
+package edu.ntnu.idatt2105.g16.backend.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -20,6 +20,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .and()
             .authorizeRequests() // Requests to authorize will follow.
             .antMatchers("/h2/**").permitAll() // Allow all H2 console access.
+            .antMatchers("/swagger-ui/**").permitAll() // Allow all Swagger UI access.
             .anyRequest().permitAll() // ! Remove this to enforce security.
     }
 }
