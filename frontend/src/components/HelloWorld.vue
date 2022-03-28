@@ -12,7 +12,8 @@
 
             <v-col class="mb-4">
                 <h1 class="display-2 font-weight-bold mb-3">
-                    Welcome to the Vuetify 3 Beta
+                    Welcome<span v-if="user">, {{ user.name }}, </span> to the
+                    Vuetify 3 Beta
                 </h1>
 
                 <p class="subheading font-weight-regular">
@@ -71,13 +72,45 @@
                     </a>
                 </v-row>
             </v-col>
+
+            <v-col class="mb-5" cols="12">
+                <a
+                    v-if="!user"
+                    @click="handleLogin"
+                    class="headline font-weight-bold mb-5"
+                >
+                    Click here to login
+                </a>
+                <a
+                    v-if="user"
+                    @click="handleLogout"
+                    class="headline font-weight-bold mb-5"
+                >
+                    Click here to logout
+                </a>
+            </v-col>
         </v-row>
     </v-container>
 </template>
 
 <script>
+import { useAuth0 } from "@auth0/auth0-vue"
 export default {
     name: "HelloWorld",
+
+    setup() {
+        const { loginWithRedirect, logout, user } = useAuth0()
+
+        const handleLogin = () => {
+            loginWithRedirect()
+        }
+
+        const handleLogout = () => {
+            logout({ returnTo: window.location.origin })
+        }
+
+        return { handleLogin, handleLogout, user }
+    },
 
     data: () => ({
         ecosystem: [
