@@ -1,49 +1,99 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col col="12">
-        <v-expansion-panels v-model="panel" multiple>
-          <v-expansion-panel>
-            <v-expansion-panel-header>Subjects</v-expansion-panel-header>
-            <v-expansion-panel-content
-              v-for="(subject, i) in { subjectList }"
-              :key="i"
-            >
-              <div class="subject"></div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+  <v-expansion-panels>
+    <v-expansion-panel>
+      <v-expansion-panel-title>
+        <v-row no-gutters @click="loadSubjects">
+          <v-col cols="4" class="d-flex justify-start"> Subjects </v-col>
+        </v-row>
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-item-group selected-class="bg-primary">
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="subject in subjectList"
+                :key="subject"
+                cols="12"
+                md="4"
+              >
+                <v-item>
+                  <v-card :class="['d-flex']" dark>
+                    <div class="text-h6 flex-grow-1">
+                      {{ subject }}
+                    </div>
+                  </v-card>
+                </v-item>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-item-group>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
 
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              Queue administration
-            </v-expansion-panel-header>
-            <v-expansion-panel-content
-              v-for="(subject, i) in { subjectList }"
-              :key="i"
-            >
-              <div class="subject"></div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
+    <v-expansion-panel>
+      <v-expansion-panel-title>
+        <v-row no-gutters @click="loadSubjects">
+          <v-col cols="4" class="d-flex justify-start">
+            Queue Administration
+          </v-col>
+        </v-row>
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-item-group selected-class="bg-primary">
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="subject in subjectList"
+                :key="subject"
+                cols="12"
+                md="4"
+              >
+                <v-item>
+                  <v-card :class="['d-flex']" dark>
+                    <div class="text-h6 flex-grow-1">
+                      {{ subject }}
+                    </div>
+                  </v-card>
+                </v-item>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-item-group>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
 
-          <v-expansion-panel>
-            <v-expansion-panel-header>Task list</v-expansion-panel-header>
-            <v-expansion-panel-content
-              v-for="(subject, i) in { subjectList }"
-              :key="i"
-            >
-              <div class="subject"></div>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-col>
-    </v-row>
-    <div id="settings">
-      <v-btn>User settings</v-btn>
-    </div>
-    <div id="logout">
-      <v-btn>Log out</v-btn>
-    </div>
-  </v-container>
+    <v-expansion-panel>
+      <v-expansion-panel-title>
+        <v-row no-gutters @click="loadSubjects">
+          <v-col cols="4" class="d-flex justify-start">
+            List of approved tasks
+          </v-col>
+        </v-row>
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <v-item-group selected-class="bg-primary">
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="subject in subjectList"
+                :key="subject"
+                cols="12"
+                md="4"
+              >
+                <v-item>
+                  <v-card :class="['d-flex']" dark>
+                    <div class="text-h6 flex-grow-1">
+                      {{ subject }}
+                    </div>
+                  </v-card>
+                </v-item>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-item-group>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <script>
@@ -53,7 +103,7 @@ export default {
   name: "SideBar",
   data: () => ({
     panel: [0, 1],
-    subjectList: [],
+    subjectList: ["test", "cool", "admin"],
   }),
   methods: {
     loadSubjects() {
@@ -62,6 +112,7 @@ export default {
           if (err) {
             this.error = err.toString();
           }
+          console.log("Fetched subjects");
         })
       );
     },
