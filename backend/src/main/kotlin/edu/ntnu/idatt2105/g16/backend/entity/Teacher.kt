@@ -4,7 +4,7 @@ import javax.persistence.Entity
 import javax.persistence.OneToMany
 
 @Entity
-class Teacher: User() {
+class Teacher : User() {
     @OneToMany
     var teachingCourses: List<Course> = listOf()
 }

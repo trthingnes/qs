@@ -12,7 +12,7 @@ class Assignment {
     @Id
     @GeneratedValue
     var id: Long = 0
-    
+
     @ManyToOne
     var course: Course = Course()
 

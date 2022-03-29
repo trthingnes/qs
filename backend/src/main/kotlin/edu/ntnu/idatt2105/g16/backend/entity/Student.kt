@@ -4,7 +4,7 @@ import javax.persistence.Entity
 import javax.persistence.ManyToMany
 
 @Entity
-class Student: User() {
+class Student : User() {
     @ManyToMany
     var teachingAssistantCourses: List<Course> = listOf()
 }
