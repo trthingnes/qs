@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div class="ml-3 mr-3 bg-light-blue">
-            <div class="ml-5 mt-3 text-white">
+        <div class="mx-auto bg-light-blue">
+            <div class="ml-3 text-white">
                 <h1>Qs</h1>
             </div>
-            <div class="ml-5 pb-1 text-white">
+            <div class="ml-3 text-white">
                 <p>"Username"</p>
             </div>
         </div>
 
-        <v-expansion-panels class="ml-3 mr-3">
-            <v-expansion-panel class="mb-2">
+        <v-expansion-panels>
+            <v-expansion-panel>
                 <v-expansion-panel-title>
-                    <v-row no-gutters @click="loadSubjects">
+                    <v-row @click="loadSubjects">
                         <v-col cols="4" class="d-flex justify-start">
                             Subjects
                         </v-col>
@@ -42,9 +42,9 @@
                 </v-expansion-panel-text>
             </v-expansion-panel>
 
-            <v-expansion-panel class="mb-2">
+            <v-expansion-panel>
                 <v-expansion-panel-title>
-                    <v-row no-gutters @click="loadSubjects">
+                    <v-row @click="loadSubjects">
                         <v-col cols="4" class="d-flex justify-start">
                             Queue Administration
                         </v-col>
@@ -76,7 +76,7 @@
 
             <v-expansion-panel class="mb-2">
                 <v-expansion-panel-title>
-                    <v-row no-gutters @click="loadSubjects">
+                    <v-row @click="loadSubjects">
                         <v-col cols="4" class="d-flex justify-start">
                             List of approved tasks
                         </v-col>
@@ -144,6 +144,5 @@ export default {
 body {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    text-align: center;
 }
 </style>
