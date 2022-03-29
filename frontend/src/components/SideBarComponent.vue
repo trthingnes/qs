@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { receiveAll } from "@/feature/api"
+import { receiveAll } from "@/services/api"
 
 export default {
     name: "SideBar",

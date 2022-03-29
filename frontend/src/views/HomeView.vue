@@ -1,25 +1,5 @@
 <template>
-    <div>
-        <SideBar />
-    </div>
-    <div>
-        <!-- -->
-    </div>
-    <div>
-        <!-- -->
-    </div>
+    <h1 class="mt-2 ml-3">This is the home view</h1>
 </template>
 
-<script>
-import { defineComponent } from "vue"
-
-// Components
-import SideBar from "../components/SideBarComponent.vue"
-
-export default defineComponent({
-    name: "QueueView",
-    components: {
-        SideBar,
-    },
-})
-</script>
+<script></script>
