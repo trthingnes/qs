@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 
 // Components
 import SideBar from "../components/SideBarComponent.vue";

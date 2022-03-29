@@ -14,8 +14,8 @@ export default {
     HomeView,
   },
 
-  data: () => ({
-    //
-  }),
-};
+    data: () => ({
+        //
+    }),
+}
 </script>

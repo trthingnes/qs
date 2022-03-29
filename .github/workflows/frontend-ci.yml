@@ -1,0 +1,29 @@
+name: Frontend
+
+defaults:
+  run:
+    working-directory: frontend
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install project
+        run: npm ci
+      - name: Run unit tests
+        run: npm run test:unit
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install project
+        run: npm ci
+      - name: Run linter
+        run: npx vue-cli-service lint --no-fix
