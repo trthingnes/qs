@@ -2,48 +2,47 @@
   <v-container>
     <v-row>
       <v-col col="12">
-        <div>
-          <div class="d-flex">
-            <v-expansion-panels v-model="panel" :disabled="disabled" multiple>
-              <v-expansion-panel>
-                <v-expansion-panel-header>Subjects</v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-btn v-for="(subjectName, i) in { subjectList }" :key="i">
-                    { subjectName }
-                  </v-btn>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
+        <v-expansion-panels v-model="panel" multiple>
+          <v-expansion-panel>
+            <v-expansion-panel-header>Subjects</v-expansion-panel-header>
+            <v-expansion-panel-content
+              v-for="(subject, i) in { subjectList }"
+              :key="i"
+            >
+              <div class="subject"></div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
 
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  Queue administration
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-btn v-for="(subjectName, i) in { subjectList }" :key="i">
-                    { subjectName }
-                  </v-btn>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              Queue administration
+            </v-expansion-panel-header>
+            <v-expansion-panel-content
+              v-for="(subject, i) in { subjectList }"
+              :key="i"
+            >
+              <div class="subject"></div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
 
-              <v-expansion-panel>
-                <v-expansion-panel-header>Task list</v-expansion-panel-header>
-                <v-expansion-panel-content>
-                  <v-btn
-                    v-for="(subjectName, i) in { subjectList }"
-                    :key="i"
-                    @click="loadSubjects"
-                  >
-                    { subjectName }
-                  </v-btn>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-btn>User settings</v-btn>
-              <v-btn>Log out</v-btn>
-            </v-expansion-panels>
-          </div>
-        </div>
+          <v-expansion-panel>
+            <v-expansion-panel-header>Task list</v-expansion-panel-header>
+            <v-expansion-panel-content
+              v-for="(subject, i) in { subjectList }"
+              :key="i"
+            >
+              <div class="subject"></div>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
+    <div id="settings">
+      <v-btn>User settings</v-btn>
+    </div>
+    <div id="logout">
+      <v-btn>Log out</v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -52,13 +51,10 @@ import { receiveAll } from "@/feature/api";
 
 export default {
   name: "SideBar",
-  data() {
-    return {
-      subjectList: [],
-      get: null,
-      error: null,
-    };
-  },
+  data: () => ({
+    panel: [0, 1],
+    subjectList: [],
+  }),
   methods: {
     loadSubjects() {
       this.subjectList.push(
@@ -72,3 +68,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+body {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  text-align: center;
+}
+</style>
