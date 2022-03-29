@@ -1,18 +1,17 @@
 <template>
   <v-app>
     <v-main>
-      <router-view />
-      <SideBarComponent />
+      <HomeView />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import SideBarComponent from "@/components/SideBarComponent";
+import HomeView from "@/views/HomeView";
 export default {
   name: "App",
   components: {
-    SideBarComponent,
+    HomeView,
   },
 
   data: () => ({
