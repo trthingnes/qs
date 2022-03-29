@@ -1,5 +1,4 @@
 server.port: 8888
-debug: true
 
 spring:
   datasource:
@@ -17,3 +16,8 @@ spring:
   mvc:
     pathmatch: # Workaround for Swagger bug.
       matching-strategy: ant_path_matcher
+  security:
+    oauth2.resourceserver.jwt.issuer-uri: ${auth0.domain}
+
+auth0.audience: http://qs.api
+auth0.domain: https://dev-n5ogkgjf.eu.auth0.com/
