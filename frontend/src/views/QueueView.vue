@@ -1,12 +1,17 @@
 <template>
     <div>
-        <div>
-            <div></div>
-            <div></div>
+        <div class="mx-auto bg-light-blue">
+            <div class="ml-3 text-white">
+                <h1>"Name of subject"</h1>
+            </div>
+            <div class="ml-3 text-white">
+                <p>Students waiting: null</p>
+            </div>
         </div>
+
         <div>
-            <v-card class="mx-auto mr-4" max-height="300">
-                <v-list density="compact">
+            <v-card class="mx-auto mr-4">
+                <v-list>
                     <v-list-subheader>QUEUE</v-list-subheader>
                     <v-list-item
                         v-for="(student, i) in queue"
