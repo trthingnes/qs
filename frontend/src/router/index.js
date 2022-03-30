@@ -29,6 +29,14 @@ const routes = [
                 /* webpackChunkName: "settings" */ "@/views/AddToQueueView.vue"
             ),
     },
+    {
+        path: "/assignments",
+        name: "assignments",
+        component: () =>
+            import(
+                /* webpackChunkName: "settings" */ "@/views/AssignmentsView.vue"
+            ),
+    },
 ]
 
 const router = createRouter({
