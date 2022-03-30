@@ -56,10 +56,7 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
-            .authenticationEntryPoint {
-                req: HttpServletRequest,
-                res: HttpServletResponse,
-                e: AuthenticationException ->
+            .authenticationEntryPoint { req: HttpServletRequest, res: HttpServletResponse, e: AuthenticationException ->
                 res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.message)
             }
             .and()
