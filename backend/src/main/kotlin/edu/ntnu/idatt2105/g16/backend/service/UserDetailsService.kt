@@ -11,7 +11,7 @@ import javax.transaction.Transactional
 
 @Service
 @Transactional
-class UserDetailsServiceImpl : UserDetailsService {
+class UserDetailsService : UserDetailsService {
     @Autowired
     private lateinit var userRepository: UserRepository
 

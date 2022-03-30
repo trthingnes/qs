@@ -27,19 +27,13 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
     private lateinit var userDetailsService: UserDetailsService
 
     @Bean
-    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
-        return JwtAuthenticationFilter()
-    }
+    fun jwtAuthenticationFilter() = JwtAuthenticationFilter()
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    override fun authenticationManagerBean(): AuthenticationManager {
-        return super.authenticationManagerBean()
-    }
+    override fun authenticationManagerBean(): AuthenticationManager = super.authenticationManagerBean()
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder())
@@ -49,18 +43,18 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
         if (http == null) { return }
 
         http
-            .headers().frameOptions().sameOrigin() // Set frame-options header.
+            .headers().frameOptions().sameOrigin() // Needed for H2 console to work.
             .and()
-            .csrf().disable() // Disable forgery protection.
-            .authorizeRequests() // Requests to authorize will follow.
+            .csrf().disable()
+            .authorizeRequests()
             .antMatchers(
                 "/h2/**",
                 "/swagger-ui/**",
                 "/swagger-resources/**",
                 "/v2/api-docs/**",
                 "/auth/**"
-            ).permitAll() // Allow access to dev tools and auth endpoint.
-            .anyRequest().authenticated() // Allow access if authenticated.
+            ).permitAll() // Needed for unauthenticated access to given paths.
+            .anyRequest().authenticated()
             .and()
             .exceptionHandling()
             .authenticationEntryPoint {
