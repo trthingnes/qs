@@ -1,12 +1,10 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
-import org.hibernate.validator.constraints.URL
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.OneToMany
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
 
 @Entity
 class CourseDescription {
@@ -15,16 +13,16 @@ class CourseDescription {
     var id: Long = 0
 
     @NotBlank
-    @Size(min = 7, max = 9)
-    var code: String = ""
+    lateinit var code: String
 
     @NotBlank
-    @Size(min = 10, max = 200)
-    var name: String = ""
+    lateinit var name: String
 
-    @URL
-    @NotNull
-    var url: String = ""
+    @NotBlank
+    lateinit var url: String
 
-    var description: String = ""
+    lateinit var description: String
+
+    @OneToMany
+    lateinit var courses: List<Course>
 }
