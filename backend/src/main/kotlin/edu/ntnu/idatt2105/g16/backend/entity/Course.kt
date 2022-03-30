@@ -1,11 +1,6 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -14,21 +9,21 @@ class Course {
     @GeneratedValue
     var id: Long = 0
 
+    @ManyToOne
+    lateinit var info: CourseDescription
+
     @NotNull
-    var semester: Semester = Semester.OTHER
+    lateinit var semester: Semester
 
     @NotNull
     var year: Int = 0
 
-    @ManyToOne
-    @NotNull
-    var info: CourseDescription = CourseDescription()
-
     @OneToOne
-    @NotNull
-    var queue: Queue = Queue()
+    lateinit var queue: Queue
 
     @ManyToMany
-    @NotNull
-    var students: List<Student> = listOf()
+    lateinit var users: List<User>
+
+    @OneToMany
+    lateinit var assignments: List<Assignment>
 }

@@ -10,15 +10,15 @@ class QueueEntry {
     @GeneratedValue
     var id: Long = 0
 
-    @NotBlank
-    var location: String = ""
-
     @NotNull
     var help: Boolean = true
 
+    @NotBlank
+    lateinit var location: String
+
     @ManyToOne
-    var queue: Queue = Queue()
+    lateinit var queue: Queue
 
     @ManyToMany
-    var assignments: List<Assignment> = listOf()
+    lateinit var assignments: List<Assignment>
 }

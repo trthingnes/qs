@@ -4,6 +4,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
+import javax.persistence.OneToOne
 
 @Entity
 class Queue {
@@ -11,6 +12,9 @@ class Queue {
     @GeneratedValue
     var id: Long = 0
 
+    @OneToOne
+    lateinit var course: Course
+
     @OneToMany
-    var entries: List<QueueEntry> = listOf()
+    lateinit var entries: List<QueueEntry>
 }

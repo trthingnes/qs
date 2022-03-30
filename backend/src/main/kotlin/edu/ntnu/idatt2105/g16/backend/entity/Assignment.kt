@@ -14,10 +14,10 @@ class Assignment {
     var id: Long = 0
 
     @ManyToOne
-    var course: Course = Course()
+    lateinit var course: Course
 
     @ManyToMany
-    var users: List<Student> = listOf()
+    lateinit var users: List<User>
 
     @NotNull
     var approved: Boolean = false
