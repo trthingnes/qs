@@ -21,7 +21,7 @@
                     ></v-checkbox>
                 </div>
             </v-row>
-            <v-btn type="submit">Still i kø</v-btn>
+            <v-btn type="submit" @click="submit()">Still i kø</v-btn>
         </v-container>
     </v-form>
 </template>
@@ -32,9 +32,13 @@ import { defineComponent, ref } from "vue"
 export default defineComponent({
     setup() {
         const position = ""
+
         const assignments = ["1", "2", "3", "4"]
+
         const selected = []
+
         const help = ref(false)
+
         var toggletext = () => {
             if (help.value) {
                 return "Godkjenning"
@@ -43,12 +47,18 @@ export default defineComponent({
             }
         }
 
+        const submit = () => {
+            //TODO: Handle inputs, save to state?
+            console.log("Submit pressed: " + toggletext())
+        }
+
         return {
             position,
             selected,
             assignments,
             help,
             toggletext,
+            submit,
         }
     },
 })
