@@ -1,5 +1,6 @@
 <template>
     <v-card class="mx-auto mr-4">
+        <QueuePositionComponent />
         <v-list>
             <v-list-subheader
                 >Students in queue: {{ queue.length }}</v-list-subheader
@@ -41,6 +42,10 @@ export default {
         regHelp() {
             document.documentElement.style.color = "#add8e6"
         },
+    },
+
+    components: {
+        QueuePositionComponent,
     },
 }
 </script>

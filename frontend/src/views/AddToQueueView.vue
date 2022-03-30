@@ -15,6 +15,7 @@
                 <div v-for="asmnt in assignments" :key="asmnt">
                     <v-checkbox
                         :value="asmnt"
+                        :model-value="completed.includes(asmnt) ? true : false"
                         :key="asmnt"
                         :label="asmnt"
                         :v-model="selected"
@@ -28,12 +29,15 @@
 
 <script>
 import { defineComponent, ref } from "vue"
+import { getAssignments, getCompletedAssignments } from "../services/api"
 
 export default defineComponent({
     setup() {
         const position = ""
 
-        const assignments = ["1", "2", "3", "4"]
+        const assignments = getAssignments()
+
+        const completed = getCompletedAssignments()
 
         const selected = []
 
@@ -56,6 +60,7 @@ export default defineComponent({
             position,
             selected,
             assignments,
+            completed,
             help,
             toggletext,
             submit,
