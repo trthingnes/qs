@@ -80,12 +80,6 @@ export default {
         password: "",
         newPass: "",
         repPass: "",
-        user: {
-            firstname: "Jonathan",
-            lastname: "Løseth",
-            email: "jonathhl@stud.ntnu.no",
-            password: "admin",
-        },
         nameRules: [
             (v) => !!v || "Name is required",
             (v) =>
