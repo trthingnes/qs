@@ -1,31 +1,71 @@
 <template>
-    <div>
-        <div class="mx-auto bg-light-blue">
-            <div class="ml-3 text-white">
-                <h1>User settings</h1>
-            </div>
-            <div class="ml-3 text-white">
-                <p>"Username"</p>
-            </div>
-        </div>
+    <v-form v-model="valid">
+        <v-container>
+            <v-row>
+                <!-- TODO: Add functionality to all buttons -->
+                <v-col cols="12" md="4">
+                    <v-text-field
+                        v-model="firstname"
+                        :rules="nameRules"
+                        :counter="15"
+                        label="First name"
+                        required
+                    ></v-text-field>
+                </v-col>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field v-model="firstName" label="First Name"></v-text-field>
-        </v-form>
+                <v-col cols="12" md="4">
+                    <v-text-field
+                        v-model="lastname"
+                        :rules="nameRules"
+                        :counter="15"
+                        label="Last name"
+                        required
+                    ></v-text-field>
+                </v-col>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field v-model="lastName" label="Last Name"></v-text-field>
-        </v-form>
+                <v-col cols="12" md="4">
+                    <v-text-field
+                        v-model="email"
+                        :rules="emailRules"
+                        label="Email"
+                        required
+                    ></v-text-field>
+                </v-col>
 
-        <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field v-model="email" label="Email"></v-text-field>
-        </v-form>
-    </div>
+                <v-col cols="12" md="4">
+                    <v-text-field
+                        v-model="password"
+                        :rules="passwordRules"
+                        :type="'password'"
+                        label="Password"
+                        required
+                    ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" md="4">
+                    <v-btn :disabled="false">Save</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-form>
 </template>
 
 <script>
 export default {
     name: "UserSettingsView",
+    data: () => ({
+        valid: true,
+        name: "",
+        nameRules: [
+            (v) => !!v || "Name is required",
+            (v) =>
+                (v && v.length <= 15) || "Name must be less than 15 characters",
+        ],
+        emailRules: [
+            (v) => !!v || "Email is required",
+            (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+        ],
+    }),
 }
 </script>
 
