@@ -11,6 +11,7 @@
 
         <div>
             <v-card class="mx-auto mr-4">
+                <QueuePositionComponent />
                 <v-list>
                     <v-list-subheader>QUEUE</v-list-subheader>
                     <v-list-item
@@ -29,11 +30,17 @@
 </template>
 
 <script>
+import QueuePositionComponent from "../components/QueuePositionComponent.vue"
+
 export default {
     name: "QueueView",
     data: () => ({
         queue: [{ name: "Jonathan" }, { name: "Tobias" }, { name: "Tor" }],
     }),
+
+    components: {
+        QueuePositionComponent,
+    },
 }
 </script>
 
