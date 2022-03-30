@@ -14,7 +14,6 @@
                 <p>Oppgaver</p>
                 <div v-for="asmnt in assignments" :key="asmnt">
                     <v-checkbox
-                        :value="asmnt"
                         :model-value="completed.includes(asmnt) ? true : false"
                         :key="asmnt"
                         :label="asmnt"
