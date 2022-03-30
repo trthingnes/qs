@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer width="350" app>
+    <v-navigation-drawer width="350" app permanent>
         <v-list>
             <v-list-item>
                 <h1>Qs</h1>

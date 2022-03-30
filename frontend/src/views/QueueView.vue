@@ -1,26 +1,27 @@
 <template>
     <div>
-        <div class="mx-auto bg-light-blue">
-            <div class="ml-3 text-white">
-                <h1>"Name of subject"</h1>
-            </div>
-            <div class="ml-3 text-white">
-                <p>Students waiting: null</p>
-            </div>
-        </div>
-
         <div>
             <v-card class="mx-auto mr-4">
                 <v-list>
-                    <v-list-subheader>QUEUE</v-list-subheader>
+                    <v-list-subheader
+                        >Students in queue: {{ queue.length }}</v-list-subheader
+                    >
                     <v-list-item
                         v-for="(student, i) in queue"
                         :key="i"
                         :value="student"
+                        class="text-center"
                     >
                         <v-list-item-title
                             v-text="student.name"
                         ></v-list-item-title>
+                        <v-spacer></v-spacer>
+                        <v-list-item-content>
+                            {{ student.type }}
+                            <v-spacer></v-spacer>
+                            Assignment:
+                            {{ student.assignment }}</v-list-item-content
+                        >
                     </v-list-item>
                 </v-list>
             </v-card>
@@ -32,7 +33,11 @@
 export default {
     name: "QueueView",
     data: () => ({
-        queue: [{ name: "Jonathan" }, { name: "Tobias" }, { name: "Tor" }],
+        queue: [
+            { name: "Jonathan", type: "Help", assignment: "1" },
+            { name: "Tobias", type: "Help", assignment: "69" },
+            { name: "Tor", type: "Help", assignment: "38" },
+        ],
     }),
 }
 </script>
