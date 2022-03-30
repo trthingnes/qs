@@ -10,7 +10,7 @@ import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtAuthenticationFilter: OncePerRequestFilter() {
+class JwtAuthenticationFilter : OncePerRequestFilter() {
     @Autowired
     private lateinit var tokenProvider: JwtProvider
 
@@ -21,8 +21,8 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
         try {
             val token = getJwtFromRequest(request)
 
-            if(token != null) {
-                if(!tokenProvider.validateToken(token)) {
+            if (token != null) {
+                if (!tokenProvider.validateToken(token)) {
                     throw IllegalStateException("Unable to validate token")
                 }
 
@@ -33,8 +33,7 @@ class JwtAuthenticationFilter: OncePerRequestFilter() {
 
                 SecurityContextHolder.getContext().authentication = authentication
             }
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             logger.error("Could not set user authentication in security context: ${e.message}")
         }
 

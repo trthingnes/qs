@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.g16.backend.service
 
-import edu.ntnu.idatt2105.g16.backend.security.UserPrincipal
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
+import edu.ntnu.idatt2105.g16.backend.security.UserPrincipal
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

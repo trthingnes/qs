@@ -16,7 +16,7 @@ class UserController {
     private lateinit var userRepository: UserRepository
 
     @PostMapping("/")
-    //@PreAuthorize("hasAnyRole('TEACHER')")
+    // @PreAuthorize("hasAnyRole('TEACHER')")
     fun createUser(@RequestBody data: UserDTO): ResponseEntity<Any> {
         val user = User(data)
 
@@ -36,5 +36,4 @@ class UserController {
             ResponseEntity.badRequest().body("User not found.")
         }
     }
-
 }

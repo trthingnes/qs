@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2105.g16.backend.security
 
-import edu.ntnu.idatt2105.g16.backend.security.JwtAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -58,9 +57,10 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
             .and()
             .exceptionHandling()
             .authenticationEntryPoint {
-                    req: HttpServletRequest,
-                    res: HttpServletResponse,
-                    e: AuthenticationException -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.message)
+                req: HttpServletRequest,
+                res: HttpServletResponse,
+                e: AuthenticationException ->
+                res.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.message)
             }
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

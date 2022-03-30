@@ -1,10 +1,8 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
-import edu.ntnu.idatt2105.g16.backend.security.JwtProvider
 import edu.ntnu.idatt2105.g16.backend.dto.LoginDTO
 import edu.ntnu.idatt2105.g16.backend.dto.TokenDTO
-import edu.ntnu.idatt2105.g16.backend.security.SecurityAdapter
-import edu.ntnu.idatt2105.g16.backend.security.UserPrincipal
+import edu.ntnu.idatt2105.g16.backend.security.JwtProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
