@@ -18,23 +18,37 @@ const routes = [
         name: "settings",
         component: () =>
             import(
-                /* webpackChunkName: "settings" */ "@/views/UserSettingsView.vue"
+                /* webpackChunkName: "settings" */ "@/views/SettingsView.vue"
             ),
     },
     {
         path: "/addtoqueue",
         name: "addtoqueue",
         component: () =>
-            import(
-                /* webpackChunkName: "settings" */ "@/views/AddToQueueView.vue"
-            ),
+            import(/* webpackChunkName: "add" */ "@/views/AddToQueueView.vue"),
     },
     {
         path: "/assignments",
         name: "assignments",
         component: () =>
             import(
-                /* webpackChunkName: "settings" */ "@/views/AssignmentsView.vue"
+                /* webpackChunkName: "assignments" */ "@/views/AssignmentsView.vue"
+            ),
+    },
+    {
+        path: "/assignments/list",
+        name: "assignmentlist",
+        component: () =>
+            import(
+                /* webpackChunkName: "assignmentlist" */ "@/views/AssignmentListView.vue"
+            ),
+    },
+    {
+        path: "/edit",
+        name: "edit",
+        component: () =>
+            import(
+                /* webpackChunkName: "edit" */ "@/views/EditSubjectView.vue"
             ),
     },
 ]

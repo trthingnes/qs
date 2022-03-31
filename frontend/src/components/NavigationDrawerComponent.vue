@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer width="350" app permanent>
         <v-list>
-            <v-list-item>
+            <v-list-item @click="$router.push('/')">
                 <h1>Qs</h1>
             </v-list-item>
 
@@ -46,6 +46,7 @@
                         variant="contained-text"
                         append-icon="mdi-cog"
                         class="ml-2"
+                        @click="$router.push('/settings')"
                     >
                         Innstillinger
                     </v-btn>

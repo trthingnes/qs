@@ -3,7 +3,7 @@
         <v-container>
             <v-row>
                 <!-- TODO: Add functionality to all buttons -->
-                <v-col cols="12" md="4">
+                <v-col cols="1" md="5">
                     <v-label>Subject code:</v-label>
                     <v-text-field
                         v-model="subjectcode"
@@ -12,7 +12,7 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="1" md="5">
                     <v-label>Subject name:</v-label>
                     <v-text-field
                         v-model="subjectName"
@@ -21,11 +21,11 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
-                    <!-- TODO: Find way to make this area empty, or find something to put here -->
+                <v-col cols="1" md="1">
+                    <!-- -->
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="1" md="5" class="">
                     <v-label>Number of assignments:</v-label>
                     <v-slider
                         v-model="numAssignments"
@@ -38,15 +38,36 @@
                     ></v-slider>
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="1" md="5" class="mt-2">
+                    <!-- TODO: Find way to read list of all students from csv file. -->
+                    <!-- TODO: Also find a more fitting drop down menu, for selecting multiple students at once -->
+                    <div class="text-center">
+                        <v-menu>
+                            <template v-slot:activator="{ props }">
+                                <v-btn color="primary" dark v-bind="props">
+                                    List students
+                                </v-btn>
+                            </template>
+
+                            <v-list>
+                                <v-list-item
+                                    v-for="(student, i) in students"
+                                    :key="i"
+                                >
+                                    <v-list-item-title>{{
+                                        student.name
+                                    }}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
+                </v-col>
+
+                <v-col cols="1" md="1">
                     <!-- -->
                 </v-col>
 
-                <v-col cols="12" md="4">
-                    <!-- -->
-                </v-col>
-
-                <v-col cols="12" md="4">
+                <v-col cols="1" md="5">
                     <v-btn :disabled="false" @click="updateInfo">Save</v-btn>
                 </v-col>
             </v-row>
@@ -59,6 +80,11 @@ export default {
     name: "EditSubjectView",
     data: () => ({
         numAssignments: 0,
+        students: [
+            { name: "Jonathan", type: "Help", assignment: "1" },
+            { name: "Tobias", type: "Help", assignment: "69" },
+            { name: "Tor", type: "Help", assignment: "38" },
+        ],
     }),
 }
 </script>
