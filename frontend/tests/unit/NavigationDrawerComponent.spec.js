@@ -1,5 +1,5 @@
 import NavigationDrawerComponent from "@/components/NavigationDrawerComponent"
-import {mount, shallowMount} from "@vue/test-utils"
+import { shallowMount } from "@vue/test-utils"
 
 describe("NavigationDrawerComponent", () => {
     it("Displays labels", () => {

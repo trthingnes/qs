@@ -1,4 +1,4 @@
-import UserSettingsView from "@/views/UserSettingsView"
+import UserSettingsView from "@/views/SettingsView"
 import { shallowMount } from "@vue/test-utils"
 
 describe("UserSettingsView", () => {
