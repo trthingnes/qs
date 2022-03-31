@@ -36,3 +36,7 @@ export function getQueue() {
         { name: "Tor", type: "Help", assignment: "38" },
     ]
 }
+
+export function pushToQueue(name, location, helpType, assignment) {
+    console.log(name + " " + location + " " + helpType + " " + assignment)
+}
