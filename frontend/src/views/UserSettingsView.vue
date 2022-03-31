@@ -9,6 +9,7 @@
                         :rules="nameRules"
                         :counter="15"
                         label="First name"
+                        data-testid="firstname"
                         required
                     ></v-text-field>
                 </v-col>
@@ -19,6 +20,7 @@
                         :rules="nameRules"
                         :counter="15"
                         label="Last name"
+                        data-testid="lastname"
                         required
                     ></v-text-field>
                 </v-col>
@@ -28,6 +30,7 @@
                         v-model="email"
                         :rules="emailRules"
                         label="Email"
+                        data-testid="email"
                         required
                     ></v-text-field>
                 </v-col>
@@ -38,6 +41,7 @@
                         :rules="passwordRules"
                         :type="'password'"
                         label="Password"
+                        data-testid="password"
                         disabled="true"
                         required
                     ></v-text-field>

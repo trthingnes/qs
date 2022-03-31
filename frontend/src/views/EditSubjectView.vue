@@ -29,6 +29,7 @@
                     <v-label>Number of assignments:</v-label>
                     <v-slider
                         v-model="numAssignments"
+                        data-testid="slider"
                         :min="0"
                         :max="15"
                         :step="1"
