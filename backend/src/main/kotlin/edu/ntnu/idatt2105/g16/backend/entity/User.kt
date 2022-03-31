@@ -34,7 +34,7 @@ class User() {
     @NotNull(message = "Email cannot be null")
     lateinit var email: String
 
-    @NotNull
+    @NotNull(message = "Role cannot be null")
     lateinit var role: Role
 
     @ManyToMany

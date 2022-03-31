@@ -5,6 +5,7 @@ import edu.ntnu.idatt2105.g16.backend.entity.User
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -16,7 +17,7 @@ class UserController {
     private lateinit var userRepository: UserRepository
 
     @PostMapping("/")
-    // @PreAuthorize("hasAnyRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('TEACHER')")
     fun createUser(@RequestBody data: UserDTO): ResponseEntity<Any> {
         val user = User(data)
 
