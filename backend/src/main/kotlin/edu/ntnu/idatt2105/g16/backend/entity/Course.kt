@@ -1,34 +1,38 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
+import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
-class Course {
+class Course() {
+    constructor(dto: CourseDTO) : this() {
+        this.info = dto.info
+        this.semester = dto.semester
+        this.year = dto.year
+        this.queue = dto.queue
+    }
+
     @Id
     @GeneratedValue
     var id: Long = 0
 
-    @NotNull
-    var semester: Semester = Semester.OTHER
+    @ManyToOne
+    lateinit var info: CourseDescription
 
-    @NotNull
+    @NotNull(message = "Semester cannot be null")
+    lateinit var semester: Semester
+
+    @NotNull(message = "Year cannot be null")
     var year: Int = 0
 
-    @ManyToOne
-    @NotNull
-    var info: CourseDescription = CourseDescription()
-
     @OneToOne
-    @NotNull
-    var queue: Queue = Queue()
+    @NotNull(message = "Queue cannot be null")
+    lateinit var queue: Queue
 
     @ManyToMany
-    @NotNull
-    var students: List<Student> = listOf()
+    var users: List<User> = listOf()
+
+    @OneToMany
+    var assignments: List<Assignment> = listOf()
 }
