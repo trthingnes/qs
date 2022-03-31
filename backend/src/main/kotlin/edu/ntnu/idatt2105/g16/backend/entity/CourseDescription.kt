@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 class CourseDescription() {
-    constructor(dto: CourseDescriptionDTO): this() {
+    constructor(dto: CourseDescriptionDTO) : this() {
         this.code = dto.code
         this.name = dto.name
         this.url = dto.url

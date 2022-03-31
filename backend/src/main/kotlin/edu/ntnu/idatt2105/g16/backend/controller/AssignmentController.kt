@@ -5,6 +5,4 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/assignment")
-class AssignmentController {
-
-}
+class AssignmentController

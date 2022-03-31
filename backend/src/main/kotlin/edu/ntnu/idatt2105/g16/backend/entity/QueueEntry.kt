@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
-class QueueEntry () {
-    constructor(dto: QueueEntryDTO): this() {
+class QueueEntry() {
+    constructor(dto: QueueEntryDTO) : this() {
         this.help = dto.help
         this.location = dto.location
         this.queue = dto.queue

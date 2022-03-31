@@ -9,7 +9,7 @@ import javax.persistence.OneToOne
 
 @Entity
 class Queue() {
-    constructor(dto: QueueDTO): this() {
+    constructor(dto: QueueDTO) : this() {
         this.course = dto.course
     }
 
