@@ -15,6 +15,7 @@
                 <div v-for="asmnt in assignments" :key="asmnt">
                     <v-checkbox
                         :model-value="completed.includes(asmnt) ? true : false"
+                        :disabled="completed.includes(asmnt) ? true : false"
                         :key="asmnt"
                         :label="asmnt"
                         :v-model="selected"

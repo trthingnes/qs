@@ -33,11 +33,13 @@
 </template>
 
 <script>
+import { getStudents, getAssignments } from "../services/api"
+
 export default {
     name: "AssignmentListView",
     data: () => ({
-        students: [{ name: "Jonathan" }, { name: "Tobias" }, { name: "Tor" }],
-        assignments: [1, 2, 3, 4, 5, 6],
+        students: getStudents(),
+        assignments: getAssignments(),
     }),
 }
 </script>

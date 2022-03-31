@@ -18,9 +18,21 @@ export function receiveAll() {
 }
 
 export function getAssignments() {
-    return ["1", "2", "3", "4"]
+    return ["1", "2", "3", "4", "5"]
 }
 
 export function getCompletedAssignments() {
     return ["1"]
+}
+
+export function getStudents() {
+    return [{ name: "Jonathan" }, { name: "Tobias" }, { name: "Tor" }]
+}
+
+export function getQueue() {
+    return [
+        { name: "Jonathan", type: "Help", assignment: "1" },
+        { name: "Tobias", type: "Help", assignment: "69" },
+        { name: "Tor", type: "Help", assignment: "38" },
+    ]
 }
