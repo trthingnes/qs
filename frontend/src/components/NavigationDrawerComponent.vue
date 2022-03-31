@@ -7,7 +7,7 @@
 
             <v-divider class="mt-2 mb-2"></v-divider>
 
-            <div v-if="authenticated">
+            <div v-if="token">
                 <v-list-subheader color="black">
                     <v-icon icon="mdi-school" class="mr-3"></v-icon>
                     Dine fag
@@ -22,7 +22,7 @@
                 ></v-list-item>
             </div>
 
-            <div v-if="authenticated && assistantCourses.length">
+            <div v-if="token && assistantCourses.length">
                 <v-divider class="mt-2 mb-2"></v-divider>
 
                 <v-list-subheader color="black">
@@ -41,7 +41,7 @@
 
         <template v-slot:append>
             <v-divider></v-divider>
-            <div v-if="authenticated">
+            <div v-if="token">
                 <v-card class="mt-3 pb-2" density="compact">
                     <v-card-title>
                         {{ firstname }} {{ lastname }}
@@ -88,7 +88,7 @@
         </template>
     </v-navigation-drawer>
     <v-overlay v-model="loginOverlayOpen" class="align-center justify-center">
-        <LoginComponent />
+        <LoginComponent @login="onUserLogin()" />
     </v-overlay>
 </template>
 <script>
@@ -106,12 +106,12 @@ export default {
         const router = useRouter()
         const store = useStore()
 
-        const loginOverlayOpen = ref(true)
-
-        const { username, firstname, lastname, email, token } =
-            store.getters.userInfo
-
-        const authenticated = Boolean(token)
+        const loginOverlayOpen = ref(false)
+        const token = ref("")
+        const username = ref("")
+        const firstname = ref("")
+        const lastname = ref("")
+        const email = ref("")
 
         const studentCourses = [
             ["IDATT2101", "Algoritmer og datastrukturer"],
@@ -127,8 +127,19 @@ export default {
             router.push(`/courses/${code}`)
         }
 
+        const onUserLogin = () => {
+            loginOverlayOpen.value = false
+            token.value = store.getters.token
+
+            let userinfo = store.getters.userInfo
+            username.value = userinfo.username
+            firstname.value = userinfo.firstname
+            lastname.value = userinfo.lastname
+            email.value = userinfo.email
+        }
+
         return {
-            authenticated,
+            token,
             username,
             firstname,
             lastname,
@@ -137,6 +148,7 @@ export default {
             assistantCourses,
             loginOverlayOpen,
             onCourseClick,
+            onUserLogin,
         }
     },
 }

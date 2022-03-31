@@ -1,5 +1,4 @@
 import axios from "axios"
-import { useStore } from "vuex"
 
 const API_URL = "http://localhost:8888"
 
@@ -12,48 +11,44 @@ const CLIENT = axios.create({
     },
 })
 
-export function getToken(username, password) {
+export async function getToken(username, password) {
     return axios
-        .post(API_URL + "/auth/token", {
-            username: username,
-            password: password,
+        .post(API_URL + "/auth/token/", {
+            username: username.value,
+            password: password.value,
         })
         .then((response) => {
             let token = response.data.token
 
             if (token) {
                 console.info("Successfully retrieved token.")
+                return token
             } else {
                 console.warn("Got no token from token endpoint.")
                 return null
             }
         })
-        .catch((error) => {
-            console.error(error)
+        .catch(() => {
+            console.error("Unable to get token.")
             return null
         })
 }
 
-export function getUserInfo() {
-    let token = useStore.getters.token
-
+export async function getUserInfo(token) {
     if (!token) {
         console.error("Cannot get user info without token.")
         return null
     }
 
     return axios
-        .get(
-            API_URL + "/user",
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
+        .get(API_URL + "/user/", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then((response) => {
-            console.log(response)
+            console.info("Successfully retrieved user info.", response.data)
+            return response.data
         })
         .catch((error) => {
             console.error(error)

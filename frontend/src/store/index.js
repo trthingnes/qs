@@ -39,10 +39,10 @@ export default createStore({
         },
     },
     actions: {
-        setUserInfo(context, { username, firstname, lastname, email }) {
+        setUserInfo(context, { username, firstName, lastName, email }) {
             context.commit("SET_USERNAME", username)
-            context.commit("SET_FIRSTNAME", firstname)
-            context.commit("SET_LASTNAME", lastname)
+            context.commit("SET_FIRSTNAME", firstName)
+            context.commit("SET_LASTNAME", lastName)
             context.commit("SET_EMAIL", email)
         },
         setToken(context, token) {

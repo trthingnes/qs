@@ -24,20 +24,22 @@ import { useStore } from "vuex"
 import { getToken, getUserInfo } from "@/services/api"
 
 export default {
-    setup() {
+    emits: ["login"],
+    setup(props, ctx) {
         const store = useStore()
         const username = ref("")
         const password = ref("")
 
         const onLoginClick = async () => {
-            console.log(
-                `Username: ${username.value}, Password: ${password.value}`
-            )
-            let token = await getToken(username, password)
-            let userinfo = await getUserInfo(token)
-            store.commit("setUserInfo", userinfo)
-
-            console.log(token)
+            try {
+                let token = await getToken(username, password)
+                store.dispatch("setToken", { token: token })
+                let userinfo = await getUserInfo(token)
+                store.dispatch("setUserInfo", userinfo)
+                ctx.emit("login")
+            } catch {
+                console.error("Unable to finish log in.")
+            }
         }
 
         return { onLoginClick, username, password }
