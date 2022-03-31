@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
-import edu.ntnu.idatt2105.g16.backend.dto.LoginDTO
+import edu.ntnu.idatt2105.g16.backend.dto.AuthorizationDTO
 import edu.ntnu.idatt2105.g16.backend.dto.TokenDTO
 import edu.ntnu.idatt2105.g16.backend.security.JwtProvider
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,7 @@ class AuthorizationController {
     lateinit var tokenProvider: JwtProvider
 
     @PostMapping("/token")
-    fun authenticateUser(@Valid @RequestBody login: LoginDTO): ResponseEntity<TokenDTO> {
+    fun authenticateUser(@Valid @RequestBody login: AuthorizationDTO): ResponseEntity<TokenDTO> {
         val authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(login.username, login.password)
         )
