@@ -64,7 +64,7 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
                 "/v2/api-docs/**",
                 "/auth/**"
             ).permitAll() // Needed for unauthenticated access to given paths.
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()//.authenticated()
             .and()
             .exceptionHandling()
             .authenticationEntryPoint { req: HttpServletRequest, res: HttpServletResponse, e: AuthenticationException ->
