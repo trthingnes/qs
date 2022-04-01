@@ -6,7 +6,6 @@ export default createStore({
         firstname: "",
         lastname: "",
         email: "",
-        token: "",
     },
     getters: {
         userInfo(state) {
@@ -16,9 +15,6 @@ export default createStore({
                 lastname: state.lastname,
                 email: state.email,
             }
-        },
-        token(state) {
-            return state.token
         },
     },
     mutations: {
@@ -34,9 +30,6 @@ export default createStore({
         SET_EMAIL(state, email) {
             state.email = email
         },
-        SET_TOKEN(state, token) {
-            state.token = token
-        },
     },
     actions: {
         setUserInfo(context, { username, firstName, lastName, email }) {
@@ -45,8 +38,11 @@ export default createStore({
             context.commit("SET_LASTNAME", lastName)
             context.commit("SET_EMAIL", email)
         },
-        setToken(context, token) {
-            context.commit("SET_TOKEN", token)
+        logout(context) {
+            context.commit("SET_USERNAME", "")
+            context.commit("SET_FIRSTNAME", "")
+            context.commit("SET_LASTNAME", "")
+            context.commit("SET_EMAIL", "")
         },
     },
     modules: {},

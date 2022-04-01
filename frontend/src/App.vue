@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import NavigationDrawerComponent from "@/components/NavigationDrawerComponent.vue"
+import NavigationDrawerComponent from "@/components/navigation/NavigationDrawerComponent.vue"
 
 export default {
     name: "App",

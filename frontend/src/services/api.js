@@ -2,6 +2,9 @@ import axios from "axios"
 
 const API_URL = "http://localhost:8888"
 
+const TOKEN_ENDPOINT = "/auth/token/"
+const USER_ENDPOINT = "/user/"
+
 const CLIENT = axios.create({
     baseURL: API_URL,
     withCredentials: false,
@@ -13,7 +16,7 @@ const CLIENT = axios.create({
 
 export async function getToken(username, password) {
     return axios
-        .post(API_URL + "/auth/token/", {
+        .post(API_URL + TOKEN_ENDPOINT, {
             username: username.value,
             password: password.value,
         })
@@ -21,38 +24,28 @@ export async function getToken(username, password) {
             let token = response.data.token
 
             if (token) {
-                console.info("Successfully retrieved token.")
                 return token
             } else {
-                console.warn("Got no token from token endpoint.")
-                return null
+                throw "Token from endpoint was empty."
             }
         })
         .catch(() => {
-            console.error("Unable to get token.")
-            return null
+            throw "Unable to get token."
         })
 }
 
 export async function getUserInfo(token) {
-    if (!token) {
-        console.error("Cannot get user info without token.")
-        return null
-    }
-
     return axios
-        .get(API_URL + "/user/", {
+        .get(API_URL + USER_ENDPOINT, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         })
         .then((response) => {
-            console.info("Successfully retrieved user info.", response.data)
             return response.data
         })
-        .catch((error) => {
-            console.error(error)
-            return null
+        .catch(() => {
+            throw "Unable to retrieve user data."
         })
 }
 
