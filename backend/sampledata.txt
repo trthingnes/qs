@@ -2,21 +2,17 @@ INSERT INTO USER VALUES ('tobiasth','tobias@thingn.es','Tobias','Rødahl Thingne
 INSERT INTO USER VALUES ('tobakken','tobakken@stud.ntnu.no','Tor-Øyvind','Paulsrud Bakken','$2a$10$Q37hnf0Y6ev27rUyMwqTmea7mXwORLK2ZB3BbdDcrchjwhc2twDp2', 0);
 INSERT INTO USER VALUES ('jonathhl','jonathhl@stud.ntnu.no','Jonathan','Hansen Løseth','$2a$10$Q37hnf0Y6ev27rUyMwqTmea7mXwORLK2ZB3BbdDcrchjwhc2twDp2', 1);
 
-INSERT INTO QUEUE VALUES (1, null);
+INSERT INTO QUEUE VALUES (1);
 INSERT INTO COURSE VALUES (1, 'IDATT1001', 'Introfag i Java.', 'Programmering 1', 2, 'https://www.ntnu.no/studier/emner/IDATT1001', 2022, 1);
-UPDATE QUEUE SET course_id=1 WHERE id=1;
 
-INSERT INTO QUEUE VALUES (2, null);
+INSERT INTO QUEUE VALUES (2);
 INSERT INTO COURSE VALUES (2, 'IDATT1002', 'Prosjektarbeid i team.', 'Systemutvikling', 2, 'https://www.ntnu.no/studier/emner/IDATT1002', 2022, 2);
-UPDATE QUEUE SET course_id=2 WHERE id=2;
 
-INSERT INTO QUEUE VALUES (3, null);
+INSERT INTO QUEUE VALUES (3);
 INSERT INTO COURSE VALUES (3, 'IDATT2101', 'Dybde i hvordan man lager og bruker algoritmer.', 'Algoritmer og datastrukturer', 0, 'https://www.ntnu.no/studier/emner/IDATT2101', 2022, 3);
-UPDATE QUEUE SET course_id=3 WHERE id=3;
 
-INSERT INTO QUEUE VALUES (4, null);
+INSERT INTO QUEUE VALUES (4);
 INSERT INTO COURSE VALUES (4, 'IDATT2105', 'Vue.js og Spring Boot.', 'Full-stack applikasjonsutvikling', 0, 'https://www.ntnu.no/studier/emner/IDATT2105', 2022, 4);
-UPDATE QUEUE SET course_id=4 WHERE id=4;
 
 INSERT INTO USER_TEACHER_COURSES VALUES ('tobiasth', 1);
 INSERT INTO USER_TEACHER_COURSES VALUES ('tobiasth', 2);
@@ -30,6 +26,15 @@ INSERT INTO USER_STUDENT_COURSES VALUES ('jonathhl', 3);
 INSERT INTO USER_STUDENT_COURSES VALUES ('jonathhl', 4);
 INSERT INTO USER_STUDENT_COURSES VALUES ('tobakken', 3);
 INSERT INTO USER_STUDENT_COURSES VALUES ('tobakken', 4);
+
+INSERT INTO ASSIGNMENT VALUES (1, 1, 1);
+INSERT INTO ASSIGNMENT VALUES (2, 1, 2);
+INSERT INTO ASSIGNMENT VALUES (3, 1, 3);
+INSERT INTO ASSIGNMENT VALUES (4, 1, 4);
+INSERT INTO ASSIGNMENT VALUES (5, 1, 5);
+
+INSERT INTO ASSIGNMENT_USERS VALUES(3, 'tobakken');
+
 
 
 

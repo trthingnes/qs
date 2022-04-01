@@ -9,21 +9,37 @@
                 :model-value="completed.includes(asmnt) ? true : false"
                 :key="asmnt"
                 :label="asmnt"
-                disabled
+                :disabled="completed.includes(asmnt) ? true : false"
             ></v-checkbox>
         </div>
     </v-component>
 </template>
 
 <script>
-import { defineComponent } from "vue"
+import { defineComponent, ref, onMounted } from "vue"
 import { getAssignments, getCompletedAssignments } from "../services/api"
 
 export default defineComponent({
     setup() {
-        const assignments = getAssignments()
+        const assignments = ref([])
+        const completed = ref([])
 
-        const completed = getCompletedAssignments()
+        const updateAssignments = () =>
+            getAssignments("3").then((data) => {
+                console.log(data)
+                assignments.value = data
+            })
+
+        const updateCompletedAssignments = () =>
+            getCompletedAssignments("3").then((data) => {
+                console.log(data)
+                completed.value = data
+            })
+
+        onMounted(() => {
+            updateAssignments()
+            updateCompletedAssignments()
+        })
 
         return {
             assignments,

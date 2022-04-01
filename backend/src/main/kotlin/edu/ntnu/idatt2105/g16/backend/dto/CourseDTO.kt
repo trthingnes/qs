@@ -11,5 +11,5 @@ data class CourseDTO(
     val semester: Semester,
     val year: Int,
 ) {
-    constructor(c: Course): this(c.id, c.code, c.name, c.url, c.description, c.semester, c.year)
+    constructor(c: Course) : this(c.id, c.code, c.name, c.url, c.description, c.semester, c.year)
 }

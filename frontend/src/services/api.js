@@ -121,10 +121,20 @@ export function receiveAll() {
         .catch((error) => console.log(error))
 }
 
-export function getAssignments() {
-    return ["1", "2", "3", "4"]
+export async function getAssignments(id) {
+    return axios
+        .get(COURSES_URL + `${id}/assignments`)
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
 }
 
-export function getCompletedAssignments() {
-    return ["1"]
+export async function getCompletedAssignments(id) {
+    return axios
+        .get(COURSES_URL + `${id}/student/assignment/completed`)
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
 }

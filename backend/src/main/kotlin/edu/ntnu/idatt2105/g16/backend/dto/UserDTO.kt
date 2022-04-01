@@ -11,5 +11,5 @@ data class UserDTO(
     val email: String,
     val role: Role
 ) {
-    constructor(u: User): this(u.username, u.password, u.firstName, u.lastName, u.email, u.role)
+    constructor(u: User) : this(u.username, u.password, u.firstName, u.lastName, u.email, u.role)
 }
