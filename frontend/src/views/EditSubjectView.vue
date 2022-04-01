@@ -8,7 +8,7 @@
                     <v-text-field
                         v-model="subjectcode"
                         :counter="9"
-                        required
+                        disabled
                     ></v-text-field>
                 </v-col>
 
@@ -17,7 +17,7 @@
                     <v-text-field
                         v-model="subjectName"
                         :counter="30"
-                        required
+                        disabled
                     ></v-text-field>
                 </v-col>
 
@@ -26,19 +26,6 @@
                 </v-col>
 
                 <v-col cols="1" md="5" class="">
-                    <v-label>Number of assignments:</v-label>
-                    <v-slider
-                        v-model="numAssignments"
-                        data-testid="slider"
-                        :min="0"
-                        :max="15"
-                        :step="1"
-                        thumb-label
-                        :disabled="false"
-                    ></v-slider>
-                </v-col>
-
-                <v-col cols="1" md="5" class="mt-2">
                     <!-- TODO: Find way to read list of all students from csv file. -->
                     <!-- TODO: Also find a more fitting drop down menu, for selecting multiple students at once -->
                     <div class="text-center">
@@ -67,8 +54,24 @@
                     <!-- -->
                 </v-col>
 
+                <v-col cols="1" md="1">
+                    <!-- -->
+                </v-col>
+
+                <v-col cols="1" md="1">
+                    <div class="text-center">
+                        <v-btn :disabled="false" @click="deleteSubject"
+                            >Delete</v-btn
+                        >
+                    </div>
+                </v-col>
+
                 <v-col cols="1" md="5">
-                    <v-btn :disabled="false" @click="updateInfo">Save</v-btn>
+                    <div class="text-center">
+                        <v-btn :disabled="false" @click="updateInfo"
+                            >Save</v-btn
+                        >
+                    </div>
                 </v-col>
             </v-row>
         </v-container>
@@ -78,14 +81,6 @@
 <script>
 export default {
     name: "EditSubjectView",
-    data: () => ({
-        numAssignments: 0,
-        students: [
-            { name: "Jonathan", type: "Help", assignment: "1" },
-            { name: "Tobias", type: "Help", assignment: "69" },
-            { name: "Tor", type: "Help", assignment: "38" },
-        ],
-    }),
 }
 </script>
 

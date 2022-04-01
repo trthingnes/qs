@@ -1,4 +1,4 @@
-import EditSubjectView from "@/views/EditSubjectView"
+import EditSubjectView from "@/views/AddSubjectView"
 import { shallowMount } from "@vue/test-utils"
 
 describe("EditSubjectView", () => {

@@ -44,11 +44,19 @@ const routes = [
             ),
     },
     {
-        path: "/edit",
-        name: "edit",
+        path: "/courses/add",
+        name: "addsubject",
         component: () =>
             import(
-                /* webpackChunkName: "edit" */ "@/views/EditSubjectView.vue"
+                /* webpackChunkName: "addsubject" */ "@/views/AddSubjectView.vue"
+            ),
+    },
+    {
+        path: "/courses/edit",
+        name: "editsubject",
+        component: () =>
+            import(
+                /* webpackChinkName: "editsubject" */ "@/views/EditSubjectView.vue"
             ),
     },
     {
