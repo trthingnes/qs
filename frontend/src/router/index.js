@@ -1,17 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router"
-import HomeView from "../views/HomeView.vue"
 
 const routes = [
     {
         path: "/",
         name: "home",
-        component: HomeView,
-    },
-    {
-        path: "/queue",
-        name: "queue",
         component: () =>
-            import(/* webpackChunkName: "queue" */ "@/views/QueueView.vue"),
+            import(/* webpackChunkName: "home" */ "@/views/HomeView.vue"),
     },
     {
         path: "/settings",
@@ -22,10 +16,18 @@ const routes = [
             ),
     },
     {
-        path: "/addtoqueue",
-        name: "addtoqueue",
+        path: "/queue",
+        name: "queue",
         component: () =>
-            import(/* webpackChunkName: "add" */ "@/views/AddToQueueView.vue"),
+            import(/* webpackChunkName: "queue" */ "@/views/QueueView.vue"),
+    },
+    {
+        path: "/queue/enter",
+        name: "enter-queue",
+        component: () =>
+            import(
+                /* webpackChunkName: "enter-queue" */ "@/views/EnterQueueView.vue"
+            ),
     },
     {
         path: "/assignments",
@@ -37,34 +39,26 @@ const routes = [
     },
     {
         path: "/assignments/list",
-        name: "assignmentlist",
+        name: "list-assignments",
         component: () =>
             import(
-                /* webpackChunkName: "assignmentlist" */ "@/views/AssignmentListView.vue"
+                /* webpackChunkName: "assignment-list" */ "@/views/ListAssignmentsView.vue"
             ),
     },
     {
         path: "/courses/add",
-        name: "addsubject",
+        name: "add-course",
         component: () =>
             import(
-                /* webpackChunkName: "addsubject" */ "@/views/AddSubjectView.vue"
+                /* webpackChunkName: "add-course" */ "@/views/AddCourseView.vue"
             ),
     },
     {
         path: "/courses/edit",
-        name: "editsubject",
+        name: "edit-course",
         component: () =>
             import(
-                /* webpackChinkName: "editsubject" */ "@/views/EditSubjectView.vue"
-            ),
-    },
-    {
-        path: "/assignmentlist",
-        name: "assignmentslist",
-        component: () =>
-            import(
-                /* webpackChunkName: "settings" */ "@/views/AssignmentListView.vue"
+                /* webpackChinkName: "edit-course" */ "@/views/EditCourseView.vue"
             ),
     },
 ]

@@ -2,7 +2,13 @@
     <v-navigation-drawer width="350" app permanent>
         <v-list>
             <v-list-item>
-                <h1>Qs</h1>
+                <router-link
+                    class="text-decoration-none"
+                    style="color: black"
+                    :to="{ name: 'home' }"
+                >
+                    <h1>Qs</h1>
+                </router-link>
             </v-list-item>
 
             <!-- Student courses section -->
@@ -64,14 +70,16 @@
                             variant="contained-text"
                             append-icon="mdi-cog"
                             class="ml-2"
+                            @click="onSettingsClick()"
                         >
                             Innstillinger
                         </v-btn>
                         <v-btn
                             variant="contained-text"
                             append-icon="mdi-logout"
+                            color="error"
                             class="ml-2"
-                            @click.stop="onUserLogout()"
+                            @click="onLogoutClick()"
                         >
                             Logg ut
                         </v-btn>
@@ -88,6 +96,7 @@
                         <v-btn
                             variant="contained-text"
                             append-icon="mdi-login"
+                            color="success"
                             class="ml-2"
                             @click.stop="isLoginOverlayOpen = true"
                         >
@@ -108,6 +117,7 @@ import CourseSectionComponent from "@/components/navigation/CourseSectionCompone
 
 import { ref } from "vue"
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 import { useCookies } from "vue3-cookies"
 import {
     getUserInfo,
@@ -122,6 +132,7 @@ export default {
         CourseSectionComponent,
     },
     setup() {
+        const router = useRouter()
         const store = useStore()
         const { cookies } = useCookies()
 
@@ -162,12 +173,26 @@ export default {
             })
         }
 
-        const onCourseClick = (code) => {
-            console.log("Course clicked", code)
+        const onCourseClick = (id) => {
+            router.push({ name: "edit-course", params: { id: id } })
         }
 
         const onAddCourseClick = () => {
-            console.log("Add course clicked")
+            router.push({ name: "add-course" })
+        }
+
+        const onSettingsClick = () => {
+            router.push({ name: "settings" })
+        }
+
+        const onLogoutClick = () => {
+            store.dispatch("logout")
+            cookies.remove("token")
+            router.push({ name: "home" })
+            updateUserInfoFromStore()
+            studentCourses.value = []
+            assistantCourses.value = []
+            isAuthenticated.value = false
         }
 
         const onUserLogin = () => {
@@ -177,21 +202,14 @@ export default {
             isLoginOverlayOpen.value = false
         }
 
-        const onUserLogout = () => {
-            store.dispatch("logout")
-            cookies.remove("token")
-            updateUserInfoFromStore()
-            studentCourses.value = []
-            assistantCourses.value = []
-            isAuthenticated.value = false
-        }
-
         if (cookies.isKey("token")) {
             getUserInfo(cookies.get("token")).then((userinfo) => {
                 store.dispatch("setUserInfo", userinfo)
                 updateUserInfoFromStore()
                 updateCourses()
             })
+        } else if (router.currentRoute.value.name != "home") {
+            router.push({ name: "home" })
         }
 
         return {
@@ -208,8 +226,9 @@ export default {
             isLoginOverlayOpen,
             onCourseClick,
             onAddCourseClick,
+            onLogoutClick,
+            onSettingsClick,
             onUserLogin,
-            onUserLogout,
         }
     },
 }
