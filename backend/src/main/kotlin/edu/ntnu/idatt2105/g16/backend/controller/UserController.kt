@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
+import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import edu.ntnu.idatt2105.g16.backend.entity.User
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
@@ -30,10 +31,32 @@ class UserController {
 
     @GetMapping("/")
     fun getCurrentUser(principal: Principal): ResponseEntity<Any> {
-        val user = userRepository.findByUsername(principal.name)
+        val optionalUser = userRepository.findByUsername(principal.name)
 
-        return if (user.isPresent) {
-            ResponseEntity.ok(user.get())
+        return if (optionalUser.isPresent) {
+            ResponseEntity.ok(optionalUser.get())
+        } else {
+            ResponseEntity.badRequest().body("User not found.")
+        }
+    }
+
+    @GetMapping("/courses/student")
+    fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
+        val optionalUser = userRepository.findByUsername(principal.name)
+
+        return if(optionalUser.isPresent) {
+            ResponseEntity.ok(optionalUser.get().studentCourses.map { CourseDTO(it) })
+        } else {
+            ResponseEntity.badRequest().body("User not found.")
+        }
+    }
+
+    @GetMapping("/courses/assistant")
+    fun getCurrentUserAssistantCourses(principal: Principal): ResponseEntity<Any> {
+        val optionalUser = userRepository.findByUsername(principal.name)
+
+        return if(optionalUser.isPresent) {
+            ResponseEntity.ok(optionalUser.get().assistantCourses.map { CourseDTO(it) })
         } else {
             ResponseEntity.badRequest().body("User not found.")
         }

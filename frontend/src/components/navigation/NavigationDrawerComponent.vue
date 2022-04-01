@@ -14,11 +14,11 @@
                 </v-list-subheader>
 
                 <v-list-item
-                    v-for="[code, name] in studentCourses"
-                    :title="name"
-                    :value="code"
-                    :key="code"
-                    @click.stop="onCourseClick(code)"
+                    v-for="course in studentCourses"
+                    :title="course.name"
+                    :value="course.code"
+                    :key="course.code"
+                    @click.stop="onCourseClick(course.code)"
                 ></v-list-item>
             </div>
 
@@ -30,11 +30,11 @@
                     Læringsassistent
                 </v-list-subheader>
                 <v-list-item
-                    v-for="[code, name] in assistantCourses"
-                    :title="name"
-                    :value="code"
-                    :key="code"
-                    @click.stop="onCourseClick(code)"
+                    v-for="course in assistantCourses"
+                    :title="course.name"
+                    :value="course.code"
+                    :key="course.code"
+                    @click.stop="onCourseClick(course.code)"
                 ></v-list-item>
             </div>
         </v-list>
@@ -99,7 +99,11 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import { useCookies } from "vue3-cookies"
-import { getUserInfo } from "@/services/api"
+import {
+    getUserInfo,
+    getUserStudentCourses,
+    getUserAssistantCourses,
+} from "@/services/api"
 
 export default {
     components: {
@@ -110,23 +114,15 @@ export default {
         const store = useStore()
         const { cookies } = useCookies()
 
-        const authenticated = ref(cookies.isKey("token"))
+        const authenticated = ref(Boolean(cookies.get("token")))
         const loginOverlayOpen = ref(false)
 
         const username = ref("")
         const firstname = ref("")
         const lastname = ref("")
         const email = ref("")
-
-        const studentCourses = ref([
-            ["IDATT2101", "Algoritmer og datastrukturer"],
-            ["IDATT2105", "Full-stack applikasjonsutvikling"],
-        ])
-
-        const assistantCourses = ref([
-            ["IDATT1001", "Programmering 1"],
-            ["IDATT2001", "Programmering 2"],
-        ])
+        const studentCourses = ref([])
+        const assistantCourses = ref([])
 
         const updateUserInfoFromStore = () => {
             let userinfo = store.getters.userInfo
@@ -136,12 +132,23 @@ export default {
             email.value = userinfo.email
         }
 
+        const updateCourses = () => {
+            getUserStudentCourses(cookies.get("token")).then((courses) => {
+                studentCourses.value = courses
+            })
+
+            getUserAssistantCourses(cookies.get("token")).then((courses) => {
+                assistantCourses.value = courses
+            })
+        }
+
         const onCourseClick = (code) => {
             router.push(`/courses/${code}`)
         }
 
         const onUserLogin = () => {
             updateUserInfoFromStore()
+            updateCourses()
             authenticated.value = true
             loginOverlayOpen.value = false
         }
@@ -150,14 +157,16 @@ export default {
             store.dispatch("logout")
             cookies.remove("token")
             updateUserInfoFromStore()
+            studentCourses.value = []
+            assistantCourses.value = []
             authenticated.value = false
         }
 
-        let token = cookies.get("token")
-        if (token) {
-            getUserInfo(token).then((userinfo) => {
+        if (cookies.isKey("token")) {
+            getUserInfo(cookies.get("token")).then((userinfo) => {
                 store.dispatch("setUserInfo", userinfo)
                 updateUserInfoFromStore()
+                updateCourses()
             })
         }
 

@@ -1,5 +1,5 @@
 <template>
-    <v-card width="400px" class="px-5 py-5">
+    <v-card width="400" class="px-5 py-5">
         <v-card-title> Velkommen </v-card-title>
         <v-card-subtitle> Logg inn for å fortsette til Qs! </v-card-subtitle>
         <v-card-text>
@@ -43,7 +43,7 @@ export default {
         const onLoginClick = async () => {
             try {
                 let token = await getToken(username, password)
-                cookies.set("token", token)
+                cookies.set("token", token, "1d")
 
                 let userinfo = await getUserInfo(token)
                 store.dispatch("setUserInfo", userinfo)

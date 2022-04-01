@@ -38,5 +38,8 @@ class User() {
     lateinit var role: Role
 
     @ManyToMany
-    var courses: List<Course> = listOf()
+    var studentCourses: List<Course> = listOf()
+
+    @ManyToMany
+    var assistantCourses: List<Course> = listOf()
 }

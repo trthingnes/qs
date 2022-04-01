@@ -19,4 +19,4 @@ spring:
       matching-strategy: ant_path_matcher
 jwt:
   secret: 4800a5d0-e090-4f70-964a-ac5164dbf7e0
-  expirationMs: 900000 # 15 minutes
+  expirationMs: 86400000 # 24 hours

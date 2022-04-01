@@ -2,8 +2,10 @@ import axios from "axios"
 
 const API_URL = "http://localhost:8888"
 
-const TOKEN_ENDPOINT = "/auth/token/"
-const USER_ENDPOINT = "/user/"
+const TOKEN_URL = "/auth/token/"
+const USER_URL = "/user/"
+const STUDENT_COURSES_URL = "/user/courses/student"
+const ASSISTANT_COURSES_URL = "/user/courses/assistant"
 
 const CLIENT = axios.create({
     baseURL: API_URL,
@@ -16,7 +18,7 @@ const CLIENT = axios.create({
 
 export async function getToken(username, password) {
     return axios
-        .post(API_URL + TOKEN_ENDPOINT, {
+        .post(API_URL + TOKEN_URL, {
             username: username.value,
             password: password.value,
         })
@@ -36,7 +38,7 @@ export async function getToken(username, password) {
 
 export async function getUserInfo(token) {
     return axios
-        .get(API_URL + USER_ENDPOINT, {
+        .get(API_URL + USER_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -49,9 +51,41 @@ export async function getUserInfo(token) {
         })
 }
 
+export async function getUserStudentCourses(token) {
+    return axios
+        .get(API_URL + STUDENT_COURSES_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course data."
+        })
+}
+
+export async function getUserAssistantCourses(token) {
+    return axios
+        .get(API_URL + ASSISTANT_COURSES_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course data."
+        })
+}
+
 export function receiveAll() {
     return CLIENT.get("")
         .then((response) => {
+            console.log(response.data)
             return response.data
         })
         .catch((error) => console.log(error))

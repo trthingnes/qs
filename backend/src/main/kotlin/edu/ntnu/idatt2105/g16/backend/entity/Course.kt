@@ -15,7 +15,6 @@ class Course() {
         this.description = dto.description
         this.semester = dto.semester
         this.year = dto.year
-        this.queue = dto.queue
     }
 
     @Id
@@ -43,9 +42,6 @@ class Course() {
     @OneToOne
     @NotNull(message = "Queue cannot be null")
     lateinit var queue: Queue
-
-    @ManyToMany
-    var users: List<User> = listOf()
 
     @OneToMany
     var assignments: List<Assignment> = listOf()

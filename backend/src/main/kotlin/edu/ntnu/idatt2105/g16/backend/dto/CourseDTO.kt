@@ -9,5 +9,6 @@ data class CourseDTO(
     val description: String,
     val semester: Semester,
     val year: Int,
-    val queue: Queue
-)
+) {
+    constructor(c: Course): this(c.code, c.name, c.url, c.description, c.semester, c.year)
+}
