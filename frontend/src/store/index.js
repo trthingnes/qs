@@ -6,6 +6,7 @@ export default createStore({
         firstname: "",
         lastname: "",
         email: "",
+        role: "",
     },
     getters: {
         userInfo(state) {
@@ -14,6 +15,7 @@ export default createStore({
                 firstname: state.firstname,
                 lastname: state.lastname,
                 email: state.email,
+                role: state.role,
             }
         },
     },
@@ -30,19 +32,24 @@ export default createStore({
         SET_EMAIL(state, email) {
             state.email = email
         },
+        SET_ROLE(state, role) {
+            state.role = role
+        },
     },
     actions: {
-        setUserInfo(context, { username, firstName, lastName, email }) {
+        setUserInfo(context, { username, firstName, lastName, email, role }) {
             context.commit("SET_USERNAME", username)
             context.commit("SET_FIRSTNAME", firstName)
             context.commit("SET_LASTNAME", lastName)
             context.commit("SET_EMAIL", email)
+            context.commit("SET_ROLE", role)
         },
         logout(context) {
             context.commit("SET_USERNAME", "")
             context.commit("SET_FIRSTNAME", "")
             context.commit("SET_LASTNAME", "")
             context.commit("SET_EMAIL", "")
+            context.commit("SET_ROLE", "")
         },
     },
     modules: {},

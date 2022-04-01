@@ -5,9 +5,9 @@
                 <h1>Qs</h1>
             </v-list-item>
 
-            <v-divider class="mt-2 mb-2"></v-divider>
-
-            <div v-if="authenticated">
+            <!-- Student courses section -->
+            <div v-if="studentCourses.length">
+                <v-divider class="mt-2 mb-2"></v-divider>
                 <v-list-subheader color="black">
                     <v-icon icon="mdi-school" class="mr-3"></v-icon>
                     Dine fag
@@ -16,15 +16,15 @@
                 <v-list-item
                     v-for="course in studentCourses"
                     :title="course.name"
-                    :value="course.code"
+                    :value="`/student/${course.id}`"
                     :key="course.code"
-                    @click.stop="onCourseClick(course.code)"
+                    @click.stop="onCourseClick(`/student/${course.id}`)"
                 ></v-list-item>
             </div>
 
-            <div v-if="authenticated && assistantCourses.length">
+            <!-- Assistant courses section -->
+            <div v-if="assistantCourses.length">
                 <v-divider class="mt-2 mb-2"></v-divider>
-
                 <v-list-subheader color="black">
                     <v-icon icon="mdi-school" class="mr-3"></v-icon>
                     Læringsassistent
@@ -32,22 +32,39 @@
                 <v-list-item
                     v-for="course in assistantCourses"
                     :title="course.name"
-                    :value="course.code"
+                    :value="`/assistant/${course.id}`"
                     :key="course.code"
-                    @click.stop="onCourseClick(course.code)"
+                    @click.stop="onCourseClick(`/assistant/${course.id}`)"
+                ></v-list-item>
+            </div>
+
+            <!-- Teacher admin section -->
+            <div v-if="isTeacher">
+                <v-divider class="mt-2 mb-2"></v-divider>
+                <v-list-subheader color="black">
+                    <v-icon icon="mdi-bookshelf" class="mr-3"></v-icon>
+                    Faglærer
+                </v-list-subheader>
+                <v-list-item
+                    v-for="course in teacherCourses"
+                    :title="course.name"
+                    :value="course.id"
+                    :key="course.id"
+                    @click.stop="onCourseClick(`/teacher/${course.id}`)"
                 ></v-list-item>
             </div>
         </v-list>
 
+        <!-- Profile card section -->
         <template v-slot:append>
             <v-divider></v-divider>
-            <div v-if="authenticated">
+            <div v-if="isAuthenticated">
                 <v-card class="mt-3 pb-2" density="compact">
                     <v-card-title>
                         {{ firstname }} {{ lastname }}
                     </v-card-title>
                     <v-card-subtitle>
-                        {{ email }} ({{ username }})
+                        {{ email }} ({{ role }})
                     </v-card-subtitle>
                     <v-card-actions>
                         <v-btn
@@ -79,7 +96,7 @@
                             variant="contained-text"
                             append-icon="mdi-login"
                             class="ml-2"
-                            @click.stop="loginOverlayOpen = true"
+                            @click.stop="isLoginOverlayOpen = true"
                         >
                             Logg inn
                         </v-btn>
@@ -88,7 +105,7 @@
             </div>
         </template>
     </v-navigation-drawer>
-    <v-overlay v-model="loginOverlayOpen" class="align-center justify-center">
+    <v-overlay v-model="isLoginOverlayOpen" class="align-center justify-center">
         <LoginComponent @login="onUserLogin()" />
     </v-overlay>
 </template>
@@ -96,13 +113,13 @@
 import LoginComponent from "@/components/navigation/LoginComponent.vue"
 
 import { ref } from "vue"
-import { useRouter } from "vue-router"
 import { useStore } from "vuex"
 import { useCookies } from "vue3-cookies"
 import {
     getUserInfo,
     getUserStudentCourses,
     getUserAssistantCourses,
+    getUserTeacherCourses,
 } from "@/services/api"
 
 export default {
@@ -110,19 +127,21 @@ export default {
         LoginComponent,
     },
     setup() {
-        const router = useRouter()
         const store = useStore()
         const { cookies } = useCookies()
 
-        const authenticated = ref(Boolean(cookies.get("token")))
-        const loginOverlayOpen = ref(false)
+        const isAuthenticated = ref(Boolean(cookies.get("token")))
+        const isTeacher = ref(false)
+        const isLoginOverlayOpen = ref(false)
 
         const username = ref("")
         const firstname = ref("")
         const lastname = ref("")
         const email = ref("")
+        const role = ref("")
         const studentCourses = ref([])
         const assistantCourses = ref([])
+        const teacherCourses = ref([])
 
         const updateUserInfoFromStore = () => {
             let userinfo = store.getters.userInfo
@@ -130,6 +149,8 @@ export default {
             firstname.value = userinfo.firstname
             lastname.value = userinfo.lastname
             email.value = userinfo.email
+            role.value = userinfo.role
+            isTeacher.value = userinfo.role === "TEACHER"
         }
 
         const updateCourses = () => {
@@ -140,17 +161,21 @@ export default {
             getUserAssistantCourses(cookies.get("token")).then((courses) => {
                 assistantCourses.value = courses
             })
+
+            getUserTeacherCourses(cookies.get("token")).then((courses) => {
+                teacherCourses.value = courses
+            })
         }
 
         const onCourseClick = (code) => {
-            router.push(`/courses/${code}`)
+            console.log("Course clicked", code)
         }
 
         const onUserLogin = () => {
             updateUserInfoFromStore()
             updateCourses()
-            authenticated.value = true
-            loginOverlayOpen.value = false
+            isAuthenticated.value = true
+            isLoginOverlayOpen.value = false
         }
 
         const onUserLogout = () => {
@@ -159,7 +184,7 @@ export default {
             updateUserInfoFromStore()
             studentCourses.value = []
             assistantCourses.value = []
-            authenticated.value = false
+            isAuthenticated.value = false
         }
 
         if (cookies.isKey("token")) {
@@ -171,14 +196,17 @@ export default {
         }
 
         return {
-            authenticated,
             username,
             firstname,
             lastname,
             email,
+            role,
             studentCourses,
             assistantCourses,
-            loginOverlayOpen,
+            teacherCourses,
+            isAuthenticated,
+            isTeacher,
+            isLoginOverlayOpen,
             onCourseClick,
             onUserLogin,
             onUserLogout,

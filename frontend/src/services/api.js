@@ -6,6 +6,7 @@ const TOKEN_URL = "/auth/token/"
 const USER_URL = "/user/"
 const STUDENT_COURSES_URL = "/user/courses/student"
 const ASSISTANT_COURSES_URL = "/user/courses/assistant"
+const TEACHER_COURSES_URL = "/user/courses/teacher"
 
 const CLIENT = axios.create({
     baseURL: API_URL,
@@ -74,7 +75,21 @@ export async function getUserAssistantCourses(token) {
             },
         })
         .then((response) => {
-            console.log(response.data)
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course data."
+        })
+}
+
+export async function getUserTeacherCourses(token) {
+    return axios
+        .get(API_URL + TEACHER_COURSES_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
             return response.data
         })
         .catch(() => {
@@ -85,7 +100,6 @@ export async function getUserAssistantCourses(token) {
 export function receiveAll() {
     return CLIENT.get("")
         .then((response) => {
-            console.log(response.data)
             return response.data
         })
         .catch((error) => console.log(error))

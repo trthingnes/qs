@@ -42,4 +42,7 @@ class User() {
 
     @ManyToMany
     var assistantCourses: List<Course> = listOf()
+
+    @ManyToMany
+    var teacherCourses: List<Course> = listOf()
 }
