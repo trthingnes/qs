@@ -26,7 +26,7 @@
             <div v-if="assistantCourses.length">
                 <CourseSectionComponent
                     title="Læringsassistent"
-                    slug="assistant"
+                    slug="courses/"
                     icon="mdi-book"
                     :courses="assistantCourses"
                     @click="onCourseClick"
@@ -37,7 +37,7 @@
             <div v-if="isTeacher">
                 <CourseSectionComponent
                     title="Faglærer"
-                    slug="teacher"
+                    slug="courses/edit"
                     icon="mdi-bookshelf"
                     :courses="teacherCourses"
                     @click="onCourseClick"
@@ -173,8 +173,8 @@ export default {
             })
         }
 
-        const onCourseClick = (id) => {
-            router.push({ name: "edit-course", params: { id: id } })
+        const onCourseClick = (path) => {
+            router.push({ path: path })
         }
 
         const onAddCourseClick = () => {

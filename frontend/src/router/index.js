@@ -54,7 +54,8 @@ const routes = [
             ),
     },
     {
-        path: "/courses/edit",
+        path: "/courses/edit/:id",
+        props: true,
         name: "edit-course",
         component: () =>
             import(

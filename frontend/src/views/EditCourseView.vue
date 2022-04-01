@@ -4,18 +4,18 @@
             <v-row>
                 <!-- TODO: Add functionality to all buttons -->
                 <v-col cols="1" md="5">
-                    <v-label>Subject code:</v-label>
+                    <v-label>Course code:</v-label>
                     <v-text-field
-                        v-model="subjectcode"
+                        v-model="code"
                         :counter="9"
                         disabled
                     ></v-text-field>
                 </v-col>
 
                 <v-col cols="1" md="5">
-                    <v-label>Subject name:</v-label>
+                    <v-label>Course name:</v-label>
                     <v-text-field
-                        v-model="subjectName"
+                        v-model="name"
                         :counter="30"
                         disabled
                     ></v-text-field>
@@ -60,17 +60,15 @@
 
                 <v-col cols="1" md="1">
                     <div class="text-center">
-                        <v-btn :disabled="false" @click="deleteSubject"
-                            >Delete</v-btn
-                        >
+                        <v-btn color="error" @click="onDeleteClick">
+                            Delete
+                        </v-btn>
                     </div>
                 </v-col>
 
                 <v-col cols="1" md="5">
                     <div class="text-center">
-                        <v-btn :disabled="false" @click="updateInfo"
-                            >Save</v-btn
-                        >
+                        <v-btn color="success" @click="onSaveClick">Save</v-btn>
                     </div>
                 </v-col>
             </v-row>
@@ -79,8 +77,28 @@
 </template>
 
 <script>
+import { ref } from "vue"
+import { useCookies } from "vue3-cookies"
+import { getCourseById } from "@/services/api"
+
 export default {
-    name: "EditSubjectView",
+    props: ["id"],
+    setup(props) {
+        const code = ref("")
+        const name = ref("")
+        const valid = ref(true)
+
+        const { cookies } = useCookies()
+        getCourseById(cookies.get("token"), props.id).then((course) => {
+            code.value = course.code
+            name.value = course.name
+        })
+
+        const onDeleteClick = () => {}
+        const onSaveClick = () => {}
+
+        return { code, name, valid, onDeleteClick, onSaveClick }
+    },
 }
 </script>
 
