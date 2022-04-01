@@ -7,51 +7,44 @@
 
             <!-- Student courses section -->
             <div v-if="studentCourses.length">
-                <v-divider class="mt-2 mb-2"></v-divider>
-                <v-list-subheader color="black">
-                    <v-icon icon="mdi-school" class="mr-3"></v-icon>
-                    Dine fag
-                </v-list-subheader>
-
-                <v-list-item
-                    v-for="course in studentCourses"
-                    :title="course.name"
-                    :value="`/student/${course.id}`"
-                    :key="course.code"
-                    @click.stop="onCourseClick(`/student/${course.id}`)"
-                ></v-list-item>
+                <CourseSectionComponent
+                    title="Dine fag"
+                    slug="student"
+                    icon="mdi-school"
+                    :courses="studentCourses"
+                    @click="onCourseClick"
+                />
             </div>
 
             <!-- Assistant courses section -->
             <div v-if="assistantCourses.length">
-                <v-divider class="mt-2 mb-2"></v-divider>
-                <v-list-subheader color="black">
-                    <v-icon icon="mdi-school" class="mr-3"></v-icon>
-                    Læringsassistent
-                </v-list-subheader>
-                <v-list-item
-                    v-for="course in assistantCourses"
-                    :title="course.name"
-                    :value="`/assistant/${course.id}`"
-                    :key="course.code"
-                    @click.stop="onCourseClick(`/assistant/${course.id}`)"
-                ></v-list-item>
+                <CourseSectionComponent
+                    title="Læringsassistent"
+                    slug="assistant"
+                    icon="mdi-book"
+                    :courses="assistantCourses"
+                    @click="onCourseClick"
+                />
             </div>
 
             <!-- Teacher admin section -->
             <div v-if="isTeacher">
-                <v-divider class="mt-2 mb-2"></v-divider>
-                <v-list-subheader color="black">
-                    <v-icon icon="mdi-bookshelf" class="mr-3"></v-icon>
-                    Faglærer
-                </v-list-subheader>
-                <v-list-item
-                    v-for="course in teacherCourses"
-                    :title="course.name"
-                    :value="course.id"
-                    :key="course.id"
-                    @click.stop="onCourseClick(`/teacher/${course.id}`)"
-                ></v-list-item>
+                <CourseSectionComponent
+                    title="Faglærer"
+                    slug="teacher"
+                    icon="mdi-bookshelf"
+                    :courses="teacherCourses"
+                    @click="onCourseClick"
+                />
+                <v-list-item>
+                    <v-btn
+                        color="primary"
+                        prepend-icon="mdi-plus"
+                        @click.stop="onAddCourseClick()"
+                    >
+                        Legg til fag
+                    </v-btn>
+                </v-list-item>
             </div>
         </v-list>
 
@@ -111,6 +104,7 @@
 </template>
 <script>
 import LoginComponent from "@/components/navigation/LoginComponent.vue"
+import CourseSectionComponent from "@/components/navigation/CourseSectionComponent.vue"
 
 import { ref } from "vue"
 import { useStore } from "vuex"
@@ -125,6 +119,7 @@ import {
 export default {
     components: {
         LoginComponent,
+        CourseSectionComponent,
     },
     setup() {
         const store = useStore()
@@ -171,6 +166,10 @@ export default {
             console.log("Course clicked", code)
         }
 
+        const onAddCourseClick = () => {
+            console.log("Add course clicked")
+        }
+
         const onUserLogin = () => {
             updateUserInfoFromStore()
             updateCourses()
@@ -208,6 +207,7 @@ export default {
             isTeacher,
             isLoginOverlayOpen,
             onCourseClick,
+            onAddCourseClick,
             onUserLogin,
             onUserLogout,
         }

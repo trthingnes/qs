@@ -2,11 +2,11 @@ import axios from "axios"
 
 const API_URL = "http://localhost:8888"
 
-const TOKEN_URL = "/auth/token/"
-const USER_URL = "/user/"
-const STUDENT_COURSES_URL = "/user/courses/student"
-const ASSISTANT_COURSES_URL = "/user/courses/assistant"
-const TEACHER_COURSES_URL = "/user/courses/teacher"
+const TOKEN_URL = API_URL + "/auth/token/"
+const USER_URL = API_URL + "/user/"
+const STUDENT_COURSES_URL = API_URL + "/user/courses/student"
+const ASSISTANT_COURSES_URL = API_URL + "/user/courses/assistant"
+const TEACHER_COURSES_URL = API_URL + "/user/courses/teacher"
 
 const CLIENT = axios.create({
     baseURL: API_URL,
@@ -19,7 +19,7 @@ const CLIENT = axios.create({
 
 export async function getToken(username, password) {
     return axios
-        .post(API_URL + TOKEN_URL, {
+        .post(TOKEN_URL, {
             username: username.value,
             password: password.value,
         })
@@ -39,7 +39,7 @@ export async function getToken(username, password) {
 
 export async function getUserInfo(token) {
     return axios
-        .get(API_URL + USER_URL, {
+        .get(USER_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -54,7 +54,7 @@ export async function getUserInfo(token) {
 
 export async function getUserStudentCourses(token) {
     return axios
-        .get(API_URL + STUDENT_COURSES_URL, {
+        .get(STUDENT_COURSES_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -69,7 +69,7 @@ export async function getUserStudentCourses(token) {
 
 export async function getUserAssistantCourses(token) {
     return axios
-        .get(API_URL + ASSISTANT_COURSES_URL, {
+        .get(ASSISTANT_COURSES_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -84,7 +84,7 @@ export async function getUserAssistantCourses(token) {
 
 export async function getUserTeacherCourses(token) {
     return axios
-        .get(API_URL + TEACHER_COURSES_URL, {
+        .get(TEACHER_COURSES_URL, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
