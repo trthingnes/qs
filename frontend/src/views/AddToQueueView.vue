@@ -1,5 +1,5 @@
 <template>
-    <v-form>
+    <v-form @submit.prevent="submit()">
         <v-container>
             <v-row>
                 <v-switch v-model="help" :label="toggletext()"></v-switch>
@@ -7,38 +7,43 @@
             <v-row>
                 <v-text-field
                     label="Plassering: bygning, rom, bordnr"
-                    :model="position"
+                    v-model="position"
                 ></v-text-field>
             </v-row>
             <v-row>
                 <p>Oppgaver</p>
                 <div v-for="asmnt in assignments" :key="asmnt">
                     <v-checkbox
+                        v-model="selected"
+                        :value="asmnt"
                         :model-value="completed.includes(asmnt) ? true : false"
-                        :key="asmnt"
+                        :disabled="completed.includes(asmnt) ? true : false"
                         :label="asmnt"
-                        :v-model="selected"
                     ></v-checkbox>
                 </div>
             </v-row>
-            <v-btn type="submit" @click="submit()">Still i kø</v-btn>
+            <v-btn type="submit">Still i kø</v-btn>
         </v-container>
     </v-form>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue"
-import { getAssignments, getCompletedAssignments } from "../services/api"
+import {
+    getAssignments,
+    getCompletedAssignments,
+    pushToQueue,
+} from "../services/api"
 
 export default defineComponent({
     setup() {
-        const position = ""
+        const position = ref("")
 
         const assignments = getAssignments()
 
         const completed = getCompletedAssignments()
 
-        const selected = []
+        const selected = ref([])
 
         const help = ref(false)
 
@@ -51,8 +56,8 @@ export default defineComponent({
         }
 
         const submit = () => {
-            //TODO: Handle inputs, save to state?
-            console.log("Submit pressed: " + toggletext())
+            pushToQueue("Tor", position.value, toggletext(), selected.value)
+            console.log(selected.value)
         }
 
         return {

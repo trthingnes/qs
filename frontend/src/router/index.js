@@ -51,6 +51,14 @@ const routes = [
                 /* webpackChunkName: "edit" */ "@/views/EditSubjectView.vue"
             ),
     },
+    {
+        path: "/assignmentlist",
+        name: "assignmentslist",
+        component: () =>
+            import(
+                /* webpackChunkName: "settings" */ "@/views/AssignmentListView.vue"
+            ),
+    },
 ]
 
 const router = createRouter({

@@ -5,9 +5,6 @@
             <v-col cols="4">
                 <NavigationDrawerComponent />
             </v-col>
-            <v-col cols="7">
-                <HeaderComponent />
-            </v-col>
         </v-row>
 
         <v-main>
@@ -20,13 +17,11 @@
 </template>
 
 <script>
-import NavigationDrawerComponent from "@/components/NavigationDrawerComponent.vue"
-import HeaderComponent from "@/components/HeaderComponent"
+import NavigationDrawerComponent from "@/components/navigation/NavigationDrawerComponent.vue"
 
 export default {
     name: "App",
     components: {
-        HeaderComponent,
         NavigationDrawerComponent,
     },
 }

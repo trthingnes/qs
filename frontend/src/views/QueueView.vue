@@ -27,15 +27,12 @@
 
 <script>
 import QueuePositionComponent from "../components/QueuePositionComponent.vue"
+import { getQueue } from "../services/api"
 
 export default {
     name: "QueueView",
     data: () => ({
-        queue: [
-            { name: "Jonathan", type: "Help", assignment: "1" },
-            { name: "Tobias", type: "Help", assignment: "69" },
-            { name: "Tor", type: "Help", assignment: "38" },
-        ],
+        queue: getQueue(),
     }),
     methods: {
         // TODO: Finne mer forklarende metodenavn, finn også rett syntax for å endre fargen.

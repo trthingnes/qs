@@ -2,13 +2,25 @@ import { createStore } from "vuex"
 
 export default createStore({
     state: {
+        username: "",
         firstname: "",
         lastname: "",
         email: "",
-        password: "",
     },
-    getters: {},
+    getters: {
+        userInfo(state) {
+            return {
+                username: state.username,
+                firstname: state.firstname,
+                lastname: state.lastname,
+                email: state.email,
+            }
+        },
+    },
     mutations: {
+        SET_USERNAME(state, username) {
+            state.username = username
+        },
         SET_FIRSTNAME(state, firstname) {
             state.firstname = firstname
         },
@@ -18,16 +30,19 @@ export default createStore({
         SET_EMAIL(state, email) {
             state.email = email
         },
-        SET_PASSWORD(state, password) {
-            state.password = password
-        },
     },
     actions: {
-        saveUserInfo(context, { firstname, lastname, email, password }) {
-            this.commit("SET_FIRSTNAME", firstname)
-            this.commit("SET_LASTNAME", lastname)
-            this.commit("SET_EMAIL", email)
-            this.commit("SET_PASSWORD", password)
+        setUserInfo(context, { username, firstName, lastName, email }) {
+            context.commit("SET_USERNAME", username)
+            context.commit("SET_FIRSTNAME", firstName)
+            context.commit("SET_LASTNAME", lastName)
+            context.commit("SET_EMAIL", email)
+        },
+        logout(context) {
+            context.commit("SET_USERNAME", "")
+            context.commit("SET_FIRSTNAME", "")
+            context.commit("SET_LASTNAME", "")
+            context.commit("SET_EMAIL", "")
         },
     },
     modules: {},
