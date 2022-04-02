@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer width="350" app permanent>
+    <v-navigation-drawer width="350" app v-model="isNavigationOpen">
         <v-list>
             <v-list-item>
                 <router-link
@@ -110,6 +110,22 @@
     <v-overlay v-model="isLoginOverlayOpen" class="align-center justify-center">
         <LoginComponent @login="onUserLogin()" />
     </v-overlay>
+    <v-app-bar collapse>
+        <template v-slot:prepend>
+            <v-app-bar-nav-icon
+                @click="isNavigationOpen = !isNavigationOpen"
+            ></v-app-bar-nav-icon>
+        </template>
+        <template v-slot:append>
+            <router-link
+                class="text-decoration-none"
+                style="color: black"
+                :to="{ name: 'home' }"
+            >
+                <v-btn icon="mdi-home"></v-btn>
+            </router-link>
+        </template>
+    </v-app-bar>
 </template>
 <script>
 import LoginComponent from "@/components/navigation/LoginComponent.vue"
@@ -139,6 +155,7 @@ export default {
         const isAuthenticated = ref(Boolean(cookies.get("token")))
         const isTeacher = ref(false)
         const isLoginOverlayOpen = ref(false)
+        const isNavigationOpen = ref(true)
 
         const username = ref("")
         const firstname = ref("")
@@ -224,6 +241,7 @@ export default {
             isAuthenticated,
             isTeacher,
             isLoginOverlayOpen,
+            isNavigationOpen,
             onCourseClick,
             onAddCourseClick,
             onLogoutClick,
