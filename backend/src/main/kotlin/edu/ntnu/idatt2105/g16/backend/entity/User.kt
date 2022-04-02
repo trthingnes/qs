@@ -10,12 +10,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class User() {
     constructor (dto: UserDTO) : this() {
-        this.username = dto.username
-        this.password = dto.password
-        this.firstName = dto.firstName
-        this.lastName = dto.lastName
-        this.email = dto.email
-        this.role = dto.role
+        update(dto)
     }
 
     @Id
@@ -45,4 +40,13 @@ class User() {
 
     @ManyToMany
     var teacherCourses: List<Course> = listOf()
+
+    fun update(dto: UserDTO) {
+        dto.username?.let { this.username = it }
+        dto.password?.let { this.password = it }
+        dto.firstName?.let { this.firstName = it }
+        dto.lastName?.let { this.lastName = it }
+        dto.email?.let { this.email = it }
+        dto.role?.let { this.role = it }
+    }
 }

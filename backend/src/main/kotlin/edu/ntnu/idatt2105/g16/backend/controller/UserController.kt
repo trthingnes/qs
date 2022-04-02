@@ -40,6 +40,22 @@ class UserController {
         }
     }
 
+    @PutMapping("/")
+    fun updateCurrentUser(principal: Principal, @RequestBody dto: UserDTO): ResponseEntity<Any> {
+        val optionalUser = userRepository.findByUsername(principal.name)
+        if (!optionalUser.isPresent) {
+            return ResponseEntity.badRequest().body("User not found.")
+        }
+
+        val user = optionalUser.get()
+        if (dto.password != null) {
+            dto.password = BCryptPasswordEncoder().encode(dto.password)
+        }
+        user.update(dto)
+
+        return ResponseEntity.ok(UserDTO(userRepository.save(user)))
+    }
+
     @GetMapping("/courses/student")
     fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
