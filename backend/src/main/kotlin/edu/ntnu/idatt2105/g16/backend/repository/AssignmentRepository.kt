@@ -8,5 +8,5 @@ import java.util.*
 @Repository
 interface AssignmentRepository : CrudRepository<Assignment, Long> {
     fun findAllByCourseId(courseId: Long): Optional<List<Assignment>>
-    fun findAllByCourseIdAndUsers(courseId: Long, username: String): Optional<List<Assignment>>
+    fun findByUsers_UsernameAndCourseId(username: String, courseId: Long): Optional<List<Assignment>>
 }
