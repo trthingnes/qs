@@ -8,6 +8,7 @@ const STUDENT_COURSES_URL = API_URL + "/user/courses/student/"
 const ASSISTANT_COURSES_URL = API_URL + "/user/courses/assistant/"
 const TEACHER_COURSES_URL = API_URL + "/user/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
+const QUEUE_URL = API_URL + "/queue"
 
 const CLIENT = axios.create({
     baseURL: API_URL,
@@ -156,4 +157,8 @@ export async function getCompletedAssignments(token, id) {
             return response.data
         })
         .catch((error) => console.log(error))
+}
+
+export async function postQueueEntry(id, assignments) {
+    return axios.post(QUEUE_URL + `${id}/add/`)
 }

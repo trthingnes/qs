@@ -10,7 +10,7 @@ class QueueEntry() {
     constructor(dto: QueueEntryDTO) : this() {
         this.help = dto.help
         this.location = dto.location
-        this.queue = dto.queue
+        this.hasAssistant = dto.hasAssistant
     }
 
     @Id
@@ -23,9 +23,12 @@ class QueueEntry() {
     @NotBlank(message = "Location cannot be blank")
     lateinit var location: String
 
+    @NotNull(message = "Has Assistant cannot be null")
+    var hasAssistant: Boolean = false
+
     @ManyToOne
     lateinit var queue: Queue
 
     @ManyToMany
-    var assignments: List<Assignment> = listOf()
+    var assignments: MutableList<Assignment> = mutableListOf()
 }

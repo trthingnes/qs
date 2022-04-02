@@ -12,5 +12,5 @@ class Queue {
     var id: Long = 0
 
     @OneToMany
-    var entries: List<QueueEntry> = listOf()
+    var entries: MutableList<QueueEntry> = mutableListOf()
 }
