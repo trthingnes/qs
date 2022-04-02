@@ -28,24 +28,30 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue"
-import {
-    getAssignments,
-    getCompletedAssignments,
-    pushToQueue,
-} from "../services/api"
+import { defineComponent, onMounted, ref } from "vue"
+import { useCookies } from "vue3-cookies"
+import { getAssignments, getCompletedAssignments } from "../services/api"
 
 export default defineComponent({
     setup() {
+        const assignments = ref([])
+        const completed = ref([])
         const position = ref("")
-
-        const assignments = getAssignments()
-
-        const completed = getCompletedAssignments()
-
         const selected = ref([])
-
         const help = ref(false)
+        const { cookies } = useCookies()
+
+        const updateAssignments = () =>
+            getAssignments("3").then((data) => {
+                console.log(data)
+                assignments.value = data
+            })
+
+        const updateCompletedAssignments = () =>
+            getCompletedAssignments(cookies.get("token"), "3").then((data) => {
+                console.log(data)
+                completed.value = data
+            })
 
         var toggletext = () => {
             if (help.value) {
@@ -56,9 +62,13 @@ export default defineComponent({
         }
 
         const submit = () => {
-            pushToQueue("Tor", position.value, toggletext(), selected.value)
             console.log(selected.value)
         }
+
+        onMounted(() => {
+            updateAssignments()
+            updateCompletedAssignments()
+        })
 
         return {
             position,

@@ -8,6 +8,7 @@ const STUDENT_COURSES_URL = API_URL + "/user/courses/student/"
 const ASSISTANT_COURSES_URL = API_URL + "/user/courses/assistant/"
 const TEACHER_COURSES_URL = API_URL + "/user/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
+const QUEUE_URL = API_URL + "/queue"
 
 const CLIENT = axios.create({
     baseURL: API_URL,
@@ -156,6 +157,21 @@ export async function getCourseById(token, id) {
         })
 }
 
+export async function updateCourseInfoById(token, id, info) {
+    return axios
+        .put(COURSES_URL + `${id}`, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}
+
 export function receiveAll() {
     return CLIENT.get("")
         .then((response) => {
@@ -164,10 +180,28 @@ export function receiveAll() {
         .catch((error) => console.log(error))
 }
 
-export function getAssignments() {
-    return ["1", "2", "3", "4"]
+export async function getAssignments(id) {
+    return axios
+        .get(COURSES_URL + `${id}/assignments`)
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
 }
 
-export function getCompletedAssignments() {
-    return ["1"]
+export async function getCompletedAssignments(token, id) {
+    return axios
+        .get(COURSES_URL + `${id}/student/assignment/completed/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
+}
+
+export async function postQueueEntry(id, assignments) {
+    return axios.post(QUEUE_URL + `${id}/add/`)
 }

@@ -60,7 +60,7 @@ class UserController {
     fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
-        return if(optionalUser.isPresent) {
+        return if (optionalUser.isPresent) {
             ResponseEntity.ok(optionalUser.get().studentCourses.map { CourseDTO(it) })
         } else {
             ResponseEntity.badRequest().body("User not found.")
@@ -71,7 +71,7 @@ class UserController {
     fun getCurrentUserAssistantCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
-        return if(optionalUser.isPresent) {
+        return if (optionalUser.isPresent) {
             ResponseEntity.ok(optionalUser.get().assistantCourses.map { CourseDTO(it) })
         } else {
             ResponseEntity.badRequest().body("User not found.")
@@ -82,7 +82,7 @@ class UserController {
     fun getCurrentUserTeacherCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
-        return if(optionalUser.isPresent) {
+        return if (optionalUser.isPresent) {
             ResponseEntity.ok(optionalUser.get().teacherCourses.map { CourseDTO(it) })
         } else {
             ResponseEntity.badRequest().body("User not found.")

@@ -9,13 +9,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class Course() {
     constructor(dto: CourseDTO) : this() {
-        this.code = dto.code
-        this.name = dto.name
-        this.url = dto.url
-        this.description = dto.description
-        this.semester = dto.semester
-        this.year = dto.year
-        this.queue = Queue()
+        update(dto)
     }
 
     @Id
@@ -28,6 +22,7 @@ class Course() {
     @NotBlank(message = "Name cannot be blank")
     lateinit var name: String
 
+    @URL
     @NotBlank(message = "URL cannot be blank")
     lateinit var url: String
 
@@ -40,8 +35,18 @@ class Course() {
     var year: Int = 0
 
     @OneToOne
+    @NotNull(message = "Queue cannot be null")
     lateinit var queue: Queue
 
     @OneToMany
     var assignments: List<Assignment> = listOf()
+
+    fun update(dto: CourseDTO) {
+        dto.code?.let { this.code = it }
+        dto.name?.let { this.name = it }
+        dto.url?.let { this.url = it }
+        dto.description?.let { this.description = it }
+        dto.semester?.let { this.semester = it }
+        dto.year?.let { this.year = it }
+    }
 }

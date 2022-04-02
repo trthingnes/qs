@@ -1,10 +1,7 @@
 <template>
     <v-form @submit.prevent="onFormSubmit">
         <v-container>
-            <v-row>
-                <h4 class="text-h4">Innstillinger</h4>
-                <v-divider class="my-5"></v-divider>
-            </v-row>
+            <HeaderComponent title="Innstillinger" />
             <v-row>
                 <v-col cols="12" md="4">
                     <v-text-field
@@ -79,8 +76,12 @@ import { ref } from "vue"
 import { useStore } from "vuex"
 import { useCookies } from "vue3-cookies"
 import { getUserInfo, updateUserInfo } from "@/services/api"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 export default {
+    components: {
+        HeaderComponent,
+    },
     setup() {
         const store = useStore()
         const { cookies } = useCookies()
