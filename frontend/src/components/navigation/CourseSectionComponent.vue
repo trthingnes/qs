@@ -1,5 +1,4 @@
 <template>
-    <v-divider class="mt-2 mb-2"></v-divider>
     <v-list-subheader color="black">
         <v-icon :icon="icon" class="mr-3"></v-icon>
         {{ title }}
