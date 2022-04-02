@@ -38,6 +38,19 @@ export async function getToken(username, password) {
         })
 }
 
+export async function updateCourseInfo(code, name, numAssignments) {
+    return axios
+        .post(COURSES_URL, {
+            code: code.value,
+            name: name.value,
+            numAssignments: numAssignments.value,
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch("Unable to create course")
+}
+
 export async function getUserInfo(token) {
     return axios
         .get(USER_URL, {

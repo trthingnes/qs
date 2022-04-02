@@ -7,6 +7,9 @@ export default createStore({
         lastname: "",
         email: "",
         role: "",
+        code: "",
+        name: "",
+        numAssignments: "",
     },
     getters: {
         userInfo(state) {
@@ -16,6 +19,13 @@ export default createStore({
                 lastname: state.lastname,
                 email: state.email,
                 role: state.role,
+            }
+        },
+        courseInfo(state) {
+            return {
+                code: state.code,
+                name: state.name,
+                numAssignments: state.numAssignments,
             }
         },
     },

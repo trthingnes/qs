@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getStudents, getAssignments } from "../services/api"
+import { getStudents, getAssignments } from "@/services/api"
 
 export default {
     name: "AssignmentListView",
