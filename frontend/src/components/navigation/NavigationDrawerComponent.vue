@@ -155,7 +155,7 @@ export default {
         const isAuthenticated = ref(Boolean(cookies.get("token")))
         const isTeacher = ref(false)
         const isLoginOverlayOpen = ref(false)
-        const isNavigationOpen = ref(false)
+        const isNavigationOpen = ref(true)
 
         const username = ref("")
         const firstname = ref("")
