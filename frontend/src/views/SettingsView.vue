@@ -1,14 +1,17 @@
 <template>
-    <v-form v-model="valid">
+    <v-form @submit.prevent="onFormSubmit">
         <v-container>
             <v-row>
-                <!-- TODO: Add functionality to all buttons -->
+                <h4 class="text-h4">Innstillinger</h4>
+                <v-divider class="my-5"></v-divider>
+            </v-row>
+            <v-row>
                 <v-col cols="12" md="4">
                     <v-text-field
+                        label="Fornavn"
                         v-model="firstname"
                         :rules="nameRules"
-                        :counter="15"
-                        label="First name"
+                        :counter="50"
                         data-testid="firstname"
                         required
                     ></v-text-field>
@@ -16,10 +19,10 @@
 
                 <v-col cols="12" md="4">
                     <v-text-field
+                        label="Etternavn"
                         v-model="lastname"
                         :rules="nameRules"
-                        :counter="15"
-                        label="Last name"
+                        :counter="50"
                         data-testid="lastname"
                         required
                     ></v-text-field>
@@ -27,46 +30,44 @@
 
                 <v-col cols="12" md="4">
                     <v-text-field
+                        label="Epost-adresse"
                         v-model="email"
                         :rules="emailRules"
-                        label="Email"
                         data-testid="email"
                         required
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="password"
-                        :rules="passwordRules"
-                        :type="'password'"
-                        label="Password"
-                        data-testid="password"
-                        disabled="true"
-                        required
-                    ></v-text-field>
-                </v-col>
-
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="6">
                     <v-text-field
                         v-model="newPass"
-                        :rules="passwordRules"
-                        :type="'password'"
-                        label="New password"
+                        type="password"
+                        label="Nytt passord"
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="6">
                     <v-text-field
                         v-model="repPass"
-                        :rules="passwordRules"
-                        :type="'password'"
-                        label="Repeat new password"
+                        type="password"
+                        label="Gjenta nytt passord"
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4">
-                    <v-btn :disabled="false" @click="updateInfo">Save</v-btn>
+                <v-col cols="12" md="12">
+                    <v-btn
+                        prepend-icon="mdi-check"
+                        color="success"
+                        type="submit"
+                    >
+                        Oppdater profil
+                    </v-btn>
+                    <v-alert
+                        v-if="updatedSuccessfully"
+                        type="success"
+                        class="my-5"
+                        >Profilen ble oppdatert.</v-alert
+                    >
                 </v-col>
             </v-row>
         </v-container>
@@ -74,45 +75,79 @@
 </template>
 
 <script>
-export default {
-    name: "UserSettingsView",
-    data: () => ({
-        valid: true,
-        firstname: "",
-        lastname: "",
-        email: "",
-        password: "",
-        newPass: "",
-        repPass: "",
-        nameRules: [
-            (v) => !!v || "Name is required",
-            (v) =>
-                (v && v.length <= 15) || "Name must be less than 15 characters",
-        ],
-        emailRules: [
-            (v) => !!v || "Email is required",
-            (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-        ],
-        passwordRules: [
-            (v) => !!v || "Password can not be empty",
-            (v) =>
-                /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(
-                    v
-                ) || "Password must be valid",
-        ],
-    }),
-    methods: {
-        updateInfo(firstname, lastname, email, password) {
-            if (this.newPass === this.repPass) password = this.newPass
+import { ref } from "vue"
+import { useStore } from "vuex"
+import { useCookies } from "vue3-cookies"
+import { getUserInfo, updateUserInfo } from "@/services/api"
 
-            this.$store.dispatch("saveUserInfo", {
-                firstname,
-                lastname,
-                email,
-                password,
+export default {
+    setup() {
+        const store = useStore()
+        const { cookies } = useCookies()
+
+        const firstname = ref("")
+        const lastname = ref("")
+        const email = ref("")
+        const newPass = ref("")
+        const repPass = ref("")
+        const updatedSuccessfully = ref(false)
+
+        const nameRules = [
+            (v) => !!v || "Navn er påkrevd.",
+            (v) => (v && v.length <= 50) || "Navn må være under 50 tegn.",
+        ]
+
+        const emailRules = [
+            (v) => !!v || "Epost-adresse er påkrevd.",
+            (v) => /.+@.+\..+/.test(v) || "Epost-adressen må være gyldig.",
+        ]
+
+        const updateUserInfoFromStore = () => {
+            let userinfo = store.getters.userInfo
+            firstname.value = userinfo.firstname
+            lastname.value = userinfo.lastname
+            email.value = userinfo.email
+        }
+
+        const onFormSubmit = () => {
+            let userinfo = store.getters.userInfo
+
+            let infoToUpdate = {}
+            if (firstname.value !== userinfo.firstname) {
+                infoToUpdate["firstName"] = firstname.value
+            }
+            if (lastname.value !== userinfo.lastname) {
+                infoToUpdate["lastName"] = lastname.value
+            }
+            if (email.value !== userinfo.email) {
+                infoToUpdate["email"] = email.value
+            }
+            if (newPass.value && newPass.value === repPass.value) {
+                infoToUpdate["password"] = newPass.value
+            }
+
+            updatedSuccessfully.value = updateUserInfo(
+                cookies.get("token"),
+                infoToUpdate
+            ).then(async () => {
+                let userinfo = await getUserInfo(cookies.get("token"))
+                store.dispatch("setUserInfo", userinfo)
             })
-            console.log("Updated user info")
-        },
+        }
+
+        updateUserInfoFromStore()
+
+        return {
+            firstname,
+            lastname,
+            email,
+            newPass,
+            repPass,
+            nameRules,
+            emailRules,
+            updatedSuccessfully,
+            onFormSubmit,
+        }
     },
 }
 </script>

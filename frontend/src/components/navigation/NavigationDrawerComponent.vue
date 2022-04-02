@@ -63,7 +63,7 @@
                         {{ firstname }} {{ lastname }}
                     </v-card-title>
                     <v-card-subtitle>
-                        {{ email }} ({{ role }})
+                        {{ email }} - {{ role }}
                     </v-card-subtitle>
                     <v-card-actions>
                         <v-btn

@@ -53,6 +53,21 @@ export async function getUserInfo(token) {
         })
 }
 
+export async function updateUserInfo(token, info) {
+    return axios
+        .put(USER_URL, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}
+
 export async function getUserStudentCourses(token) {
     return axios
         .get(STUDENT_COURSES_URL, {
