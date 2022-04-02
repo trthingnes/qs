@@ -129,6 +129,21 @@ export async function getCourseById(token, id) {
         })
 }
 
+export async function updateCourseInfoById(token, id, info) {
+    return axios
+        .put(COURSES_URL + `${id}`, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}
+
 export function receiveAll() {
     return CLIENT.get("")
         .then((response) => {

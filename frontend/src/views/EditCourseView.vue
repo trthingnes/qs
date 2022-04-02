@@ -1,28 +1,60 @@
 <template>
-    <v-form v-model="valid">
+    <v-form>
         <v-container>
+            <HeaderComponent title="Rediger fag" />
             <v-row>
-                <!-- TODO: Add functionality to all buttons -->
-                <v-col cols="1" md="5">
-                    <v-label>Course code:</v-label>
+                <v-col cols="12" md="6">
+                    <v-text-field label="Fagkode" v-model="code"></v-text-field>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                    <v-text-field label="Fagnavn" v-model="name"></v-text-field>
+                </v-col>
+
+                <v-col cols="6" md="3">
                     <v-text-field
-                        v-model="code"
-                        :counter="9"
-                        disabled
+                        label="Semester"
+                        v-model="semester"
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="1" md="5">
-                    <v-label>Course name:</v-label>
-                    <v-text-field
-                        v-model="name"
-                        :counter="30"
-                        disabled
-                    ></v-text-field>
+                <v-col cols="6" md="3">
+                    <v-text-field label="År" v-model="year"></v-text-field>
                 </v-col>
 
-                <v-col cols="1" md="1">
-                    <!-- -->
+                <v-col cols="12" md="6">
+                    <v-text-field label="Nettsted" v-model="url"></v-text-field>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                    <v-textarea
+                        label="Beskrivelse"
+                        v-model="description"
+                    ></v-textarea>
+                </v-col>
+
+                <v-col cols="12" md="6">
+                    <v-btn
+                        color="success"
+                        prepend-icon="mdi-check"
+                        @click="onSaveClick"
+                        class="mr-3"
+                    >
+                        Lagre fag
+                    </v-btn>
+                    <v-btn
+                        color="error"
+                        prepend-icon="mdi-delete"
+                        @click="onDeleteClick"
+                    >
+                        Slett fag
+                    </v-btn>
+                    <v-alert
+                        v-if="updatedSuccessfully"
+                        type="success"
+                        class="my-5"
+                        >Faget ble oppdatert.</v-alert
+                    >
                 </v-col>
 
                 <v-col cols="1" md="5" class="">
@@ -49,57 +81,89 @@
                         </v-menu>
                     </div>
                 </v-col>
-
-                <v-col cols="1" md="1">
-                    <!-- -->
-                </v-col>
-
-                <v-col cols="1" md="1">
-                    <!-- -->
-                </v-col>
-
-                <v-col cols="1" md="1">
-                    <div class="text-center">
-                        <v-btn color="error" @click="onDeleteClick">
-                            Delete
-                        </v-btn>
-                    </div>
-                </v-col>
-
-                <v-col cols="1" md="5">
-                    <div class="text-center">
-                        <v-btn color="success" @click="onSaveClick">Save</v-btn>
-                    </div>
-                </v-col>
             </v-row>
         </v-container>
     </v-form>
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, watch } from "vue"
+import { useRoute } from "vue-router"
 import { useCookies } from "vue3-cookies"
-import { getCourseById } from "@/services/api"
+import { getCourseById, updateCourseInfoById } from "@/services/api"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 export default {
-    props: ["id"],
-    setup(props) {
+    components: {
+        HeaderComponent,
+    },
+    setup() {
+        const route = useRoute()
+        const { cookies } = useCookies()
+
         const code = ref("")
         const name = ref("")
-        const valid = ref(true)
+        const url = ref("")
+        const description = ref("")
+        const semester = ref("")
+        const year = ref(0)
+        const updatedSuccessfully = ref(false)
 
-        const { cookies } = useCookies()
-        getCourseById(cookies.get("token"), props.id).then((course) => {
-            code.value = course.code
-            name.value = course.name
-        })
+        const getCourseInfo = (id) => {
+            if (!id) return
 
-        const onDeleteClick = () => {}
-        const onSaveClick = () => {}
+            getCourseById(cookies.get("token"), id).then((course) => {
+                code.value = course.code
+                name.value = course.name
+                url.value = course.url
+                description.value = course.description
+                semester.value = course.semester
+                year.value = course.year
+            })
+        }
 
-        return { code, name, valid, onDeleteClick, onSaveClick }
+        const onDeleteClick = () => {
+            // TODO
+        }
+
+        const onSaveClick = () => {
+            let infoToUpdate = {
+                code: code.value,
+                name: name.value,
+                url: url.value,
+                description: description.value,
+                semester: semester.value,
+                year: year.value,
+            }
+
+            updatedSuccessfully.value = updateCourseInfoById(
+                cookies.get("token"),
+                route.params.id,
+                infoToUpdate
+            )
+        }
+
+        getCourseInfo(route.params.id)
+        watch(
+            () => route.params.id,
+            async (id) => getCourseInfo(id)
+        )
+        watch(
+            () => updatedSuccessfully,
+            async () => getCourseInfo(route.params.id)
+        )
+
+        return {
+            code,
+            name,
+            url,
+            description,
+            semester,
+            year,
+            updatedSuccessfully,
+            onDeleteClick,
+            onSaveClick,
+        }
     },
 }
 </script>
-
-<style scoped></style>
