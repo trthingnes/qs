@@ -18,9 +18,12 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue"
 import { getAssignments, getCompletedAssignments } from "../services/api"
+import { useCookies } from "vue3-cookies"
 
 export default defineComponent({
     setup() {
+        const { cookies } = useCookies()
+
         const assignments = ref([])
         const completed = ref([])
 
@@ -31,7 +34,7 @@ export default defineComponent({
             })
 
         const updateCompletedAssignments = () =>
-            getCompletedAssignments("3").then((data) => {
+            getCompletedAssignments(cookies.get("token"), "3").then((data) => {
                 console.log(data)
                 completed.value = data
             })

@@ -130,9 +130,13 @@ export async function getAssignments(id) {
         .catch((error) => console.log(error))
 }
 
-export async function getCompletedAssignments(id) {
+export async function getCompletedAssignments(token, id) {
     return axios
-        .get(COURSES_URL + `${id}/student/assignment/completed`)
+        .get(COURSES_URL + `${id}/student/assignment/completed/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then((response) => {
             return response.data
         })

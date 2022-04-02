@@ -1,12 +1,8 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
-import edu.ntnu.idatt2105.g16.backend.dto.AssignmentDTO
 import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
-import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
-import edu.ntnu.idatt2105.g16.backend.entity.User
 import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
 import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
-import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -25,9 +21,6 @@ class CourseController {
 
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
 
     @GetMapping("/{id}")
     fun getCourseById(@PathVariable id: Long): ResponseEntity<Any> {
