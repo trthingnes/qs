@@ -38,17 +38,32 @@ export async function getToken(username, password) {
         })
 }
 
-export async function updateCourseInfo(code, name, numAssignments) {
+export async function createCourse(token, info) {
     return axios
-        .post(COURSES_URL, {
-            code: code.value,
-            name: name.value,
-            numAssignments: numAssignments.value,
+        .post(COURSES_URL, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
         .then((response) => {
             return response.data
         })
         .catch("Unable to create course")
+}
+
+export async function getCourseInfo(token) {
+    return axios
+        .get(COURSES_URL, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course data."
+        })
 }
 
 export async function getUserInfo(token) {

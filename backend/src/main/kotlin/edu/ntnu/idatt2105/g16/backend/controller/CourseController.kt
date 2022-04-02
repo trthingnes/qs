@@ -1,14 +1,12 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
 import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
+import edu.ntnu.idatt2105.g16.backend.entity.Course
+import edu.ntnu.idatt2105.g16.backend.entity.Queue
 import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
 @RestController
@@ -26,5 +24,11 @@ class CourseController {
         } else {
             ResponseEntity.badRequest().body("Course not found.")
         }
+    }
+
+    @PostMapping("/add")
+    fun addCourse(@RequestBody data: CourseDTO): ResponseEntity<Any> {
+        val course = Course(data)
+        return ResponseEntity.ok(courseRepository.save(course))
     }
 }

@@ -15,6 +15,7 @@ class Course() {
         this.description = dto.description
         this.semester = dto.semester
         this.year = dto.year
+        this.queue = Queue()
     }
 
     @Id
@@ -27,7 +28,6 @@ class Course() {
     @NotBlank(message = "Name cannot be blank")
     lateinit var name: String
 
-    @URL
     @NotBlank(message = "URL cannot be blank")
     lateinit var url: String
 
@@ -40,7 +40,6 @@ class Course() {
     var year: Int = 0
 
     @OneToOne
-    @NotNull(message = "Queue cannot be null")
     lateinit var queue: Queue
 
     @OneToMany
