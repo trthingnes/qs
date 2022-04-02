@@ -1,28 +1,12 @@
 <template>
-    <v-app>
-        <v-toolbar>
-            <v-toolbar-items>
-                <h1>{{ view.name }}</h1>
-                <v-spacer></v-spacer>
-                <h1>
-                    {{ subject.name }}
-                </h1>
-            </v-toolbar-items>
-        </v-toolbar>
-    </v-app>
+    <v-row>
+        <h4 class="text-h4">{{ title }}</h4>
+        <v-divider class="my-5"></v-divider>
+    </v-row>
 </template>
 
 <script>
 export default {
-    name: "HeaderComponent",
-    data: () => ({
-        view: { name: "Queue" },
-        subject: {
-            name: "Full-Stack Applikasjonsutvikling",
-            code: "IDATT2105",
-        },
-    }),
+    props: ["title"],
 }
 </script>
-
-<style scoped></style>

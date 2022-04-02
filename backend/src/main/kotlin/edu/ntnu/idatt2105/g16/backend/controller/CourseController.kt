@@ -4,11 +4,8 @@ import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
 import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
 @RestController
@@ -26,5 +23,19 @@ class CourseController {
         } else {
             ResponseEntity.badRequest().body("Course not found.")
         }
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    fun updateCourseById(@PathVariable id: Long, @RequestBody dto: CourseDTO): ResponseEntity<Any> {
+        val optionalCourse = courseRepository.findCourseById(id)
+        if (!optionalCourse.isPresent) {
+            return ResponseEntity.badRequest().body("Course not found.")
+        }
+
+        val course = optionalCourse.get()
+        course.update(dto)
+
+        return ResponseEntity.ok(CourseDTO(courseRepository.save(course)))
     }
 }

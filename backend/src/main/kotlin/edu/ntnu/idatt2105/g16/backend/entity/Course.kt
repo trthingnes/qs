@@ -9,12 +9,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class Course() {
     constructor(dto: CourseDTO) : this() {
-        this.code = dto.code
-        this.name = dto.name
-        this.url = dto.url
-        this.description = dto.description
-        this.semester = dto.semester
-        this.year = dto.year
+        update(dto)
     }
 
     @Id
@@ -45,4 +40,13 @@ class Course() {
 
     @OneToMany
     var assignments: List<Assignment> = listOf()
+
+    fun update(dto: CourseDTO) {
+        dto.code?.let { this.code = it }
+        dto.name?.let { this.name = it }
+        dto.url?.let { this.url = it }
+        dto.description?.let { this.description = it }
+        dto.semester?.let { this.semester = it }
+        dto.year?.let { this.year = it }
+    }
 }

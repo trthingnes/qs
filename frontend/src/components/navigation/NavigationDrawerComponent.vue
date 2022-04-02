@@ -63,7 +63,7 @@
                         {{ firstname }} {{ lastname }}
                     </v-card-title>
                     <v-card-subtitle>
-                        {{ email }} - {{ role }}
+                        {{ email }}
                     </v-card-subtitle>
                     <v-card-actions>
                         <v-btn
@@ -161,7 +161,6 @@ export default {
         const firstname = ref("")
         const lastname = ref("")
         const email = ref("")
-        const role = ref("")
         const studentCourses = ref([])
         const assistantCourses = ref([])
         const teacherCourses = ref([])
@@ -172,7 +171,6 @@ export default {
             firstname.value = userinfo.firstname
             lastname.value = userinfo.lastname
             email.value = userinfo.email
-            role.value = userinfo.role
             isTeacher.value = userinfo.role === "TEACHER"
         }
 
@@ -234,7 +232,6 @@ export default {
             firstname,
             lastname,
             email,
-            role,
             studentCourses,
             assistantCourses,
             teacherCourses,
