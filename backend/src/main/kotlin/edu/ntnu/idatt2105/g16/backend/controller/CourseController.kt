@@ -71,7 +71,7 @@ class CourseController {
         }
     }
 
-    @GetMapping("/{id}/assignments")
+    @GetMapping("/assignments")
     fun getAssignments(@PathVariable id:Long): ResponseEntity<Any> {
         val optionalAssignments = assignmentRepository.findAllByCourseId(id)
 
@@ -82,7 +82,7 @@ class CourseController {
         }
     }
 
-    @GetMapping("/{id}/student/assignments/completed")
+    @GetMapping("/student/assignments/completed")
     fun getCompletedAssignments(principal: Principal, @PathVariable id: Long): ResponseEntity<Any> {
         val optionalAssignments = assignmentRepository.findByUsers_UsernameAndCourseId(principal.name, id)
 

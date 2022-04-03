@@ -18,22 +18,20 @@ class QueueController {
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
 
-    @PostMapping("/{id}/{course}/add/{asmnt}")
+    @Autowired
+    private lateinit var queueEntryRepository: QueueEntryRepository
+
+    @PostMapping("/{id}/add")
     fun postQueueEntry(
         @RequestBody data: QueueEntryDTO,
-        @PathVariable id: Long,
-        @PathVariable course: Long,
-        @PathVariable asmnt: Int
+        @PathVariable id: Long
     ): ResponseEntity<Any> {
         val optionalQueue = queueRepository.findById(id)
-        val optionalAssignment = assignmentRepository.findAllByCourseId(course)
 
-        if (optionalQueue.isPresent && optionalAssignment.isPresent) {
-            val assignment = optionalAssignment.get().filter { it.ordinal == asmnt }
+        if (optionalQueue.isPresent) {
             val queue = optionalQueue.get()
             val queueEntry = QueueEntry(data)
-            //queueEntry.assignments.addAll(assignment)
-            //queue.entries.add(queueEntry)
+            queue.entries.add(queueEntry)
             println("Here")
             return ResponseEntity.ok(queueRepository.save(queue))
         } else {

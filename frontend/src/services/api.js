@@ -205,7 +205,7 @@ export async function getAssignments(id) {
 
 export async function getCompletedAssignments(token, id) {
     return axios
-        .get(COURSES_URL + `${id}/student/assignment/completed/`, {
+        .get(COURSES_URL + `${id}/student/assignments/completed/`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
