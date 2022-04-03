@@ -8,7 +8,6 @@ const STUDENT_COURSES_URL = API_URL + "/courses/student/"
 const ASSISTANT_COURSES_URL = API_URL + "/courses/assistant/"
 const TEACHER_COURSES_URL = API_URL + "/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
-const QUEUE_URL = API_URL + "/queue/"
 
 export async function getToken(username, password) {
     return axios
@@ -238,10 +237,10 @@ export async function getCompletedAssignments(token, id) {
 export async function postQueueEntry(token, id, help, location) {
     return axios
         .post(
-            QUEUE_URL + `${id}/queue/add`,
+            COURSES_URL + `${id}/queue/`,
             {
-                help: help.value,
-                location: location.value,
+                help: help,
+                location: location,
                 hasAssistant: false,
             },
             {
@@ -250,8 +249,46 @@ export async function postQueueEntry(token, id, help, location) {
                 },
             }
         )
-        .then((response) => {
-            return response.data
+        .then(() => {
+            return true
         })
-        .catch((error) => console.log(error))
+        .catch(() => {
+            return false
+        })
+}
+
+export async function putQueueEntryHasAssistant(token, id, entryId) {
+    return axios
+        .put(
+            COURSES_URL + `${id}/queue/${entryId}/`,
+            {
+                hasAssistant: true,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+export async function deleteQueueEntry(token, id, entryId) {
+    return axios
+        .delete(COURSES_URL + `${id}/queue/${entryId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            return false
+        })
 }
