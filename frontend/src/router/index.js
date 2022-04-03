@@ -16,28 +16,6 @@ const routes = [
             ),
     },
     {
-        path: "/queue",
-        name: "queue",
-        component: () =>
-            import(/* webpackChunkName: "queue" */ "@/views/QueueView.vue"),
-    },
-    {
-        path: "/queue/enter",
-        name: "enter-queue",
-        component: () =>
-            import(
-                /* webpackChunkName: "enter-queue" */ "@/views/EnterQueueView.vue"
-            ),
-    },
-    {
-        path: "/assignments",
-        name: "assignments",
-        component: () =>
-            import(
-                /* webpackChunkName: "assignments" */ "@/views/AssignmentsView.vue"
-            ),
-    },
-    {
         path: "/assignments/list",
         name: "list-assignments",
         component: () =>
@@ -78,6 +56,23 @@ const routes = [
         component: () =>
             import(
                 /* webpackChunkName: "view-queue" */ "@/views/QueueView.vue"
+            ),
+    },
+    {
+        path: "/courses/queue/:id/enter",
+        props: true,
+        name: "enter-queue",
+        component: () =>
+            import(
+                /* webpackChunkName: "enter-queue" */ "@/views/EnterQueueView.vue"
+            ),
+    },
+    {
+        path: "/courses/:id/assignments",
+        name: "assignments",
+        component: () =>
+            import(
+                /* webpackChunkName: "assignments" */ "@/views/AssignmentsView.vue"
             ),
     },
 ]

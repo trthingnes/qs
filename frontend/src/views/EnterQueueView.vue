@@ -17,7 +17,7 @@
                         v-model="selected"
                         :value="asmnt"
                         :model-value="completed.includes(asmnt) ? true : false"
-                        :disabled="completed.includes(asmnt) ? true : false"
+                        :readonly="completed.includes(asmnt) ? true : false"
                         :label="asmnt"
                     ></v-checkbox>
                 </div>
@@ -29,11 +29,18 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue"
+import { useRoute } from "vue-router"
 import { useCookies } from "vue3-cookies"
-import { getAssignments, getCompletedAssignments } from "../services/api"
+import {
+    getAssignments,
+    getCompletedAssignments,
+    postQueueEntry,
+} from "../services/api"
 
 export default defineComponent({
     setup() {
+        const route = useRoute()
+
         const assignments = ref([])
         const completed = ref([])
         const position = ref("")
@@ -42,16 +49,20 @@ export default defineComponent({
         const { cookies } = useCookies()
 
         const updateAssignments = () =>
-            getAssignments("3").then((data) => {
-                console.log(data)
-                assignments.value = data
-            })
+            getAssignments(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    console.log(data)
+                    assignments.value = data
+                }
+            )
 
         const updateCompletedAssignments = () =>
-            getCompletedAssignments(cookies.get("token"), "3").then((data) => {
-                console.log(data)
-                completed.value = data
-            })
+            getCompletedAssignments(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    console.log(data)
+                    completed.value = data
+                }
+            )
 
         var toggletext = () => {
             if (help.value) {
@@ -62,7 +73,12 @@ export default defineComponent({
         }
 
         const submit = () => {
-            console.log(selected.value)
+            postQueueEntry(
+                cookies.get("token"),
+                route.params.id,
+                help.value,
+                position.value
+            )
         }
 
         onMounted(() => {

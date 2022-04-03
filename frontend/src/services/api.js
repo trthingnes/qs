@@ -209,18 +209,9 @@ export async function getQueueEntriesById(token, id) {
         })
 }
 
-export async function getAssignments(id) {
+export async function getAssignments(token, id) {
     return axios
-        .get(COURSES_URL + `${id}/assignments`)
-        .then((response) => {
-            return response.data
-        })
-        .catch((error) => console.log(error))
-}
-
-export async function getCompletedAssignments(token, id) {
-    return axios
-        .get(COURSES_URL + `${id}/student/assignments/completed/`, {
+        .get(COURSES_URL + `${id}/assignments`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -231,6 +222,36 @@ export async function getCompletedAssignments(token, id) {
         .catch((error) => console.log(error))
 }
 
-export async function postQueueEntry(id) {
-    return axios.post(QUEUE_URL + `${id}/add/`)
+export async function getCompletedAssignments(token, id) {
+    return axios
+        .get(COURSES_URL + `${id}/assignments/completed/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
+}
+
+export async function postQueueEntry(token, id, help, location) {
+    return axios
+        .post(
+            QUEUE_URL + `${id}/queue/add`,
+            {
+                help: help.value,
+                location: location.value,
+                hasAssistant: false,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => console.log(error))
 }
