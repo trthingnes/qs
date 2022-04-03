@@ -137,6 +137,19 @@ class CourseController {
         }
     }
 
+    @GetMapping("{id}/queue")
+    fun getAllQueueEntries(@PathVariable id: Long): ResponseEntity<Any> {
+        val optionalCourse = courseRepository.findCourseById(id)
+
+        return if (optionalCourse.isPresent) {
+            ResponseEntity.ok(optionalCourse.get().queueEntries.map {
+                QueueEntryDTO(it)
+            })
+        } else {
+            ResponseEntity.badRequest().body("Could not find course")
+        }
+    }
+
     @PostMapping("{id}/queue")
     fun postQueueEntry(principal: Principal, @PathVariable id: Long, @RequestBody data: QueueEntryDTO): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findById(id)

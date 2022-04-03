@@ -11,8 +11,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class Assignment() {
     constructor(dto: AssignmentDTO) : this() {
-        ordinal = dto.ordinal
-        course = dto.course
+        update(dto)
     }
 
     @Id
@@ -28,4 +27,9 @@ class Assignment() {
 
     @ManyToMany
     var users: List<User> = listOf()
+
+    fun update(dto: AssignmentDTO) {
+        dto.course?.let { this.course = it }
+        dto.ordinal?.let { this.ordinal = it }
+    }
 }

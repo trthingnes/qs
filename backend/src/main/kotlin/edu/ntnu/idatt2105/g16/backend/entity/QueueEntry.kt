@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
 import edu.ntnu.idatt2105.g16.backend.dto.QueueEntryDTO
+import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
