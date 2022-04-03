@@ -17,7 +17,7 @@ class UserController {
     @Autowired
     private lateinit var userRepository: UserRepository
 
-    @PostMapping("/")
+    @PostMapping
     @PreAuthorize("hasAnyRole('TEACHER')")
     fun createUser(@RequestBody data: UserDTO): ResponseEntity<Any> {
         val user = User(data)
@@ -28,7 +28,7 @@ class UserController {
         return ResponseEntity.ok(userRepository.save(user))
     }
 
-    @GetMapping("/")
+    @GetMapping
     fun getCurrentUser(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
@@ -39,7 +39,7 @@ class UserController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping
     fun updateCurrentUser(principal: Principal, @RequestBody dto: UserDTO): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
         if (!optionalUser.isPresent) {

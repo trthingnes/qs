@@ -35,19 +35,19 @@ class AuthorizationController {
         return ResponseEntity.ok(TokenDTO(token))
     }
 
-    @GetMapping("/test/student")
+    @GetMapping("/student")
     @PreAuthorize("hasAnyRole('STUDENT')")
     fun testStudentAuthentication(user: Principal): ResponseEntity<String> {
         return ResponseEntity.ok("Successfully authorized as student ${user.name}.")
     }
 
-    @GetMapping("/test/assistant")
+    @GetMapping("/assistant")
     @PreAuthorize("hasAnyRole('ASSISTANT')")
     fun testAssistantAuthentication(user: Principal): ResponseEntity<String> {
         return ResponseEntity.ok("Successfully authorized as assistant ${user.name}.")
     }
 
-    @GetMapping("/test/teacher")
+    @GetMapping("/teacher")
     @PreAuthorize("hasAnyRole('TEACHER')")
     fun testTeacherAuthentication(user: Principal): ResponseEntity<String> {
         return ResponseEntity.ok("Successfully authorized as teacher ${user.name}.")

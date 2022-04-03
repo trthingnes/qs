@@ -29,9 +29,6 @@ class CourseController {
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
 
-    @Autowired
-    private lateinit var queueEntryRepository: QueueEntryRepository
-
     @GetMapping("/student")
     fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
@@ -67,7 +64,7 @@ class CourseController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     fun getCourseById(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -93,6 +90,7 @@ class CourseController {
     }
 
     @GetMapping("/{id}/students/")
+    @PreAuthorize("hasAnyRole('ASSISTANT', 'TEACHER')")
     fun getStudentsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -104,6 +102,7 @@ class CourseController {
     }
 
     @GetMapping("/{id}/assistants")
+    @PreAuthorize("hasAnyRole('ASSISTANT', 'TEACHER')")
     fun getAssistantsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -114,8 +113,8 @@ class CourseController {
         }
     }
 
-    @GetMapping("/assignments")
-    fun getAssignments(@PathVariable id:Long): ResponseEntity<Any> {
+    @GetMapping("/{id}/assignments")
+    fun getCourseAssignments(@PathVariable id:Long): ResponseEntity<Any> {
         val optionalAssignments = assignmentRepository.findAllByCourseId(id)
 
         return if (optionalAssignments.isPresent) {
@@ -125,8 +124,8 @@ class CourseController {
         }
     }
 
-    @GetMapping("/student/assignments/completed")
-    fun getCompletedAssignments(principal: Principal, @PathVariable id: Long): ResponseEntity<Any> {
+    @GetMapping("/{id}/assignments/completed")
+    fun getCurrentUserCompletedAssignments(principal: Principal, @PathVariable id: Long): ResponseEntity<Any> {
         val optionalAssignments = assignmentRepository.findByUsers_UsernameAndCourseId(principal.name, id)
 
         return if (optionalAssignments.isPresent) {
@@ -136,23 +135,18 @@ class CourseController {
         }
     }
 
-
-
-    @PostMapping("/queue")
-    fun postQueueEntry(
-        @RequestBody data: QueueEntryDTO,
-        @PathVariable id: Long
-    ): ResponseEntity<Any> {
+    @PostMapping("{id}/queue")
+    fun postQueueEntry(@PathVariable id: Long, @RequestBody data: QueueEntryDTO): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findById(id)
 
-        if (optionalCourse.isPresent) {
+        return if (optionalCourse.isPresent) {
             val course = optionalCourse.get()
             val queueEntry = QueueEntry(data)
             course.queue.add(queueEntry)
-            println("Here")
-            return ResponseEntity.ok(courseRepository.save(course))
+
+            ResponseEntity.ok(courseRepository.save(course))
         } else {
-            return ResponseEntity.badRequest().body("Could not find course")
+            ResponseEntity.badRequest().body("Could not find course")
         }
 
     }
