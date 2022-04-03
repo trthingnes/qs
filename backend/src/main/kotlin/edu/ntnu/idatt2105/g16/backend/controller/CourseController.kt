@@ -6,6 +6,7 @@ import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import edu.ntnu.idatt2105.g16.backend.entity.QueueEntry
 import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
 import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
+import edu.ntnu.idatt2105.g16.backend.repository.QueueEntryRepository
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -28,6 +29,9 @@ class CourseController {
 
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
+
+    @Autowired
+    private lateinit var queueEntryRepository: QueueEntryRepository
 
     @GetMapping("/student")
     fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
@@ -136,14 +140,18 @@ class CourseController {
     }
 
     @PostMapping("{id}/queue")
-    fun postQueueEntry(@PathVariable id: Long, @RequestBody data: QueueEntryDTO): ResponseEntity<Any> {
+    fun postQueueEntry(principal: Principal, @PathVariable id: Long, @RequestBody data: QueueEntryDTO): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findById(id)
+        val optionalUser = userRepository.findByUsername(principal.name)
 
-        return if (optionalCourse.isPresent) {
+        return if (optionalCourse.isPresent && optionalUser.isPresent) {
             val course = optionalCourse.get()
-            val queueEntry = queueEntryRepository.save(QueueEntry(data))
+            var queueEntry = QueueEntry(data)
+            queueEntry.user = optionalUser.get()
+            queueEntry = queueEntryRepository.save(queueEntry)
             course.queueEntries.add(queueEntry)
-            return ResponseEntity.ok(courseRepository.save(course))
+            courseRepository.save(course)
+            return ResponseEntity.ok(QueueEntryDTO(queueEntry))
         } else {
             ResponseEntity.badRequest().body("Could not find course")
         }

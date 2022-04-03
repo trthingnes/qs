@@ -8,8 +8,7 @@ import javax.validation.constraints.NotNull
 @Entity
 class QueueEntry() {
     constructor(dto: QueueEntryDTO) : this() {
-        this.help = dto.help
-        this.location = dto.location
+        update(dto)
         this.hasAssistant = false
     }
 
@@ -27,5 +26,11 @@ class QueueEntry() {
     lateinit var location: String
 
     @ManyToOne
-    lateinit var course: Course
+    @NotNull(message = "User cannot be null")
+    lateinit var user: User
+
+    fun update(dto: QueueEntryDTO) {
+        dto.help?.let { this.help = it }
+        dto.location?.let { this.location = it }
+    }
 }

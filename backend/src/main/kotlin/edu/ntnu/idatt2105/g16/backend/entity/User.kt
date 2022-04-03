@@ -4,6 +4,7 @@ import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
@@ -33,13 +34,13 @@ class User() {
     lateinit var role: Role
 
     @ManyToMany
-    var studentCourses: List<Course> = listOf()
+    var studentCourses: MutableList<Course> = mutableListOf()
 
     @ManyToMany
-    var assistantCourses: List<Course> = listOf()
+    var assistantCourses: MutableList<Course> = mutableListOf()
 
     @ManyToMany
-    var teacherCourses: List<Course> = listOf()
+    var teacherCourses: MutableList<Course> = mutableListOf()
 
     fun update(dto: UserDTO) {
         dto.username?.let { this.username = it }
