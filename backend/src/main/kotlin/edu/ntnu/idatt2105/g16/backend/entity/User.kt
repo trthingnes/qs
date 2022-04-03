@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
+import io.swagger.annotations.ApiModel
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToMany
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
+@ApiModel(description = "A user that can attend courses and enter queues.")
 class User() {
     constructor (dto: UserDTO) : this() {
         update(dto)

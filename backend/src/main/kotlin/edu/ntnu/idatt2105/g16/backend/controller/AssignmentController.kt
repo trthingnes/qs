@@ -1,0 +1,44 @@
+package edu.ntnu.idatt2105.g16.backend.controller
+
+import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
+
+@RestController
+@RequestMapping("courses/{id}/assignments")
+@Api(description = "Operations pertaining to creating, updating and getting assignments.")
+class AssignmentController {
+    @Autowired
+    private lateinit var assignmentRepository: AssignmentRepository
+
+    @GetMapping
+    @ApiOperation("Gets a list of all the assignments of the course with the given id.")
+    fun getCourseAssignments(@PathVariable id: Long): ResponseEntity<Any> {
+        val optionalAssignments = assignmentRepository.findAllByCourseId(id)
+
+        return if (optionalAssignments.isPresent) {
+            ResponseEntity.ok(optionalAssignments.get().map { it.ordinal })
+        } else {
+            ResponseEntity.badRequest().body("No assignments found.")
+        }
+    }
+
+    @GetMapping("/completed")
+    @ApiOperation("Gets all of the current users completed assignments in the course with id given.")
+    fun getCurrentUserCompletedAssignments(principal: Principal, @PathVariable id: Long): ResponseEntity<Any> {
+        val optionalAssignments = assignmentRepository.findByUsers_UsernameAndCourseId(principal.name, id)
+
+        return if (optionalAssignments.isPresent) {
+            ResponseEntity.ok(optionalAssignments.get().map { it.ordinal })
+        } else {
+            ResponseEntity.badRequest().body("No completed assignments found")
+        }
+    }
+}

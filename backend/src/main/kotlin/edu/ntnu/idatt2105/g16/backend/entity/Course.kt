@@ -1,12 +1,14 @@
 package edu.ntnu.idatt2105.g16.backend.entity
 
 import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
+import io.swagger.annotations.ApiModel
 import org.hibernate.validator.constraints.URL
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
+@ApiModel(description = "A course that students can attend.")
 class Course() {
     constructor(dto: CourseDTO) : this() {
         update(dto)

@@ -2,6 +2,9 @@ server.port: 8888
 debug: true
 
 spring:
+  data:
+    rest: # Hide default rest endpoints.
+      detection-strategy: annotated
   datasource:
     url: jdbc:h2:file:./data/h2
     username: sa
@@ -17,6 +20,7 @@ spring:
   mvc:
     pathmatch: # Workaround for Swagger bug.
       matching-strategy: ant_path_matcher
+
 jwt:
   secret: 4800a5d0-e090-4f70-964a-ac5164dbf7e0
   expirationMs: 86400000 # 24 hours

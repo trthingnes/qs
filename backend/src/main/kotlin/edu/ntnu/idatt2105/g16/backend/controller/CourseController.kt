@@ -4,10 +4,11 @@ import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
 import edu.ntnu.idatt2105.g16.backend.dto.QueueEntryDTO
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import edu.ntnu.idatt2105.g16.backend.entity.QueueEntry
-import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
 import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
 import edu.ntnu.idatt2105.g16.backend.repository.QueueEntryRepository
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/courses")
+@Api(description = "Operations pertaining to creating, updating and getting courses.")
 class CourseController {
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -27,13 +29,8 @@ class CourseController {
     @Autowired
     private lateinit var courseRepository: CourseRepository
 
-    @Autowired
-    private lateinit var assignmentRepository: AssignmentRepository
-
-    @Autowired
-    private lateinit var queueEntryRepository: QueueEntryRepository
-
     @GetMapping("/student")
+    @ApiOperation("Gets a list of the courses the current user is a student in.")
     fun getCurrentUserStudentCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
@@ -45,6 +42,7 @@ class CourseController {
     }
 
     @GetMapping("/assistant")
+    @ApiOperation("Gets a list of the courses the current user is an assistant in.")
     fun getCurrentUserAssistantCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
@@ -56,6 +54,7 @@ class CourseController {
     }
 
     @GetMapping("/teacher")
+    @ApiOperation("Gets a list of the courses the current user is a teacher in.")
     fun getCurrentUserTeacherCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
@@ -67,6 +66,7 @@ class CourseController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Gets a course by it's id.")
     fun getCourseById(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -79,6 +79,7 @@ class CourseController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('TEACHER')")
+    @ApiOperation("Updates a course by it's id.")
     fun updateCourseById(@PathVariable id: Long, @RequestBody dto: CourseDTO): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
         if (!optionalCourse.isPresent) {
@@ -93,6 +94,7 @@ class CourseController {
 
     @GetMapping("/{id}/students/")
     @PreAuthorize("hasAnyRole('ASSISTANT', 'TEACHER')")
+    @ApiOperation("Gets a list of the students in the course with the given id.")
     fun getStudentsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -105,6 +107,7 @@ class CourseController {
 
     @GetMapping("/{id}/assistants")
     @PreAuthorize("hasAnyRole('ASSISTANT', 'TEACHER')")
+    @ApiOperation("Gets a list of the assistants in the course with the given id.")
     fun getAssistantsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
@@ -113,88 +116,5 @@ class CourseController {
         } else {
             ResponseEntity.badRequest().body("Course not found.")
         }
-    }
-
-    @GetMapping("/{id}/assignments")
-    fun getCourseAssignments(@PathVariable id:Long): ResponseEntity<Any> {
-        val optionalAssignments = assignmentRepository.findAllByCourseId(id)
-
-        return if (optionalAssignments.isPresent) {
-            ResponseEntity.ok(optionalAssignments.get().map { it.ordinal })
-        } else {
-            ResponseEntity.badRequest().body("No assignments found")
-        }
-    }
-
-    @GetMapping("/{id}/assignments/completed")
-    fun getCurrentUserCompletedAssignments(principal: Principal, @PathVariable id: Long): ResponseEntity<Any> {
-        val optionalAssignments = assignmentRepository.findByUsers_UsernameAndCourseId(principal.name, id)
-
-        return if (optionalAssignments.isPresent) {
-            ResponseEntity.ok(optionalAssignments.get().map { it.ordinal })
-        } else {
-            ResponseEntity.badRequest().body("No completed assignments found")
-        }
-    }
-
-    @GetMapping("{id}/queue")
-    fun getAllQueueEntries(@PathVariable id: Long): ResponseEntity<Any> {
-        val optionalCourse = courseRepository.findCourseById(id)
-
-        return if (optionalCourse.isPresent) {
-            ResponseEntity.ok(optionalCourse.get().queueEntries.map {
-                QueueEntryDTO(it)
-            })
-        } else {
-            ResponseEntity.badRequest().body("Could not find course")
-        }
-    }
-
-    @PostMapping("{id}/queue")
-    fun postQueueEntry(principal: Principal, @PathVariable id: Long, @RequestBody data: QueueEntryDTO): ResponseEntity<Any> {
-        val optionalCourse = courseRepository.findById(id)
-        val optionalUser = userRepository.findByUsername(principal.name)
-
-        return if (optionalCourse.isPresent && optionalUser.isPresent) {
-            val course = optionalCourse.get()
-            var queueEntry = QueueEntry(data)
-            queueEntry.user = optionalUser.get()
-            queueEntry = queueEntryRepository.save(queueEntry)
-            course.queueEntries.add(queueEntry)
-            courseRepository.save(course)
-            return ResponseEntity.ok(QueueEntryDTO(queueEntry))
-        } else {
-            ResponseEntity.badRequest().body("Could not find course")
-        }
-    }
-
-    @PutMapping("/{id}/queue/{entryId}")
-    fun updateHasAssistant(@PathVariable id: Long, @PathVariable entryId: Long, @RequestBody dto: QueueEntryDTO): ResponseEntity<Any> {
-        val optionalQueueEntry = queueEntryRepository.findById(entryId)
-        if (!optionalQueueEntry.isPresent) {
-            return ResponseEntity.badRequest().body("Queue entry not found.")
-        }
-
-        val queueEntry = optionalQueueEntry.get()
-        queueEntry.update(dto)
-
-        return ResponseEntity.ok(QueueEntryDTO(queueEntryRepository.save(queueEntry)))
-    }
-
-    @DeleteMapping("/{id}/queue/{entryId}")
-    fun deleteQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long): ResponseEntity<Any> {
-        val optionalQueueEntry = queueEntryRepository.findById(entryId)
-        val optionalCourse = courseRepository.findCourseById(id)
-
-        if (!optionalQueueEntry.isPresent || !optionalCourse.isPresent) {
-            return ResponseEntity.badRequest().body("Queue entry not found")
-        }
-        val queueEntry = optionalQueueEntry.get()
-        val course = optionalCourse.get()
-        course.queueEntries.remove(queueEntry)
-        courseRepository.save(course)
-        queueEntryRepository.delete(queueEntry)
-
-        return ResponseEntity.ok("Queue entry ${entryId} deleted")
     }
 }

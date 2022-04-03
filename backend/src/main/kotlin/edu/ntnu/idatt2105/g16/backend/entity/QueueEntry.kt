@@ -2,11 +2,13 @@ package edu.ntnu.idatt2105.g16.backend.entity
 
 import edu.ntnu.idatt2105.g16.backend.dto.QueueEntryDTO
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
+import io.swagger.annotations.ApiModel
 import javax.persistence.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 @Entity
+@ApiModel(description = "An entry in a courses queue.")
 class QueueEntry() {
     constructor(dto: QueueEntryDTO) : this() {
         update(dto)
