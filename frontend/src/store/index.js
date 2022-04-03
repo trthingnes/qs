@@ -7,9 +7,6 @@ export default createStore({
         lastname: "",
         email: "",
         role: "",
-        code: "",
-        name: "",
-        numAssignments: "",
     },
     getters: {
         userInfo(state) {

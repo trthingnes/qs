@@ -62,6 +62,15 @@ const routes = [
                 /* webpackChinkName: "edit-course" */ "@/views/EditCourseView.vue"
             ),
     },
+    {
+        path: "/courses/view/:id",
+        props: true,
+        name: "view-course",
+        component: () =>
+            import(
+                /* webpackChinkName: "view-course" */ "@/views/CourseView.vue"
+            ),
+    },
 ]
 
 const router = createRouter({

@@ -4,9 +4,9 @@ const API_URL = "http://localhost:8888"
 
 const TOKEN_URL = API_URL + "/auth/token/"
 const USER_URL = API_URL + "/user/"
-const STUDENT_COURSES_URL = API_URL + "/user/courses/student/"
-const ASSISTANT_COURSES_URL = API_URL + "/user/courses/assistant/"
-const TEACHER_COURSES_URL = API_URL + "/user/courses/teacher/"
+const STUDENT_COURSES_URL = API_URL + "/courses/student/"
+const ASSISTANT_COURSES_URL = API_URL + "/courses/assistant/"
+const TEACHER_COURSES_URL = API_URL + "/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
 const QUEUE_URL = API_URL + "/queue"
 

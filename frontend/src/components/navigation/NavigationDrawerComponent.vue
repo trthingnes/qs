@@ -15,7 +15,7 @@
             <div v-if="studentCourses.length">
                 <CourseSectionComponent
                     title="Dine fag"
-                    slug="student"
+                    slug="courses/view"
                     icon="mdi-school"
                     :courses="studentCourses"
                     @click="onCourseClick"
@@ -26,7 +26,7 @@
             <div v-if="assistantCourses.length">
                 <CourseSectionComponent
                     title="Læringsassistent"
-                    slug="courses/"
+                    slug="courses/view"
                     icon="mdi-book"
                     :courses="assistantCourses"
                     @click="onCourseClick"
