@@ -141,10 +141,9 @@ class CourseController {
 
         return if (optionalCourse.isPresent) {
             val course = optionalCourse.get()
-            val queueEntry = QueueEntry(data)
-            course.queue.add(queueEntry)
-
-            ResponseEntity.ok(courseRepository.save(course))
+            val queueEntry = queueEntryRepository.save(QueueEntry(data))
+            course.queueEntries.add(queueEntry)
+            return ResponseEntity.ok(courseRepository.save(course))
         } else {
             ResponseEntity.badRequest().body("Could not find course")
         }

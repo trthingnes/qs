@@ -35,7 +35,7 @@ class Course() {
     var year: Int = 0
 
     @OneToMany
-    var queue: MutableList<QueueEntry> = mutableListOf()
+    var queueEntries: MutableList<QueueEntry> = mutableListOf()
 
     @OneToMany
     var assignments: MutableList<Assignment> = mutableListOf()
