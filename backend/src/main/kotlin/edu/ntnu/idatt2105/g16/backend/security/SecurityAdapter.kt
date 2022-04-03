@@ -53,8 +53,13 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
             .headers()
             .frameOptions().sameOrigin() // Needed for H2 console to work.
             .and()
-            .cors()
-            .and()
+            .cors().configurationSource {
+                val cors = CorsConfiguration()
+                cors.allowedOrigins = listOf("*")
+                cors.allowedMethods = listOf("GET","POST", "PUT", "DELETE", "OPTIONS")
+                cors.allowedHeaders = listOf("*")
+                cors
+            }.and()
             .csrf().disable()
             .authorizeRequests()
             .antMatchers(

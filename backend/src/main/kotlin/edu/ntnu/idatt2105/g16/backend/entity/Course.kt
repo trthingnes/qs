@@ -39,7 +39,13 @@ class Course() {
     lateinit var queue: Queue
 
     @OneToMany
-    var assignments: List<Assignment> = listOf()
+    var assignments: MutableList<Assignment> = mutableListOf()
+
+    @ManyToMany
+    var students: MutableList<User> = mutableListOf()
+
+    @ManyToMany
+    var assistants: MutableList<User> = mutableListOf()
 
     fun update(dto: CourseDTO) {
         dto.code?.let { this.code = it }

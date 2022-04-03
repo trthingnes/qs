@@ -1,169 +1,21 @@
 <template>
     <v-form>
         <v-container>
-            <HeaderComponent title="Rediger fag" />
-            <v-row>
-                <v-col cols="12" md="6">
-                    <v-text-field label="Fagkode" v-model="code"></v-text-field>
-                </v-col>
+            <EditCourseDetailsComponent />
 
-                <v-col cols="12" md="6">
-                    <v-text-field label="Fagnavn" v-model="name"></v-text-field>
-                </v-col>
-
-                <v-col cols="6" md="3">
-                    <v-text-field
-                        label="Semester"
-                        v-model="semester"
-                    ></v-text-field>
-                </v-col>
-
-                <v-col cols="6" md="3">
-                    <v-text-field label="År" v-model="year"></v-text-field>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                    <v-text-field label="Nettsted" v-model="url"></v-text-field>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                    <v-textarea
-                        label="Beskrivelse"
-                        v-model="description"
-                    ></v-textarea>
-                </v-col>
-
-                <v-col cols="12" md="6">
-                    <v-btn
-                        color="success"
-                        prepend-icon="mdi-check"
-                        @click="onSaveClick"
-                        class="mr-3"
-                    >
-                        Lagre fag
-                    </v-btn>
-                    <v-btn
-                        color="error"
-                        prepend-icon="mdi-delete"
-                        @click="onDeleteClick"
-                    >
-                        Slett fag
-                    </v-btn>
-                    <v-alert
-                        v-if="updatedSuccessfully"
-                        type="success"
-                        class="my-5"
-                        >Faget ble oppdatert.</v-alert
-                    >
-                </v-col>
-
-                <v-col cols="1" md="5" class="">
-                    <!-- TODO: Find way to read list of all students from csv file. -->
-                    <!-- TODO: Also find a more fitting drop down menu, for selecting multiple students at once -->
-                    <div class="text-center">
-                        <v-menu>
-                            <template v-slot:activator="{ props }">
-                                <v-btn color="primary" dark v-bind="props">
-                                    List students
-                                </v-btn>
-                            </template>
-
-                            <v-list>
-                                <v-list-item
-                                    v-for="(student, i) in students"
-                                    :key="i"
-                                >
-                                    <v-list-item-title>{{
-                                        student.name
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                    </div>
-                </v-col>
-            </v-row>
+            <EditCourseParticipantsComponent />
         </v-container>
     </v-form>
 </template>
 
 <script>
-import { ref, watch } from "vue"
-import { useRoute } from "vue-router"
-import { useCookies } from "vue3-cookies"
-import { getCourseById, updateCourseInfoById } from "@/services/api"
-import HeaderComponent from "@/components/HeaderComponent.vue"
+import EditCourseDetailsComponent from "@/components/course/EditCourseDetailsComponent.vue"
+import EditCourseParticipantsComponent from "@/components/course/EditCourseParticipantsComponent.vue"
 
 export default {
     components: {
-        HeaderComponent,
-    },
-    setup() {
-        const route = useRoute()
-        const { cookies } = useCookies()
-
-        const code = ref("")
-        const name = ref("")
-        const url = ref("")
-        const description = ref("")
-        const semester = ref("")
-        const year = ref(0)
-        const updatedSuccessfully = ref(false)
-
-        const getCourseInfo = (id) => {
-            if (!id) return
-
-            getCourseById(cookies.get("token"), id).then((course) => {
-                code.value = course.code
-                name.value = course.name
-                url.value = course.url
-                description.value = course.description
-                semester.value = course.semester
-                year.value = course.year
-            })
-        }
-
-        const onDeleteClick = () => {
-            // TODO
-        }
-
-        const onSaveClick = () => {
-            let infoToUpdate = {
-                code: code.value,
-                name: name.value,
-                url: url.value,
-                description: description.value,
-                semester: semester.value,
-                year: year.value,
-            }
-
-            updatedSuccessfully.value = updateCourseInfoById(
-                cookies.get("token"),
-                route.params.id,
-                infoToUpdate
-            )
-        }
-
-        getCourseInfo(route.params.id)
-        watch(
-            () => route.params.id,
-            async (id) => getCourseInfo(id)
-        )
-        watch(
-            () => updatedSuccessfully,
-            async () => getCourseInfo(route.params.id)
-        )
-
-        return {
-            code,
-            name,
-            url,
-            description,
-            semester,
-            year,
-            updatedSuccessfully,
-            onDeleteClick,
-            onSaveClick,
-        }
+        EditCourseDetailsComponent,
+        EditCourseParticipantsComponent,
     },
 }
 </script>

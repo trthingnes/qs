@@ -10,15 +10,6 @@ const TEACHER_COURSES_URL = API_URL + "/user/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
 const QUEUE_URL = API_URL + "/queue"
 
-const CLIENT = axios.create({
-    baseURL: API_URL,
-    withCredentials: false,
-    headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-    },
-})
-
 export async function getToken(username, password) {
     return axios
         .post(TOKEN_URL, {
@@ -157,6 +148,37 @@ export async function getCourseById(token, id) {
         })
 }
 
+export async function getCourseStudentsById(token, id) {
+    return axios
+        .get(COURSES_URL + `${id}/students/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course students."
+        })
+}
+
+export async function getCourseAssistantsById(token, id) {
+    return axios
+        .get(COURSES_URL + `${id}/assistants/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve course assistants."
+        })
+}
+
 export async function updateCourseInfoById(token, id, info) {
     return axios
         .put(COURSES_URL + `${id}`, info, {
@@ -170,14 +192,6 @@ export async function updateCourseInfoById(token, id, info) {
         .catch(() => {
             return false
         })
-}
-
-export function receiveAll() {
-    return CLIENT.get("")
-        .then((response) => {
-            return response.data
-        })
-        .catch((error) => console.log(error))
 }
 
 export async function getAssignments(id) {
@@ -202,6 +216,6 @@ export async function getCompletedAssignments(token, id) {
         .catch((error) => console.log(error))
 }
 
-export async function postQueueEntry(id, assignments) {
+export async function postQueueEntry(id) {
     return axios.post(QUEUE_URL + `${id}/add/`)
 }

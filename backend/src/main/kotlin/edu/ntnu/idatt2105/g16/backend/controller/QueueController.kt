@@ -8,14 +8,12 @@ import edu.ntnu.idatt2105.g16.backend.repository.QueueEntryRepository
 import edu.ntnu.idatt2105.g16.backend.repository.QueueRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@CrossOrigin
 @RestController
 @RequestMapping("/queue")
 class QueueController {

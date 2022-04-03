@@ -1,7 +1,7 @@
 <template>
-    <v-card width="400" class="px-5 py-5">
-        <v-card-title> Velkommen </v-card-title>
-        <v-card-subtitle> Logg inn for å fortsette til Qs! </v-card-subtitle>
+    <v-card class="px-5 py-5">
+        <v-card-title>Velkommen</v-card-title>
+        <v-card-subtitle>Logg inn for å fortsette til Qs!</v-card-subtitle>
         <v-card-text>
             <v-alert type="error" v-if="loginFailed" class="mt-3 mb-6">
                 Feil brukernavn eller passord.
