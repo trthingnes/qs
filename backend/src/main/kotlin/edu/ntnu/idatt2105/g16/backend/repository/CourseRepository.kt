@@ -8,5 +8,4 @@ import java.util.*
 @Repository
 interface CourseRepository : CrudRepository<Course, Long> {
     fun findCourseById(id: Long): Optional<Course>
-    fun findByQueue_Id(id: Long): Optional<Course>
 }
