@@ -45,7 +45,6 @@ class CourseController {
     }
 
     @GetMapping("/assistant")
-    @PreAuthorize("hasAnyRole('ASSISTANT', 'TEACHER')")
     fun getCurrentUserAssistantCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
@@ -57,7 +56,6 @@ class CourseController {
     }
 
     @GetMapping("/teacher")
-    @PreAuthorize("hasAnyRole('TEACHER')")
     fun getCurrentUserTeacherCourses(principal: Principal): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
