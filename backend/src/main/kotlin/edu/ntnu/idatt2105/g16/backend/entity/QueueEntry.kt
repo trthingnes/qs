@@ -19,7 +19,7 @@ class QueueEntry() {
     @NotNull(message = "Help cannot be null")
     var help: Boolean = true
 
-    @NotNull(message = "Has Assistant cannot be null")
+    @NotNull(message = "Has assistant cannot be null")
     var hasAssistant: Boolean = false
 
     @NotBlank(message = "Location cannot be blank")

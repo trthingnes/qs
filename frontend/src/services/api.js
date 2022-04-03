@@ -8,7 +8,7 @@ const STUDENT_COURSES_URL = API_URL + "/courses/student/"
 const ASSISTANT_COURSES_URL = API_URL + "/courses/assistant/"
 const TEACHER_COURSES_URL = API_URL + "/courses/teacher/"
 const COURSES_URL = API_URL + "/courses/"
-const QUEUE_URL = API_URL + "/queue"
+const QUEUE_URL = API_URL + "/queue/"
 
 export async function getToken(username, password) {
     return axios
@@ -191,6 +191,21 @@ export async function updateCourseInfoById(token, id, info) {
         })
         .catch(() => {
             return false
+        })
+}
+
+export async function getQueueEntriesById(token, id) {
+    return axios
+        .get(COURSES_URL + `${id}/queue/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            throw "Unable to retrieve queue entries."
         })
 }
 

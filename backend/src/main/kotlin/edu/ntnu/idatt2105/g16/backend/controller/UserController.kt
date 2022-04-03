@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
-import edu.ntnu.idatt2105.g16.backend.dto.CourseDTO
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import edu.ntnu.idatt2105.g16.backend.entity.User
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository

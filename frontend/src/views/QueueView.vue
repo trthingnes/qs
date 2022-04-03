@@ -1,50 +1,58 @@
 <template>
-    <v-card class="mx-auto mr-4">
-        <QueuePositionComponent />
-        <v-list>
-            <v-list-subheader
-                >Students in queue: {{ queue.length }}</v-list-subheader
-            >
-            <v-list-item
-                v-for="(student, i) in queue"
-                :key="i"
-                :value="student"
-                class="text-center"
-                @click="regHelp"
-            >
-                <v-list-item-title v-text="student.name"></v-list-item-title>
-                <v-spacer></v-spacer>
-                <v-list-item-content>
-                    {{ student.type }}
-                    <v-spacer></v-spacer>
-                    Assignment:
-                    {{ student.assignment }}</v-list-item-content
-                >
-            </v-list-item>
-        </v-list>
-    </v-card>
+    <v-container>
+        <HeaderComponent title="Kø" />
+        <v-row>
+            <v-col cols="12">
+                <v-table fixed-header>
+                    <thead>
+                        <tr>
+                            <th>Navn</th>
+                            <th>Plassering</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <QueueEntryComponent
+                            v-for="entry in entries"
+                            :key="entry"
+                            :entry="entry"
+                        />
+                    </tbody>
+                </v-table>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 <script>
-import QueuePositionComponent from "../components/QueuePositionComponent.vue"
-import { getQueue } from "../services/api"
+import { ref } from "vue"
+import { useRoute } from "vue-router"
+import { useCookies } from "vue3-cookies"
+import HeaderComponent from "@/components/HeaderComponent.vue"
+import QueueEntryComponent from "@/components/QueueEntryComponent.vue"
+import { getQueueEntriesById } from "@/services/api"
 
 export default {
-    name: "QueueView",
-    data: () => ({
-        queue: getQueue(),
-    }),
-    methods: {
-        // TODO: Finne mer forklarende metodenavn, finn også rett syntax for å endre fargen.
-        regHelp() {
-            document.documentElement.style.color = "#add8e6"
-        },
-    },
-
     components: {
-        QueuePositionComponent,
+        HeaderComponent,
+        QueueEntryComponent,
+    },
+    setup() {
+        const route = useRoute()
+        const { cookies } = useCookies()
+
+        const entries = ref()
+
+        const getEntries = () => {
+            getQueueEntriesById(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    entries.value = data
+                }
+            )
+        }
+        getEntries()
+
+        return { entries }
     },
 }
 </script>
-
-<style scoped></style>
