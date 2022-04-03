@@ -19,6 +19,7 @@
                             v-for="(assignment, i) in assignments"
                             :key="i"
                             :value="assignment"
+                            id="task"
                         >
                             <!-- TODO: Fix an appropriate solution to displaying approved/not approved assignments -->
                             <v-card>
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-import { getStudents, getAssignments } from "@/services/api"
+import { getAssignments, getStudents } from "@/services/api"
 
 export default {
     name: "AssignmentListView",

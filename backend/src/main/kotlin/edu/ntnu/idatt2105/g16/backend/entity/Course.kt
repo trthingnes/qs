@@ -34,9 +34,8 @@ class Course() {
     @NotNull(message = "Year cannot be null")
     var year: Int = 0
 
-    @OneToOne
-    @NotNull(message = "Queue cannot be null")
-    lateinit var queue: Queue
+    @OneToMany
+    var queue: MutableList<QueueEntry> = mutableListOf()
 
     @OneToMany
     var assignments: MutableList<Assignment> = mutableListOf()

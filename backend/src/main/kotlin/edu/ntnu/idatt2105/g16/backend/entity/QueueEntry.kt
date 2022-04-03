@@ -26,9 +26,6 @@ class QueueEntry() {
     @NotNull(message = "Has Assistant cannot be null")
     var hasAssistant: Boolean = false
 
-    @ManyToOne
-    lateinit var queue: Queue
-
     @ManyToMany
     var assignments: MutableList<Assignment> = mutableListOf()
 }

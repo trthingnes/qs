@@ -3,9 +3,6 @@ package edu.ntnu.idatt2105.g16.backend.controller
 import edu.ntnu.idatt2105.g16.backend.dto.QueueEntryDTO
 import edu.ntnu.idatt2105.g16.backend.entity.QueueEntry
 import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
-import edu.ntnu.idatt2105.g16.backend.repository.CourseRepository
-import edu.ntnu.idatt2105.g16.backend.repository.QueueEntryRepository
-import edu.ntnu.idatt2105.g16.backend.repository.QueueRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,9 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/queue")
 class QueueController {
-
-    @Autowired
-    private lateinit var queueRepository: QueueRepository
 
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
