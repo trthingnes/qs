@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull
 class QueueEntry() {
     constructor(dto: QueueEntryDTO) : this() {
         update(dto)
-        this.hasAssistant = false
     }
 
     @Id
@@ -32,5 +31,6 @@ class QueueEntry() {
     fun update(dto: QueueEntryDTO) {
         dto.help?.let { this.help = it }
         dto.location?.let { this.location = it }
+        dto.hasAssistant?.let { this.hasAssistant = it }
     }
 }

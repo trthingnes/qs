@@ -155,6 +155,35 @@ class CourseController {
         } else {
             ResponseEntity.badRequest().body("Could not find course")
         }
+    }
 
+    @PutMapping("/{id}/queue/{entryId}")
+    fun updateHasAssistant(@PathVariable id: Long, @PathVariable entryId: Long, @RequestBody dto: QueueEntryDTO): ResponseEntity<Any> {
+        val optionalQueueEntry = queueEntryRepository.findById(entryId)
+        if (!optionalQueueEntry.isPresent) {
+            return ResponseEntity.badRequest().body("Queue entry not found.")
+        }
+
+        val queueEntry = optionalQueueEntry.get()
+        queueEntry.update(dto)
+
+        return ResponseEntity.ok(QueueEntryDTO(queueEntryRepository.save(queueEntry)))
+    }
+
+    @DeleteMapping("/{id}/queue/{entryId}")
+    fun deleteQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long): ResponseEntity<Any> {
+        val optionalQueueEntry = queueEntryRepository.findById(entryId)
+        val optionalCourse = courseRepository.findCourseById(id)
+
+        if (!optionalQueueEntry.isPresent || !optionalCourse.isPresent) {
+            return ResponseEntity.badRequest().body("Queue entry not found")
+        }
+        val queueEntry = optionalQueueEntry.get()
+        val course = optionalCourse.get()
+        course.queueEntries.remove(queueEntry)
+        courseRepository.save(course)
+        queueEntryRepository.delete(queueEntry)
+
+        return ResponseEntity.ok("Queue entry ${entryId} deleted")
     }
 }
