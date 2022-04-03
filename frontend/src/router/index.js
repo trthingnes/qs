@@ -59,7 +59,7 @@ const routes = [
         name: "edit-course",
         component: () =>
             import(
-                /* webpackChinkName: "edit-course" */ "@/views/EditCourseView.vue"
+                /* webpackChunkName: "edit-course" */ "@/views/EditCourseView.vue"
             ),
     },
     {
@@ -68,7 +68,16 @@ const routes = [
         name: "view-course",
         component: () =>
             import(
-                /* webpackChinkName: "view-course" */ "@/views/CourseView.vue"
+                /* webpackChunkName: "view-course" */ "@/views/CourseView.vue"
+            ),
+    },
+    {
+        path: "/courses/queue/:id",
+        props: true,
+        name: "view-queue",
+        component: () =>
+            import(
+                /* webpackChunkName: "view-queue" */ "@/views/QueueView.vue"
             ),
     },
 ]
