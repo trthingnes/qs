@@ -209,19 +209,24 @@ export async function getQueueEntriesById(token, id) {
 }
 
 export async function postCompletedAssignment(token, id, ordinal, username) {
-    return axios.get(COURSES_URL + `${id}/assignments/${ordinal}`, {
-        username: username
-    }, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-    .then(() => {
-        return true
-    })
-    .catch(() => {
-        throw "Could not find user or assignment"
-    })
+    return axios
+        .get(
+            COURSES_URL + `${id}/assignments/${ordinal}`,
+            {
+                username: username,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        .then(() => {
+            return true
+        })
+        .catch(() => {
+            throw "Could not find user or assignment"
+        })
 }
 
 export async function getAssignments(token, id) {

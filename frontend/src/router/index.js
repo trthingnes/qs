@@ -16,14 +16,6 @@ const routes = [
             ),
     },
     {
-        path: "/assignments/list",
-        name: "list-assignments",
-        component: () =>
-            import(
-                /* webpackChunkName: "assignment-list" */ "@/views/ListAssignmentsView.vue"
-            ),
-    },
-    {
         path: "/courses/add",
         name: "add-course",
         component: () =>
@@ -73,6 +65,14 @@ const routes = [
         component: () =>
             import(
                 /* webpackChunkName: "assignments" */ "@/views/AssignmentsView.vue"
+            ),
+    },
+    {
+        path: "/courses/:id/assignments/list",
+        name: "list-assignments",
+        component: () =>
+            import(
+                /* webpackChunkName: "list-assignments" */ "@/views/ListAssignmentsView.vue"
             ),
     },
 ]

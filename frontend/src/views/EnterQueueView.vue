@@ -28,7 +28,7 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { useCookies } from "vue3-cookies"
 import {
     getAssignments,
@@ -39,6 +39,7 @@ import {
 export default defineComponent({
     setup() {
         const route = useRoute()
+        const router = useRouter()
 
         const assignments = ref([])
         const completed = ref([])
@@ -75,8 +76,13 @@ export default defineComponent({
             postQueueEntry(
                 cookies.get("token"),
                 route.params.id,
-                help.value,
+                !help.value,
                 position.value
+            ).then(
+                router.push({
+                    name: "view-queue",
+                    params: { id: route.params.id },
+                })
             )
         }
 
