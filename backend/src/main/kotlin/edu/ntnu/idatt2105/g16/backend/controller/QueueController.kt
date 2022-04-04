@@ -9,6 +9,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
@@ -61,6 +62,7 @@ class QueueController {
     }
 
     @GetMapping("/queue/{entryId}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ASSISTANT')")
     @ApiOperation("Get a single queue entry from id")
     fun getQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long): ResponseEntity<Any> {
         val optionalEntry = queueEntryRepository.findById(entryId)
@@ -87,6 +89,7 @@ class QueueController {
     }
 
     @DeleteMapping("/queue/{entryId}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ASSISTANT')")
     @ApiOperation("Deletes the queue entry with the given id.")
     fun deleteQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long): ResponseEntity<Any> {
         val optionalQueueEntry = queueEntryRepository.findById(entryId)

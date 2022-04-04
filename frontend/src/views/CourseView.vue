@@ -55,15 +55,13 @@
                 >
                     Åpne køen
                 </v-btn>
-            </v-col>
-            <v-col cols="12" md="6">
                 <v-btn
                     color="primary"
                     prepend-icon="mdi-clipboard-list"
                     @click="onAssignmentsOpenClick"
                     class="mr-3"
                 >
-                    Vis Oppgaver
+                    Vis oppgaver
                 </v-btn>
             </v-col>
         </v-row>
