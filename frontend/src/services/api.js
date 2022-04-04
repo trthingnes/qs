@@ -291,7 +291,7 @@ export async function getQueueEntriesById(token, id) {
 
 export async function postCompletedAssignment(token, id, ordinal, username) {
     return axios
-        .get(
+        .post(
             COURSES_URL + `${id}/assignments/${ordinal}`,
             {
                 username: username,
@@ -334,6 +334,21 @@ export async function getCompletedAssignments(token, id) {
             return response.data
         })
         .catch((error) => console.log(error))
+}
+
+export async function getQueueEntryById(token, id, entryId) {
+    return axios
+        .get(COURSES_URL + `${id}/queue/${entryId}/`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.data
+        })
+        .catch(() => {
+            return "Could not find queue entry"
+        })
 }
 
 export async function postQueueEntry(token, id, help, location) {

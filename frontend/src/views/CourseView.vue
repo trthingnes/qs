@@ -56,6 +56,16 @@
                     Åpne køen
                 </v-btn>
             </v-col>
+            <v-col cols="12" md="6">
+                <v-btn
+                    color="primary"
+                    prepend-icon="mdi-clipboard-list"
+                    @click="onAssignmentsOpenClick"
+                    class="mr-3"
+                >
+                    Vis Oppgaver
+                </v-btn>
+            </v-col>
         </v-row>
     </v-container>
 </template>
@@ -99,6 +109,13 @@ export default {
             router.push({ name: "view-queue", params: { id: route.params.id } })
         }
 
+        const onAssignmentsOpenClick = () => {
+            router.push({
+                name: "assignments",
+                params: { id: route.params.id },
+            })
+        }
+
         getCourseInfo(route.params.id)
         watch(
             () => route.params.id,
@@ -113,6 +130,7 @@ export default {
             semester,
             year,
             onQueueOpenClick,
+            onAssignmentsOpenClick,
         }
     },
 }

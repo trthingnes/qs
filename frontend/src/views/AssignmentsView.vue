@@ -1,6 +1,6 @@
 <template>
     <v-component>
-        <h2>Fullførte og gjenstående oppgaver i faget 'fagkode'</h2>
+        <h2>Fullførte og gjenstående oppgaver i faget {{ course.name }}</h2>
     </v-component>
     <v-component>
         <div v-for="asmnt in assignments" :key="asmnt">
@@ -18,7 +18,11 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
-import { getAssignments, getCompletedAssignments } from "../services/api"
+import {
+    getAssignments,
+    getCompletedAssignments,
+    getCourseById,
+} from "../services/api"
 import { useCookies } from "vue3-cookies"
 
 export default defineComponent({
@@ -28,6 +32,15 @@ export default defineComponent({
 
         const assignments = ref([])
         const completed = ref([])
+        const course = ref({})
+
+        const getCourse = () => {
+            getCourseById(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    course.value = data
+                }
+            )
+        }
 
         const updateAssignments = () =>
             getAssignments(cookies.get("token"), route.params.id).then(
@@ -48,11 +61,13 @@ export default defineComponent({
         onMounted(() => {
             updateAssignments()
             updateCompletedAssignments()
+            getCourse()
         })
 
         return {
             assignments,
             completed,
+            course,
         }
     },
 })

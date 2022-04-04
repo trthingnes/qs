@@ -58,6 +58,18 @@ class QueueController {
         }
     }
 
+    @GetMapping("/queue/{entryId}")
+    @ApiOperation("Get a single queue entry from id")
+    fun getQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long): ResponseEntity<Any> {
+        val optionalEntry = queueEntryRepository.findById(entryId)
+
+        return if (optionalEntry.isPresent) {
+            ResponseEntity.ok(QueueEntryDTO(optionalEntry.get()))
+        } else {
+            ResponseEntity.badRequest().body("No entry found")
+        }
+    }
+
     @PutMapping("/queue/{entryId}")
     @ApiOperation("Updates the queue entry with the given id.")
     fun updateQueueEntry(@PathVariable id: Long, @PathVariable entryId: Long, @RequestBody dto: QueueEntryDTO): ResponseEntity<Any> {

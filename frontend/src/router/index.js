@@ -60,6 +60,15 @@ const routes = [
             ),
     },
     {
+        path: "/courses/queue/:id/:entry",
+        props: true,
+        name: "assist",
+        component: () =>
+            import(
+                /* webpackChunkName: "enter-queue" */ "@/views/AssistView.vue"
+            ),
+    },
+    {
         path: "/courses/:id/assignments",
         name: "assignments",
         component: () =>

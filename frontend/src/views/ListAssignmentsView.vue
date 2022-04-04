@@ -1,19 +1,20 @@
 <template>
     <v-card class="mx-auto mr-4">
-        <v-list>
-            <v-list-subheader>
-                Total number of students:
-                {{ students.length }}
-            </v-list-subheader>
-            <v-list-item>
+        <v-table fixed-header>
+            <thead>
+                <tr>
+                    <th>Total number of students: {{ students.length }}</th>
+                </tr>
+            </thead>
+            <tbody>
                 <ListAssignmentComponent
                     v-for="student in students"
                     :key="student"
                     :student="student"
                     :assignments="assignments"
                 />
-            </v-list-item>
-        </v-list>
+            </tbody>
+        </v-table>
     </v-card>
 </template>
 
