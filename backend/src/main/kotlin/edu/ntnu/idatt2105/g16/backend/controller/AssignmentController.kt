@@ -1,14 +1,14 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
+import edu.ntnu.idatt2105.g16.backend.dto.AssignmentDTO
+import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
 import edu.ntnu.idatt2105.g16.backend.repository.AssignmentRepository
+import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
 @RestController
@@ -17,6 +17,9 @@ import java.security.Principal
 class AssignmentController {
     @Autowired
     private lateinit var assignmentRepository: AssignmentRepository
+
+    @Autowired
+    private lateinit var userRepository: UserRepository
 
     @GetMapping
     @ApiOperation("Gets a list of all the assignments of the course with the given id.")
@@ -39,6 +42,28 @@ class AssignmentController {
             ResponseEntity.ok(optionalAssignments.get().map { it.ordinal })
         } else {
             ResponseEntity.badRequest().body("No completed assignments found")
+        }
+    }
+
+    @PostMapping("/{ordinal}")
+    @ApiOperation("Add a user to the list with the users who completed a specific assignment")
+    fun postUserCompletedAssignment(@PathVariable id: Long, @PathVariable ordinal: Int, @RequestBody user: UserDTO): ResponseEntity<Any> {
+        val receivedUser = user.username
+        var username = "notfound"
+        if (receivedUser != null) {
+            username = receivedUser
+        }
+        val optionalAssignment = assignmentRepository.findByCourseIdAndOrdinal(id, ordinal)
+        val optionalUser = userRepository.findByUsername(username)
+
+        return if (optionalAssignment.isPresent && optionalUser.isPresent) {
+            val assignment = optionalAssignment.get()
+            assignment.users.add(optionalUser.get())
+            assignmentRepository.save(assignment)
+
+            ResponseEntity.ok(AssignmentDTO(assignment))
+        } else {
+            ResponseEntity.badRequest().body("Could not find assignment or user")
         }
     }
 }
