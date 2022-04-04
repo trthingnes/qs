@@ -16,10 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.header.writers.StaticHeadersWriter
 import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -56,7 +53,7 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
             .cors().configurationSource {
                 val cors = CorsConfiguration()
                 cors.allowedOrigins = listOf("*")
-                cors.allowedMethods = listOf("GET","POST", "PUT", "DELETE", "OPTIONS")
+                cors.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 cors.allowedHeaders = listOf("*")
                 cors
             }.and()

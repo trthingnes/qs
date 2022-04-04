@@ -14,14 +14,14 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
-import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/courses")
@@ -77,7 +77,7 @@ class CourseController {
     fun getCourseById(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
-        return if(optionalCourse.isPresent) {
+        return if (optionalCourse.isPresent) {
             ResponseEntity.ok(CourseDTO(optionalCourse.get()))
         } else {
             ResponseEntity.badRequest().body("Course not found.")
@@ -90,7 +90,7 @@ class CourseController {
     fun addCourse(principal: Principal, @RequestBody dto: CourseDTO): ResponseEntity<Any> {
         val optionalUser = userRepository.findByUsername(principal.name)
 
-        if(optionalUser.isEmpty) {
+        if (optionalUser.isEmpty) {
             return ResponseEntity.badRequest().body("Could not find user.")
         }
 
@@ -98,7 +98,7 @@ class CourseController {
         val course = courseRepository.save(Course(dto))
 
         val assignments = mutableListOf<Assignment>()
-        for(i in 1 .. dto.numAssignments!!) {
+        for (i in 1..dto.numAssignments!!) {
             assignments.add(Assignment(AssignmentDTO(i, course)))
         }
         assignmentRepository.saveAll(assignments)
@@ -130,7 +130,7 @@ class CourseController {
     fun getStudentsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
-        return if(optionalCourse.isPresent) {
+        return if (optionalCourse.isPresent) {
             ResponseEntity.ok(optionalCourse.get().students.map { UserDTO(it) })
         } else {
             ResponseEntity.badRequest().body("Course not found.")
@@ -143,7 +143,7 @@ class CourseController {
     fun getAssistantsByCourseId(@PathVariable id: Long): ResponseEntity<Any> {
         val optionalCourse = courseRepository.findCourseById(id)
 
-        return if(optionalCourse.isPresent) {
+        return if (optionalCourse.isPresent) {
             ResponseEntity.ok(optionalCourse.get().assistants.map { UserDTO(it) })
         } else {
             ResponseEntity.badRequest().body("Course not found.")
@@ -162,7 +162,7 @@ class CourseController {
         }
 
         val course = optionalCourse.get()
-        val user = if(optionalUser.isEmpty) { userRepository.save(User(data)) } else { optionalUser.get() }
+        val user = if (optionalUser.isEmpty) { userRepository.save(User(data)) } else { optionalUser.get() }
 
         user.studentCourses.add(course)
         userRepository.save(user)
@@ -185,7 +185,7 @@ class CourseController {
         }
 
         val course = optionalCourse.get()
-        val user = if(optionalUser.isEmpty) {
+        val user = if (optionalUser.isEmpty) {
             data.password = BCryptPasswordEncoder().encode(data.password)
             userRepository.save(User(data))
         } else { optionalUser.get() }
