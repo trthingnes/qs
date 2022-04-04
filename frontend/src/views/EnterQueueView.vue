@@ -28,8 +28,8 @@
 
 <script>
 import { defineComponent, onMounted, ref } from "vue"
+import { useStore } from "vuex"
 import { useRoute, useRouter } from "vue-router"
-import { useCookies } from "vue3-cookies"
 import {
     getAssignments,
     getCompletedAssignments,
@@ -38,6 +38,7 @@ import {
 
 export default defineComponent({
     setup() {
+        const store = useStore()
         const route = useRoute()
         const router = useRouter()
 
@@ -46,10 +47,9 @@ export default defineComponent({
         const position = ref("")
         const selected = ref([])
         const help = ref(false)
-        const { cookies } = useCookies()
 
         const updateAssignments = () =>
-            getAssignments(cookies.get("token"), route.params.id).then(
+            getAssignments(store.getters.token, route.params.id).then(
                 (data) => {
                     console.log(data)
                     assignments.value = data
@@ -57,7 +57,7 @@ export default defineComponent({
             )
 
         const updateCompletedAssignments = () =>
-            getCompletedAssignments(cookies.get("token"), route.params.id).then(
+            getCompletedAssignments(store.getters.token, route.params.id).then(
                 (data) => {
                     console.log(data)
                     completed.value = data
@@ -74,7 +74,7 @@ export default defineComponent({
 
         const submit = () => {
             postQueueEntry(
-                cookies.get("token"),
+                store.getters.token,
                 route.params.id,
                 !help.value,
                 position.value

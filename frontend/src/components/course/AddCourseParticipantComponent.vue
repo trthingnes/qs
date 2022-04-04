@@ -69,8 +69,8 @@
 </template>
 <script>
 import { ref } from "vue"
+import { useStore } from "vuex"
 import { useRoute } from "vue-router"
-import { useCookies } from "vue3-cookies"
 import {
     addStudentToCourseById,
     addAssistantToCourseById,
@@ -79,8 +79,8 @@ import {
 export default {
     props: ["assistant"],
     setup(props, ctx) {
+        const store = useStore()
         const route = useRoute()
-        const { cookies } = useCookies()
 
         const firstname = ref("")
         const lastname = ref("")
@@ -99,13 +99,13 @@ export default {
 
             if (props.assistant) {
                 addAssistantToCourseById(
-                    cookies.get("token"),
+                    store.getters.token,
                     route.params.id,
                     data
                 )
             } else {
                 addStudentToCourseById(
-                    cookies.get("token"),
+                    store.getters.token,
                     route.params.id,
                     data
                 )

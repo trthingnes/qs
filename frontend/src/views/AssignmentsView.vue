@@ -17,17 +17,17 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue"
+import { useStore } from "vuex"
 import { useRoute } from "vue-router"
 import {
     getAssignments,
     getCompletedAssignments,
     getCourseById,
 } from "../services/api"
-import { useCookies } from "vue3-cookies"
 
 export default defineComponent({
     setup() {
-        const { cookies } = useCookies()
+        const store = useStore()
         const route = useRoute()
 
         const assignments = ref([])
@@ -35,15 +35,13 @@ export default defineComponent({
         const course = ref({})
 
         const getCourse = () => {
-            getCourseById(cookies.get("token"), route.params.id).then(
-                (data) => {
-                    course.value = data
-                }
-            )
+            getCourseById(store.getters.token, route.params.id).then((data) => {
+                course.value = data
+            })
         }
 
         const updateAssignments = () =>
-            getAssignments(cookies.get("token"), route.params.id).then(
+            getAssignments(store.getters.token, route.params.id).then(
                 (data) => {
                     console.log(data)
                     assignments.value = data
@@ -51,7 +49,7 @@ export default defineComponent({
             )
 
         const updateCompletedAssignments = () =>
-            getCompletedAssignments(cookies.get("token"), route.params.id).then(
+            getCompletedAssignments(store.getters.token, route.params.id).then(
                 (data) => {
                     console.log(data)
                     completed.value = data

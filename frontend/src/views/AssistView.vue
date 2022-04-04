@@ -7,20 +7,20 @@
 
 <script>
 import { deleteQueueEntry, getQueueEntryById } from "@/services/api"
-import { useCookies } from "vue3-cookies"
 import { useRoute, useRouter } from "vue-router"
 import { ref } from "vue"
+import { useStore } from "vuex"
 
 export default {
     setup() {
+        const store = useStore()
         const route = useRoute()
         const router = useRouter()
-        const { cookies } = useCookies()
         const entry = ref()
 
         const getEntry = () => {
             getQueueEntryById(
-                cookies.get("token"),
+                store.getters.token,
                 route.params.id,
                 route.params.entry
             ).then((data) => {
@@ -31,7 +31,7 @@ export default {
 
         const complete = () => {
             deleteQueueEntry(
-                cookies.get("token"),
+                store.getters.token,
                 route.params.id,
                 route.params.entry
             ).then(() => {

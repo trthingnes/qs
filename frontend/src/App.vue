@@ -17,12 +17,22 @@
 </template>
 
 <script>
+import { useStore } from "vuex"
+import { useCookies } from "vue3-cookies"
 import NavigationDrawerComponent from "@/components/navigation/NavigationDrawerComponent.vue"
 
 export default {
     name: "App",
     components: {
         NavigationDrawerComponent,
+    },
+    setup() {
+        const store = useStore()
+        const { cookies } = useCookies()
+
+        if (cookies.isKey("token")) {
+            store.dispatch("setToken", cookies.get("token"))
+        }
     },
 }
 </script>
