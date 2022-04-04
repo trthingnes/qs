@@ -37,9 +37,15 @@ export async function createCourse(token, info) {
             },
         })
         .then((response) => {
-            return response.data
+            if (response.status == 200) {
+                return response.data
+            }
+
+            return false
         })
-        .catch("Unable to create course")
+        .catch(() => {
+            return false
+        })
 }
 
 export async function getCourseInfo(token) {
@@ -155,7 +161,6 @@ export async function getCourseStudentsById(token, id) {
             },
         })
         .then((response) => {
-            console.log(response.data)
             return response.data
         })
         .catch(() => {
@@ -175,6 +180,82 @@ export async function getCourseAssistantsById(token, id) {
         })
         .catch(() => {
             throw "Unable to retrieve course assistants."
+        })
+}
+
+export async function addStudentToCourseById(token, id, info) {
+    return axios
+        .post(COURSES_URL + `${id}/students/`, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (response.status == 200) {
+                return response.data
+            }
+
+            return false
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+export async function addAssistantToCourseById(token, id, info) {
+    return axios
+        .post(COURSES_URL + `${id}/assistants/`, info, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (response.status == 200) {
+                return response.data
+            }
+
+            return false
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+export async function removeStudentByCourseId(token, id, username) {
+    return axios
+        .delete(COURSES_URL + `${id}/students/${username}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (response.status == 200) {
+                return response.data
+            }
+
+            return false
+        })
+        .catch(() => {
+            return false
+        })
+}
+
+export async function removeAssistantsByCourseId(token, id, username) {
+    return axios
+        .delete(COURSES_URL + `${id}/assistants/${username}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            if (response.status == 200) {
+                return response.data
+            }
+
+            return false
+        })
+        .catch(() => {
+            return false
         })
 }
 

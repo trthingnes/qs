@@ -1,9 +1,9 @@
 <template>
     <v-form @submit.prevent="onFormSubmit">
         <v-container>
+            <HeaderComponent title="Legg til fag" />
             <v-row>
-                <!-- TODO: Add functionality to all buttons -->
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                     <v-text-field
                         label="Emnekode"
                         v-model="code"
@@ -13,7 +13,7 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                     <v-text-field
                         label="Emnenavn"
                         v-model="name"
@@ -22,7 +22,7 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="3">
+                <v-col cols="6" md="3">
                     <v-text-field
                         label="Semester"
                         v-model="semester"
@@ -30,7 +30,7 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="3">
+                <v-col cols="6" md="3">
                     <v-text-field
                         label="År"
                         v-model="year"
@@ -39,11 +39,11 @@
                     ></v-text-field>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                     <v-text-field label="URL" v-model="url"></v-text-field>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                     <v-textarea
                         v-model="description"
                         label="Beskrivelse"
@@ -51,7 +51,7 @@
                     ></v-textarea>
                 </v-col>
 
-                <v-col cols="6">
+                <v-col cols="12" md="6">
                     <v-label>Antall øvinger:</v-label>
                     <v-slider
                         v-model="numAssignments"
@@ -66,19 +66,16 @@
                     ></v-slider>
                 </v-col>
 
-                <v-col cols="1" md="5">
-                    <v-btn
-                        prepend-icon="mdi-check"
-                        color="success"
-                        type="submit"
-                        >Save</v-btn
-                    >
+                <v-col cols="12" md="6">
+                    <v-btn prepend-icon="mdi-plus" color="success" type="submit"
+                        >Legg til fag
+                    </v-btn>
                     <v-alert
                         v-if="updatedSuccessfully"
                         type="success"
                         class="my-5"
-                        >Emnet ble opprettet.</v-alert
-                    >
+                        >Emnet ble opprettet.
+                    </v-alert>
                 </v-col>
             </v-row>
         </v-container>
@@ -89,8 +86,12 @@
 import { ref } from "vue"
 import { useCookies } from "vue3-cookies"
 import { createCourse } from "@/services/api"
+import HeaderComponent from "@/components/HeaderComponent.vue"
 
 export default {
+    components: {
+        HeaderComponent,
+    },
     setup() {
         const { cookies } = useCookies()
 
@@ -134,9 +135,9 @@ export default {
             description,
             numAssignments,
             updatedSuccessfully,
-            onFormSubmit,
             codeRules,
             nameRules,
+            onFormSubmit,
         }
     },
 }
