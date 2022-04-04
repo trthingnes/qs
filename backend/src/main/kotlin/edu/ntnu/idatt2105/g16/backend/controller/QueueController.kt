@@ -31,9 +31,11 @@ class QueueController {
         val optionalCourse = courseRepository.findCourseById(id)
 
         return if (optionalCourse.isPresent) {
-            ResponseEntity.ok(optionalCourse.get().queueEntries.map {
-                QueueEntryDTO(it)
-            })
+            ResponseEntity.ok(
+                optionalCourse.get().queueEntries.map {
+                    QueueEntryDTO(it)
+                }
+            )
         } else {
             ResponseEntity.badRequest().body("Could not find course")
         }
@@ -99,6 +101,6 @@ class QueueController {
         courseRepository.save(course)
         queueEntryRepository.delete(queueEntry)
 
-        return ResponseEntity.ok("Queue entry ${entryId} deleted")
+        return ResponseEntity.ok("Queue entry $entryId deleted")
     }
 }

@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2105.g16.backend.dto
 
 import edu.ntnu.idatt2105.g16.backend.entity.QueueEntry
-import edu.ntnu.idatt2105.g16.backend.entity.User
 
 data class QueueEntryDTO(
     val id: Long,
