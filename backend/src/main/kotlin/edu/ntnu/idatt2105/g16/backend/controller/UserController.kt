@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.g16.backend.controller
 
 import edu.ntnu.idatt2105.g16.backend.dto.UserDTO
-import edu.ntnu.idatt2105.g16.backend.entity.User
 import edu.ntnu.idatt2105.g16.backend.repository.UserRepository
+import edu.ntnu.idatt2105.g16.backend.service.UserService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,24 +17,21 @@ import java.security.Principal
 @Api(description = "Operations pertaining to creating, updating and getting users.")
 class UserController {
     @Autowired
-    private lateinit var userRepository: UserRepository
+    private lateinit var userService: UserService
 
     @PostMapping
     @PreAuthorize("hasAnyRole('TEACHER')")
     @ApiOperation("Creates a new user with the given info.")
     fun createUser(@RequestBody data: UserDTO): ResponseEntity<Any> {
-        val user = User(data)
+        val user = userService.createUser(data)
 
-        // Hash password with BCrypt before passing it along.
-        user.password = BCryptPasswordEncoder().encode(user.password)
-
-        return ResponseEntity.ok(userRepository.save(user))
+        return ResponseEntity.ok(user)
     }
 
     @GetMapping
     @ApiOperation("Gets info about the current user.")
     fun getCurrentUser(principal: Principal): ResponseEntity<Any> {
-        val optionalUser = userRepository.findByUsername(principal.name)
+        val optionalUser = userService.getUserByUsername(principal.name)
 
         return if (optionalUser.isPresent) {
             ResponseEntity.ok(UserDTO(optionalUser.get()))
@@ -46,7 +43,8 @@ class UserController {
     @PutMapping
     @ApiOperation("Updates the current user with the given info")
     fun updateCurrentUser(principal: Principal, @RequestBody dto: UserDTO): ResponseEntity<Any> {
-        val optionalUser = userRepository.findByUsername(principal.name)
+        val optionalUser = userService.getUserByUsername(principal.name)
+
         if (!optionalUser.isPresent) {
             return ResponseEntity.badRequest().body("User not found.")
         }
@@ -57,6 +55,6 @@ class UserController {
         }
         user.update(dto)
 
-        return ResponseEntity.ok(UserDTO(userRepository.save(user)))
+        return ResponseEntity.ok(UserDTO(userService.saveUser(user)))
     }
 }

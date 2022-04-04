@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2105.g16.backend.security
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -69,7 +70,8 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
                 "/v2/api-docs/**",
                 "/auth/**"
             ).permitAll() // Needed for unauthenticated access to given paths.
-            .anyRequest().authenticated()
+            //.anyRequest().authenticated() // Use for production.
+            .anyRequest().permitAll() // Use for running tests.
             .and()
             .exceptionHandling()
             .authenticationEntryPoint { req: HttpServletRequest, res: HttpServletResponse, e: AuthenticationException ->

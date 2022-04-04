@@ -24,7 +24,6 @@ class Course() {
     @NotBlank(message = "Name cannot be blank")
     lateinit var name: String
 
-    @URL
     @NotBlank(message = "URL cannot be blank")
     lateinit var url: String
 
