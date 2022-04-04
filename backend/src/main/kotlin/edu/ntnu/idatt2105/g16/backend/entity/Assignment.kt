@@ -29,7 +29,7 @@ class Assignment() {
     lateinit var course: Course
 
     @ManyToMany
-    var users: List<User> = listOf()
+    var users: MutableList<User> = mutableListOf()
 
     fun update(dto: AssignmentDTO) {
         dto.course?.let { this.course = it }

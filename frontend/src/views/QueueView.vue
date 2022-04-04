@@ -3,6 +3,7 @@
         <HeaderComponent title="Kø" />
         <v-row>
             <v-col cols="12">
+                <v-btn color="primary" @click="enterqueue">Still i kø</v-btn>
                 <v-table fixed-header>
                     <thead>
                         <tr>
@@ -26,7 +27,7 @@
 
 <script>
 import { ref } from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { useCookies } from "vue3-cookies"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 import QueueEntryComponent from "@/components/QueueEntryComponent.vue"
@@ -39,6 +40,7 @@ export default {
     },
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const { cookies } = useCookies()
 
         const entries = ref()
@@ -50,9 +52,17 @@ export default {
                 }
             )
         }
+
+        const enterqueue = () => {
+            router.push({
+                name: "enter-queue",
+                params: { id: route.params.id },
+            })
+        }
+
         getEntries()
 
-        return { entries }
+        return { entries, enterqueue }
     },
 }
 </script>

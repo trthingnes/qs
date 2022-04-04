@@ -2,12 +2,22 @@
     <HeaderComponent class="mt-10" title="Legg til og fjern deltagere" />
     <v-row>
         <v-col cols="12" md="6" class="mt-2">
-            <v-btn class="mr-2 mb-2" color="success" prepend-icon="mdi-plus"
-                >Legg til student</v-btn
+            <v-btn
+                class="mr-2 mb-2"
+                color="success"
+                prepend-icon="mdi-plus"
+                @click="isAddStudentOverlayOpen = true"
             >
-            <v-btn class="mb-2" color="success" prepend-icon="mdi-plus"
-                >Legg til assistent</v-btn
+                Legg til student
+            </v-btn>
+            <v-btn
+                class="mb-2"
+                color="success"
+                prepend-icon="mdi-plus"
+                @click="isAddAssistantOverlayOpen = true"
             >
+                Legg til assistent
+            </v-btn>
         </v-col>
         <v-col cols="12" md="6">
             <v-file-input
@@ -31,7 +41,7 @@
                             v-for="assistant in courseAssistants"
                             :key="assistant.username"
                         >
-                            <td>{{ assistant.name }}</td>
+                            <td>{{ assistant.username }}</td>
                             <td>Assistent</td>
                             <td>
                                 <v-btn
@@ -51,7 +61,7 @@
                             v-for="student in courseStudents"
                             :key="student.username"
                         >
-                            <td>{{ student.name }}</td>
+                            <td>{{ student.username }}</td>
                             <td>Student</td>
                             <td>
                                 <v-btn
@@ -72,18 +82,42 @@
             </v-table>
         </v-col>
     </v-row>
+    <v-overlay
+        v-model="isAddStudentOverlayOpen"
+        class="align-center justify-center"
+    >
+        <AddCourseParticipantComponent
+            @added="isAddStudentOverlayOpen = false"
+        />
+    </v-overlay>
+    <v-overlay
+        v-model="isAddAssistantOverlayOpen"
+        class="align-center justify-center"
+    >
+        <AddCourseParticipantComponent
+            :assistant="true"
+            @added="isAddAssistantOverlayOpen = false"
+        />
+    </v-overlay>
 </template>
 
 <script>
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 import { useCookies } from "vue3-cookies"
+import {
+    getCourseStudentsById,
+    getCourseAssistantsById,
+    removeStudentByCourseId,
+    removeAssistantsByCourseId,
+} from "@/services/api"
 import HeaderComponent from "@/components/HeaderComponent.vue"
-import { getCourseStudentsById, getCourseAssistantsById } from "@/services/api"
+import AddCourseParticipantComponent from "@/components/course/AddCourseParticipantComponent.vue"
 
 export default {
     components: {
         HeaderComponent,
+        AddCourseParticipantComponent,
     },
     setup() {
         const route = useRoute()
@@ -91,13 +125,23 @@ export default {
 
         const courseStudents = ref()
         const courseAssistants = ref()
+        const isAddStudentOverlayOpen = ref(false)
+        const isAddAssistantOverlayOpen = ref(false)
 
         const onUserDeleteClick = (username, student) => {
-            console.log(
-                `Deleting ${
-                    student ? "student" : "assistant"
-                } with username ${username}`
-            )
+            if (student) {
+                removeStudentByCourseId(
+                    cookies.get("token"),
+                    route.params.id,
+                    username
+                )
+            } else {
+                removeAssistantsByCourseId(
+                    cookies.get("token"),
+                    route.params.id,
+                    username
+                )
+            }
         }
 
         getCourseStudentsById(cookies.get("token"), route.params.id).then(
@@ -110,6 +154,8 @@ export default {
         return {
             courseStudents,
             courseAssistants,
+            isAddStudentOverlayOpen,
+            isAddAssistantOverlayOpen,
             onUserDeleteClick,
         }
     },

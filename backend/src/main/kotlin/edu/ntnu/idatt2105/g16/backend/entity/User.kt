@@ -33,7 +33,7 @@ class User() {
     lateinit var email: String
 
     @NotNull(message = "Role cannot be null")
-    lateinit var role: Role
+    var role: Role = Role.STUDENT
 
     @ManyToMany
     var studentCourses: MutableList<Course> = mutableListOf()

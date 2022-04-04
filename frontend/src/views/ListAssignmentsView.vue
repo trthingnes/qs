@@ -5,43 +5,65 @@
                 Total number of students:
                 {{ students.length }}
             </v-list-subheader>
-
-            <v-list-item
-                v-for="(student, i) in students"
-                :key="i"
-                :value="student"
-            >
-                <v-list-item-title v-text="student.name"></v-list-item-title>
-                <v-spacer></v-spacer>
-                <v-list-item-content>
-                    <v-row>
-                        <v-col
-                            v-for="(assignment, i) in assignments"
-                            :key="i"
-                            :value="assignment"
-                            id="task"
-                        >
-                            <!-- TODO: Fix an appropriate solution to displaying approved/not approved assignments -->
-                            <v-card>
-                                <v-card-text>{{ assignment }}</v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-list-item-content>
+            <v-list-item>
+                <ListAssignmentComponent
+                    v-for="student in students"
+                    :key="student"
+                    :student="student"
+                    :assignments="assignments"
+                />
             </v-list-item>
         </v-list>
     </v-card>
 </template>
 
 <script>
-import { getAssignments, getStudents } from "@/services/api"
+import ListAssignmentComponent from "@/components/ListAssignmentComponent.vue"
+import { getAssignments, getCourseStudentsById } from "@/services/api"
+import { ref } from "vue"
+import { useCookies } from "vue3-cookies"
+import { useRoute } from "vue-router"
+import { onMounted } from "@vue/runtime-core"
 
 export default {
     name: "AssignmentListView",
-    data: () => ({
-        students: getStudents(),
-        assignments: getAssignments(),
-    }),
+
+    components: { ListAssignmentComponent },
+
+    setup() {
+        const { cookies } = useCookies()
+        const route = useRoute()
+
+        const students = ref([])
+        const assignments = ref([])
+
+        const updateStudents = () => {
+            getCourseStudentsById(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    console.log(data)
+                    students.value = data
+                }
+            )
+        }
+
+        const updateAssignments = () => {
+            getAssignments(cookies.get("token"), route.params.id).then(
+                (data) => {
+                    assignments.value = data
+                }
+            )
+        }
+
+        onMounted(() => {
+            updateStudents()
+            updateAssignments()
+        })
+
+        return {
+            students,
+            assignments,
+        }
+    },
 }
 </script>
 
