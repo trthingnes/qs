@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -46,8 +47,16 @@ class SecurityAdapter : WebSecurityConfigurerAdapter() {
         if (http == null) { return }
 
         http
-            .headers().frameOptions().sameOrigin() // Needed for H2 console to work.
+            .headers()
+            .frameOptions().sameOrigin() // Needed for H2 console to work.
             .and()
+            .cors().configurationSource {
+                val cors = CorsConfiguration()
+                cors.allowedOrigins = listOf("*")
+                cors.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                cors.allowedHeaders = listOf("*")
+                cors
+            }.and()
             .csrf().disable()
             .authorizeRequests()
             .antMatchers(
