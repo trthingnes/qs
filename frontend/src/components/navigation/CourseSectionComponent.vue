@@ -1,5 +1,5 @@
 <template>
-    <v-list-subheader color="black">
+    <v-list-subheader color="black" data-testid="subheader">
         <v-icon :icon="icon" class="mr-3"></v-icon>
         {{ title }}
     </v-list-subheader>
@@ -9,6 +9,7 @@
         :value="course.id"
         :key="course.id"
         @click.stop="onCourseClick(course.id)"
+        data-testid="item"
     ></v-list-item>
 </template>
 <script>

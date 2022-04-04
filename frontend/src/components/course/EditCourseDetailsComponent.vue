@@ -84,9 +84,7 @@ export default {
             })
         }
 
-        const onCourseDeleteClick = () => {
-            // TODO
-        }
+        const onCourseDeleteClick = () => {}
 
         const onCourseSaveClick = () => {
             let infoToUpdate = {
