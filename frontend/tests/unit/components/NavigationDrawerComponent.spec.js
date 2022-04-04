@@ -1,4 +1,4 @@
-import NavigationDrawerComponent from "@/components/NavigationDrawerComponent"
+import NavigationDrawerComponent from "@/components/navigation/NavigationDrawerComponent"
 import { shallowMount } from "@vue/test-utils"
 
 describe("NavigationDrawerComponent", () => {
