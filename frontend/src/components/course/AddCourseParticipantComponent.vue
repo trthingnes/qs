@@ -56,6 +56,7 @@
                                 prepend-icon="mdi-plus"
                                 color="success"
                                 type="submit"
+                                data-testid="button"
                             >
                                 Legg til
                                 {{ assistant ? "assistent" : "student" }}
