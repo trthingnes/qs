@@ -8,6 +8,6 @@ data class QueueEntryDTO(
     val location: String?,
     val hasAssistant: Boolean?,
     val username: String?,
-){
+) {
     constructor(q: QueueEntry) : this(q.id, q.help, q.location, q.hasAssistant, q.user.username)
 }
