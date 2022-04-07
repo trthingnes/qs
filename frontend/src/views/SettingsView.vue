@@ -74,6 +74,7 @@
 <script>
 import { ref } from "vue"
 import { useStore } from "vuex"
+import { useCookies } from "vue3-cookies"
 import { getUserInfo, updateUserInfo } from "@/services/api"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 
@@ -83,6 +84,7 @@ export default {
     },
     setup() {
         const store = useStore()
+        const { cookies } = useCookies()
 
         const firstname = ref("")
         const lastname = ref("")
@@ -126,10 +128,10 @@ export default {
             }
 
             updatedSuccessfully.value = updateUserInfo(
-                store.getters.token,
+                cookies.get("token"),
                 infoToUpdate
             ).then(async () => {
-                let userinfo = await getUserInfo(store.getters.token)
+                let userinfo = await getUserInfo(cookies.get("token"))
                 store.dispatch("setUserInfo", userinfo)
             })
         }

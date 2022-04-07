@@ -152,7 +152,7 @@ export default {
         const store = useStore()
         const { cookies } = useCookies()
 
-        const isAuthenticated = ref(Boolean(store.getters.token))
+        const isAuthenticated = ref(Boolean(cookies.get("token")))
         const isTeacher = ref(false)
         const isLoginOverlayOpen = ref(false)
         const isNavigationOpen = ref(true)
@@ -175,15 +175,15 @@ export default {
         }
 
         const updateCourses = () => {
-            getUserStudentCourses(store.getters.token).then((courses) => {
+            getUserStudentCourses(cookies.get("token")).then((courses) => {
                 studentCourses.value = courses
             })
 
-            getUserAssistantCourses(store.getters.token).then((courses) => {
+            getUserAssistantCourses(cookies.get("token")).then((courses) => {
                 assistantCourses.value = courses
             })
 
-            getUserTeacherCourses(store.getters.token).then((courses) => {
+            getUserTeacherCourses(cookies.get("token")).then((courses) => {
                 teacherCourses.value = courses
             })
         }
@@ -218,7 +218,7 @@ export default {
         }
 
         if (cookies.isKey("token")) {
-            getUserInfo(store.getters.token).then((userinfo) => {
+            getUserInfo(cookies.get("token")).then((userinfo) => {
                 store.dispatch("setUserInfo", userinfo)
                 updateUserInfoFromStore()
                 updateCourses()

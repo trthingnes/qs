@@ -7,12 +7,8 @@ export default createStore({
         lastname: "",
         email: "",
         role: "",
-        token: "",
     },
     getters: {
-        token(state) {
-            return state.token
-        },
         userInfo(state) {
             return {
                 username: state.username,
@@ -31,9 +27,6 @@ export default createStore({
         },
     },
     mutations: {
-        SET_TOKEN(state, token) {
-            state.token = token
-        },
         SET_USERNAME(state, username) {
             state.username = username
         },
@@ -51,9 +44,6 @@ export default createStore({
         },
     },
     actions: {
-        setToken(context, token) {
-            context.commit("SET_TOKEN", token)
-        },
         setUserInfo(context, { username, firstName, lastName, email, role }) {
             context.commit("SET_USERNAME", username)
             context.commit("SET_FIRSTNAME", firstName)

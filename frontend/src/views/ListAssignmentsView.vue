@@ -22,9 +22,9 @@
 import ListAssignmentComponent from "@/components/ListAssignmentComponent.vue"
 import { getAssignments, getCourseStudentsById } from "@/services/api"
 import { ref } from "vue"
+import { useCookies } from "vue3-cookies"
 import { useRoute } from "vue-router"
 import { onMounted } from "@vue/runtime-core"
-import { useStore } from "vuex"
 
 export default {
     name: "AssignmentListView",
@@ -32,14 +32,14 @@ export default {
     components: { ListAssignmentComponent },
 
     setup() {
-        const store = useStore()
+        const { cookies } = useCookies()
         const route = useRoute()
 
         const students = ref([])
         const assignments = ref([])
 
         const updateStudents = () => {
-            getCourseStudentsById(store.getters.token, route.params.id).then(
+            getCourseStudentsById(cookies.get("token"), route.params.id).then(
                 (data) => {
                     console.log(data)
                     students.value = data
@@ -48,7 +48,7 @@ export default {
         }
 
         const updateAssignments = () => {
-            getAssignments(store.getters.token, route.params.id).then(
+            getAssignments(cookies.get("token"), route.params.id).then(
                 (data) => {
                     assignments.value = data
                 }
@@ -67,3 +67,5 @@ export default {
     },
 }
 </script>
+
+<style scoped></style>

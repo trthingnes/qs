@@ -50,8 +50,8 @@
 
 <script>
 import { ref, watch } from "vue"
-import { useStore } from "vuex"
 import { useRoute } from "vue-router"
+import { useCookies } from "vue3-cookies"
 import { getCourseById, updateCourseInfoById } from "@/services/api"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 
@@ -60,8 +60,8 @@ export default {
         HeaderComponent,
     },
     setup() {
-        const store = useStore()
         const route = useRoute()
+        const { cookies } = useCookies()
 
         const code = ref("")
         const name = ref("")
@@ -74,7 +74,7 @@ export default {
         const getCourseInfo = (id) => {
             if (!id) return
 
-            getCourseById(store.getters.token, id).then((course) => {
+            getCourseById(cookies.get("token"), id).then((course) => {
                 code.value = course.code
                 name.value = course.name
                 url.value = course.url
@@ -84,7 +84,9 @@ export default {
             })
         }
 
-        const onCourseDeleteClick = () => {}
+        const onCourseDeleteClick = () => {
+            // TODO
+        }
 
         const onCourseSaveClick = () => {
             let infoToUpdate = {
@@ -97,7 +99,7 @@ export default {
             }
 
             updatedSuccessfully.value = updateCourseInfoById(
-                store.getters.token,
+                cookies.get("token"),
                 route.params.id,
                 infoToUpdate
             )

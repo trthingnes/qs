@@ -84,7 +84,7 @@
 
 <script>
 import { ref } from "vue"
-import { useStore } from "vuex"
+import { useCookies } from "vue3-cookies"
 import { createCourse } from "@/services/api"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 
@@ -93,7 +93,7 @@ export default {
         HeaderComponent,
     },
     setup() {
-        const store = useStore()
+        const { cookies } = useCookies()
 
         const code = ref("")
         const name = ref("")
@@ -121,7 +121,7 @@ export default {
             infoToAdd["url"] = url.value
 
             updatedSuccessfully.value = createCourse(
-                store.getters.token,
+                cookies.get("token"),
                 infoToAdd
             )
         }

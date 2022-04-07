@@ -103,8 +103,8 @@
 
 <script>
 import { ref } from "vue"
-import { useStore } from "vuex"
 import { useRoute } from "vue-router"
+import { useCookies } from "vue3-cookies"
 import {
     getCourseStudentsById,
     getCourseAssistantsById,
@@ -120,8 +120,8 @@ export default {
         AddCourseParticipantComponent,
     },
     setup() {
-        const store = useStore()
         const route = useRoute()
+        const { cookies } = useCookies()
 
         const courseStudents = ref()
         const courseAssistants = ref()
@@ -131,23 +131,23 @@ export default {
         const onUserDeleteClick = (username, student) => {
             if (student) {
                 removeStudentByCourseId(
-                    store.getters.token,
+                    cookies.get("token"),
                     route.params.id,
                     username
                 )
             } else {
                 removeAssistantsByCourseId(
-                    store.getters.token,
+                    cookies.get("token"),
                     route.params.id,
                     username
                 )
             }
         }
 
-        getCourseStudentsById(store.getters.token, route.params.id).then(
+        getCourseStudentsById(cookies.get("token"), route.params.id).then(
             (data) => (courseStudents.value = data)
         )
-        getCourseAssistantsById(store.getters.token, route.params.id).then(
+        getCourseAssistantsById(cookies.get("token"), route.params.id).then(
             (data) => (courseAssistants.value = data)
         )
 

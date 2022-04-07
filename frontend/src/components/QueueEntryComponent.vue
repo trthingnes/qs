@@ -6,14 +6,14 @@
     </tr>
 </template>
 <script>
+import { useCookies } from "vue3-cookies"
 import { useRoute, useRouter } from "vue-router"
-import { useStore } from "vuex"
 import { putQueueEntryHasAssistant } from "@/services/api"
 
 export default {
     props: ["entry"],
     setup(props) {
-        const store = useStore()
+        const { cookies } = useCookies()
         const route = useRoute()
         const router = useRouter()
 
@@ -21,7 +21,7 @@ export default {
             console.log(route.params.id)
             console.log(props.entry.id)
             putQueueEntryHasAssistant(
-                store.getters.token,
+                cookies.get("token"),
                 route.params.id,
                 props.entry.id
             ).then(() => {

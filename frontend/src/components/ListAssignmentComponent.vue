@@ -22,9 +22,9 @@
 </template>
 <script>
 import { ref } from "vue"
-import { useStore } from "vuex"
-import { useRoute, useRouter } from "vue-router"
 import { postCompletedAssignment } from "@/services/api"
+import { useCookies } from "vue3-cookies"
+import { useRoute, useRouter } from "vue-router"
 
 export default {
     props: {
@@ -34,9 +34,9 @@ export default {
     setup() {
         const selected = ref()
         const selectedUsername = ref()
+        const { cookies } = useCookies()
         const route = useRoute()
         const router = useRouter()
-        const store = useStore()
 
         const selectAssignment = (assignmentNumber, username) => {
             selected.value = assignmentNumber
@@ -46,7 +46,7 @@ export default {
 
         const approve = () => {
             postCompletedAssignment(
-                store.getters.token,
+                cookies.get("token"),
                 route.params.id,
                 selected.value,
                 selectedUsername.value

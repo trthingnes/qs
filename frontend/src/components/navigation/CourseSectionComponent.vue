@@ -4,12 +4,12 @@
         {{ title }}
     </v-list-subheader>
     <v-list-item
+        data-testid="item"
         v-for="course in courses"
         :title="course.name"
         :value="course.id"
         :key="course.id"
         @click.stop="onCourseClick(course.id)"
-        data-testid="item"
     ></v-list-item>
 </template>
 <script>

@@ -27,8 +27,8 @@
 
 <script>
 import { ref } from "vue"
-import { useStore } from "vuex"
 import { useRoute, useRouter } from "vue-router"
+import { useCookies } from "vue3-cookies"
 import HeaderComponent from "@/components/HeaderComponent.vue"
 import QueueEntryComponent from "@/components/QueueEntryComponent.vue"
 import { getQueueEntriesById } from "@/services/api"
@@ -39,14 +39,14 @@ export default {
         QueueEntryComponent,
     },
     setup() {
-        const store = useStore()
         const route = useRoute()
         const router = useRouter()
+        const { cookies } = useCookies()
 
         const entries = ref()
 
         const getEntries = () => {
-            getQueueEntriesById(store.getters.token, route.params.id).then(
+            getQueueEntriesById(cookies.get("token"), route.params.id).then(
                 (data) => {
                     entries.value = data
                 }
